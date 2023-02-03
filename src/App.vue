@@ -1,30 +1,42 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <div class="row container-fluid">
+    <div class="col-2">
+      <SidenavView />
+    </div>
+
+    
+   <div class="col-10">
+      <NavView />
+      <router-view />
+   </div>
+  </div>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script setup>
+  import NavView from "@/views/NavView"
+  import SidenavView from "@/views/SidenavView"
+</script>
 
-nav {
-  padding: 30px;
-}
+<style scoped>
 
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
+*{
+  overflow-x: hidden;
 }
+  
+  
 
-nav a.router-link-exact-active {
-  color: #42b983;
-}
+  .row>*{
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .container-fluid, .container-lg, .container-md, .container-sm, .container-xl, .container-xxl {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 0;
+    width: 100%;
+    padding-right: 0;
+    padding-left: 0;
+    margin-right: 0;
+    margin-left: 0;
+ }
 </style>
