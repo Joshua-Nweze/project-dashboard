@@ -7,7 +7,8 @@
     
    <div class="col-10">
       <NavView />
-      <router-view />
+      <router-view class="router-view"/>
+      <Footer />
    </div>
   </div>
 </template>
@@ -15,15 +16,13 @@
 <script setup>
   import NavView from "@/views/NavView"
   import SidenavView from "@/views/SidenavView"
+  import Footer from "@/components/Footer"
 </script>
 
 <style scoped>
-
-*{
-  overflow-x: hidden;
-}
-  
-  
+  *{
+    overflow-x: hidden;
+  }
 
   .row>*{
     padding-left: 0;
@@ -38,5 +37,10 @@
     padding-left: 0;
     margin-right: 0;
     margin-left: 0;
- }
+  }
+
+  .router-view{
+    background-color: var(--bs-gray-100);
+    padding: 30px;
+  }
 </style>

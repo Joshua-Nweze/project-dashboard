@@ -1,12 +1,12 @@
-// import { createRouter, createWebHistory } from 'vue-router'
-// import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory } from 'vue-router'
+import DashboardView from '../views/DashboardView'
 
-// const routes = [
-//   {
-//     path: '/',
-//     name: 'home',
-//     component: HomeView
-//   },
+const routes = [
+  {
+    path: '/',
+    name: 'dashboard',
+    component: DashboardView
+  },
 //   {
 //     path: '/about',
 //     name: 'about',
@@ -17,11 +17,11 @@
 //       return import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
 //     }
 //   }
-// ]
+]
 
-// const router = createRouter({
-//   history: createWebHistory(process.env.BASE_URL),
-//   routes
-// })
+const router = createRouter({
+  history: createWebHistory(process.env.BASE_URL),
+  routes
+})
 
-// export default router
+export default router

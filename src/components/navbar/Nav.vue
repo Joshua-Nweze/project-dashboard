@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav class="navbar bg-body-tertiary">
+        <nav class="navbar">
             <div class="container-fluid">
                 <a class="navbar-brand"><b>ESHDC</b> Dashboard</a>
 
@@ -28,6 +28,7 @@
 <style scoped>
     .navbar{
         margin: 0;
+        background-color: var(--bs-gray-300);
     }
 
     .nav-links > span{
