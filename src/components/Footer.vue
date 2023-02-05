@@ -1,7 +1,10 @@
 <template>
-    <div class="footer">
-        Footer
-    </div>
+    <footer class="footer">
+        <div class="row">
+            <div class="col-6">&copy; {{ new Date().getFullYear() }} ESHDC Data Dashboard </div>
+            <div class="col-6 text-end">Designed and created by Joshua Nweze</div>
+        </div>
+    </footer>
 </template>
 
 <script setup>
@@ -10,7 +13,7 @@
 
 <style scoped>
     .footer{
-        position: absolute;
-        bottom: 0;
+        background-color: var(--bs-gray-200);
+        padding: 20px 5px;
     }
 </style>

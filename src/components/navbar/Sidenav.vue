@@ -9,26 +9,35 @@
                 </div>
                 <hr>
                 <div class="row">
-                    <div class="col-12 sidebar-items active">
+                    <router-link to="/" class="col-12 sidebar-items">
                         <span class="col-3"><i class="bi bi-table"></i></span>
                         <span class="col-9 align-items-center">Dashboard</span>
-                    </div>
-                     <div class="col-12 sidebar-items">
+                    </router-link>
+                    
+                    <router-link to="/notifications" class="sidebar-items">
                         <span class="col-3"><i class="bi bi-bell"></i></span>
-                        <span class="col-9 align-items-center">Notification</span>
-                    </div>
-                     <div class="col-12 sidebar-items">
+                        <span class="col-9 align-items-center">Notifications</span>
+                    </router-link>
+                    
+                    <router-link to="/files" class="col-12 sidebar-items">
                         <span class="col-3"><i class="bi bi-file-earmark"></i></span>
                         <span class="col-9 align-items-center">Files</span>
-                    </div>
-                     <div class="col-12 sidebar-items">
+                    </router-link>
+                    
+                    <router-link to="/upload" class="col-12 sidebar-items">
                         <span class="col-3"><i class="bi bi-upload"></i></span>
                         <span class="col-9 align-items-center">File Upload</span>
-                    </div>
-                     <div class="col-12 sidebar-items">
+                    </router-link>
+
+                    <router-link to="/admins" class="col-12 sidebar-items">
+                        <span class="col-3"><i class="bi bi-person"></i></span>
+                        <span class="col-9 align-items-center">Admins</span>
+                    </router-link>
+
+                    <router-link to="/account" class="col-12 sidebar-items">
                         <span class="col-3"><i class="bi bi-person-circle"></i></span>
                         <span class="col-9 align-items-center">Account</span>
-                    </div>
+                    </router-link>
                 </div>
             </div>
         </div>
@@ -46,6 +55,7 @@
         background-color: black;
         margin: 0;
         color: white;
+        /* top: 0; */
     }
 
     .logo{
@@ -54,14 +64,17 @@
     }
 
     .sidebar-items{
-        margin-bottom: 15px;
         /* padding-bottom: 15px; */
+        margin: 7px 0;
+        width: 100%;
         height: 45px;
         display: flex;
         align-items: center;
+        text-decoration: none;
+        color: white;
     }
 
-    .active{
+    .active, .sidebar-section:hover{
         background-color: #2e2e2e;
         border-radius: 5px;
     }

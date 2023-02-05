@@ -1,21 +1,23 @@
 <template>
   <div class="row container-fluid">
     <div class="col-2">
-      <SidenavView />
+      <Sidenav />
     </div>
 
     
    <div class="col-10">
-      <NavView />
-      <router-view class="router-view"/>
+      <Nav />
+      <div class="router-view">
+        <router-view/>
+      </div>
       <Footer />
    </div>
   </div>
 </template>
 
 <script setup>
-  import NavView from "@/views/NavView"
-  import SidenavView from "@/views/SidenavView"
+  import Nav from "@/components/navbar/Nav"
+  import Sidenav from "@/components/navbar/Sidenav"
   import Footer from "@/components/Footer"
 </script>
 
@@ -43,4 +45,5 @@
     background-color: var(--bs-gray-100);
     padding: 30px;
   }
+
 </style>

@@ -1,9 +1,9 @@
 <template>
-  <Sidenav />
+     Admins
 </template>
 
 <script setup>
-    import Sidenav from "@/components/navbar/Sidenav";
+
 </script>
 
 <style scoped>
