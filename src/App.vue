@@ -1,17 +1,19 @@
 <template>
-  <div class="row container-fluid">
-    <div class="col-2">
-      <Sidenav />
-    </div>
-
-    
-   <div class="col-10">
-      <Nav />
-      <div class="router-view">
-        <router-view/>
+  <div class="body">
+    <div class="row container-fluid">
+      <div class="col-2">
+        <Sidenav class="side-nav"/>
       </div>
-      <Footer />
-   </div>
+
+      
+      <div class="col-10 main">
+          <Nav />
+          <div class="router-view">
+            <router-view/>
+          </div>
+          <Footer />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -24,6 +26,16 @@
 <style scoped>
   *{
     overflow-x: hidden;
+  }
+
+  .body{
+    background-color: var(--bs-gray-100);
+  }
+
+  .main{
+    min-height: 100vh;
+    display: flex;
+    flex-flow: column;
   }
 
   .row>*{
@@ -42,8 +54,9 @@
   }
 
   .router-view{
-    background-color: var(--bs-gray-100);
     padding: 30px;
+    position: relative;
+    margin-bottom: 30px;
+    flex-grow: 1;
   }
-
 </style>

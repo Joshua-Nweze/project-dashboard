@@ -55,7 +55,20 @@
         background-color: black;
         margin: 0;
         color: white;
-        /* top: 0; */
+        width: inherit;
+        position: fixed;
+        overflow-y: scroll;
+        padding-bottom: 100px;
+        overflow-x: hidden;
+        z-index: 2;
+
+        /* Hide scrollbar for IE, Edge add Firefox */
+        -ms-overflow-style: none;
+        scrollbar-width: none; /* Firefox */
+    }
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    .side-nav::-webkit-scrollbar {
+    display: none;
     }
 
     .logo{
