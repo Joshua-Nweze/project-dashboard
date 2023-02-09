@@ -5,6 +5,8 @@
                 Admins
             </div>
 
+            <button class="btn btn-secondary m-3" data-bs-toggle="modal" data-bs-target="#inviteAdmin">Invite someone to be admin</button>
+
             <table class="table">
                 <thead>
                     <tr>
@@ -25,6 +27,28 @@
             </table>
         </div>
     </div>
+
+
+    <!-- Invite to be admin modal -->
+    <div class="modal fade" tabindex="-1"  id="inviteAdmin" aria-labelledby="inviteAdmin" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Invite to be admin</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label for="inviteeEmail">Enter invitee's email</label>
+                <input type="text" class="form-control" id="inviteeEmail" placeholder="Invitee's e-mail">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary">Invite</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
 </template>
 
 <script setup>

@@ -6,6 +6,9 @@
      import Admins from "@/components/admins/Admins"
 </script>
 
-<style scoped>
-
+<style>
+     .form-control:focus{
+        border-color: #6c757d;
+        box-shadow: none;
+    }
 </style>

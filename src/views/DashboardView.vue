@@ -1,13 +1,17 @@
 <template>
-    <Cards />
-    <Latest />
+    <CardsRow />
+    <LatestRow />
+    <GraphRow />
 </template>
 
 <script setup>
-    import Cards from "@/components/dashboard/Cards"
-    import Latest from "@/components/dashboard/Latest"
+    import CardsRow from "@/components/dashboard/CardsRow"
+    import LatestRow from "@/components/dashboard/LatestRow"
+    import GraphRow from "@/components/dashboard/GraphRow"
 </script>
 
-<style scoped>
-
+<style>
+    .router-link{
+        text-decoration: none;
+    }
 </style>

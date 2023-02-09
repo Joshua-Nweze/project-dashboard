@@ -8,6 +8,8 @@
     import Files from "@/components/files/Files"
 </script>
 
-<style scoped>
-
+<style >
+    .dropdown-toggle::after{
+        display: none;
+    }
 </style>

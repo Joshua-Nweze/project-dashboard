@@ -6,6 +6,8 @@
                     <div class="fs-3 mb-4"><i class="bi bi-person-circle"></i> My profile</div>
                     <EditProfile />
                     <ChangePwd />
+                    <hr>
+                    <DeleteAccount />
                 </div>
             </div>
         </div>
@@ -15,6 +17,7 @@
 <script setup>
     import EditProfile from "@/components/account/EditProfile"
     import ChangePwd from "@/components/account/ChangePwd"
+    import DeleteAccount from "@/components/account/DeleteAccount"
 </script>
 
 <style scoped>

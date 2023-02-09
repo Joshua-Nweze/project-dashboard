@@ -9,7 +9,7 @@
                 </div>
                 <hr>
                 <div class="row">
-                    <router-link to="/" class="col-12 sidebar-items">
+                    <router-link to="/dashboard" class="col-12 sidebar-items">
                         <span class="col-3"><i class="bi bi-table"></i></span>
                         <span class="col-9 align-items-center">Dashboard</span>
                     </router-link>

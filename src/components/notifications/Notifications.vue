@@ -1,7 +1,7 @@
 <template>
     <div class="row">
         <div class="col-12 d-flex justify-content-center fs-4 text-body-secondary">No notification to show</div>
-        <div class="col-12">
+        <!-- <div class="col-12">
             <div class="row mt-5 justify-content-center">
                 <div class="col-9">
                     <div class="card">
@@ -19,7 +19,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 
