@@ -14,7 +14,7 @@
 
 
     <div class="row d-flex justify-content-center mt-3">
-        <div class="col-3 mb-2" v-for="queryFile in queryFiles" :key="queryFile.index">
+        <div class="col-sm-6 col-md-4 col-lg-3 mb-2" v-for="queryFile in queryFiles" :key="queryFile.index">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">{{ queryFile.title }}</h5>

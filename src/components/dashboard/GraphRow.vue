@@ -1,9 +1,9 @@
 <template>
     <div class="row mt-5 align-items-center">
-        <div class="col-8">
+        <div class="col-lg-8 col-sm-12 col-md-8 mt-3">
             <canvas id="myGraphChart"></canvas>
         </div>
-        <div class="col-4">
+        <div class="col-lg-4 col-12 col-md-4 mt-5">
             <div class="card">
                 <div class="card-body">
                     <div class="fs-3 text-secondary">File Categories</div>

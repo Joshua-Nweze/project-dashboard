@@ -1,6 +1,6 @@
 <template>
     <div class="row justify-content-center">
-        <div class="col-8">
+        <div class="col-md-8 col-sm-12">
             <div class="card">
                 <div class="card-body">
                     <div class="fs-3 mb-4"><i class="bi bi-person-circle"></i> My profile</div>

@@ -1,13 +1,13 @@
 <template>
     <div class="row">
         <div class="fs-5 text-body-secondary mb-2">Change details</div>
-        <div class="col-6">
+        <div class="col-md-6 col-12">
             <div class="mb-3">
                 <label for="firstName" class="form-label">First name</label>
                 <input type="email" class="form-control" id="firstName" placeholder="First name">
             </div>
         </div>
-        <div class="col-6">
+        <div class="col-md-6 col-12">
             <div class="mb-3">
                 <label for="lastName" class="form-label">Current password</label>
                 <input type="email" class="form-control" id="lastName" placeholder="Last name">

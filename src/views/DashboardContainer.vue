@@ -1,12 +1,13 @@
 <template>
   <div class="body">
     <div class="row container-fluid">
-      <div class="col-2">
+      <div class="col-2  d-none d-lg-block">
         <Sidenav class="side-nav"/>
+   
       </div>
+    
 
-      
-      <div class="col-10 main">
+      <div class="col-lg-10 col-sm-12 col-md-12 main">
           <Nav />
           <div class="router-view p-4">
             <router-view/>
@@ -22,7 +23,7 @@
   import Nav from "@/components/navbar/Nav"
   import Sidenav from "@/components/navbar/Sidenav"
   import Footer from "@/components/Footer"
-  import { ref } from "@vue/reactivity"
+
 </script>
 
 <style scoped>

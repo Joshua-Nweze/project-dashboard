@@ -15,11 +15,11 @@
             </div>
         </div>
 
-        <div class="col-lg-5 col-sm-12 col-md-12 order-md-3 order-lg-2">
+        <div class="col-lg-5 col-sm-12 col-md-12 order-md-3 order-lg-2 mt-4">
             <canvas id="myBarChart"></canvas>
         </div>
 
-        <div class="col-lg-4 col-sm-12 col-md-6 order-md-2 order-lg-3">
+        <div class="col-lg-4 col-sm-12 col-md-6 order-md-2 order-lg-3 mt-4">
             <canvas id="myPieChart"></canvas>
         </div>
     </div>
@@ -29,16 +29,28 @@
     import { storeToRefs } from "pinia";
     import { useFiles } from "@/store/useFiles"
     import Chart from 'chart.js/auto';
-    import { onMounted } from "@vue/runtime-core";
+    import { onMounted, ref } from "@vue/runtime-core";
 
     let files = useFiles()
     let {file, catArr} = storeToRefs(files)
     let fileDetails = file.value.files
 
+    // for (let i = 0; i < fileDetails.length; i++) {
+    //     console.log(fileDetails[i]);
+        
+    // }
+
+    // let a = fileDetails.map(file => {
+    //     if (file.category) {
+    //         console.log('yes');
+    //     }
+    // })
+
     // for (let i = 0; i < catArr.size; i++) {
     //     console.log(catArr[i]);
         
     // }
+    let num1 = ref(10)
     onMounted(() => {
         const bar = document.getElementById('myBarChart')
         const pie = document.getElementById('myPieChart')
@@ -49,7 +61,7 @@
                 labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
                 datasets: [{
                     label: '# of uploads per month',
-                    data: [12, 19, 3, 5, 2, 3],
+                    data: [12, 19, 3, 5, 2, 3, num1.value],
                     borderWidth: 1,
                     height: 100
                 }]
@@ -66,10 +78,10 @@
         new Chart(pie, {
             type: 'pie',
             data: {
-                labels: catArr.value,
+                labels: ['hujn', 'ujb', 'uy'],
                 datasets: [{
                     label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
+                    data: [5, 8, 0, 8],
                     borderWidth: 1
                 }]
             },

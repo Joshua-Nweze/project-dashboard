@@ -1,52 +1,50 @@
 <template>
     <div>
-        <nav class="navbar">
+        <CollapsibleNav 
+            class="d-md-block d-lg-none d-xl-none" 
+            v-if="showCollapsible" 
+            @closeCollapsible="closeCollapsible"
+        />
+
+
+        <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
+                
+                <button @click="showCollapsible = true" class="navbar-toggler" type="button" data-bs-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
                 <a class="navbar-brand"><h1>ESHDC <span class="text-body-secondary">Data Dashboard</span></h1></a>
-
-                <div class="d-flex justify-content-end nav-links">
-                <!-- <span class="hover-pointer" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="bi bi-search"></i> Search</span> -->
-
-                <router-link to="/notifications" class="router-link">
-                    <span class="position-relative">
-                        <i class="bi bi-bell"></i> 
-                        Notifications
-                        <span class="notification-dot position-absolute top-0 start-90 translate-middle p-2 bg-danger border border-light rounded-circl d-none">
-                        <span class="visually-hidden">New notifications</span>
-                        </span>
-                    </span>
-                </router-link>
-
-                <router-link to="/account" class="router-link">
-                    <span><i class="bi bi-person-circle"></i> Account</span>
-                </router-link>
-
-                <span class="hover-pointer">Logout</span>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex justify-content-end nav-links">
+                        <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#">
+                            <router-link to="/notifications" class="router-link">
+                                <span class="position-relative">
+                                    <i class="bi bi-bell"></i> 
+                                    Notifications
+                                    <span class="notification-dot position-absolute top-0 start-90 translate-middle p-2 bg-danger border border-light rounded-circl d-none">
+                                    <span class="visually-hidden">New notifications</span>
+                                    </span>
+                                </span>
+                            </router-link>
+                        </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <router-link to="/account" class="router-link">
+                                    <span><i class="bi bi-person-circle"></i> Account</span>
+                                </router-link>
+                            </a>
+                        </li>
+                        <!-- <li class="nav-item">
+                            <a href="" class="nav-item">
+                                <span class="hover-pointer">Logout</span>
+                            </a>
+                        </li> -->
+                    </ul>
                 </div>
             </div>
         </nav>
-
-
-        <!-- Search Modal -->
-        <!-- <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="searchInput" class="form-label">Search file</label>
-                        <div class="row">
-                            <div class="col-9">
-                                <input type="email" class="form-control" id="searchInput" placeholder="Search file" @keypress.enter="search" v-model="searchVal">
-                            </div>
-                            <div class="col-3">
-                                <button type="button" class="btn btn-outline-secondary" @click="search" data-bs-dismiss="modal">Search</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        </div> -->
 
     </div>
 </template>
@@ -57,12 +55,16 @@
     import { reactive, ref } from "@vue/reactivity";
     import { storeToRefs } from "pinia";
 
+    
+  import CollapsibleNav from "@/components/navbar/CollapsibleNav"
+
     let files = useFiles()
     let {searchFile} = files
 
     let searchVal = ref()
 
     let router = useRouter()
+    let showCollapsible = ref(false)
 
     function search(searchVal) {
         if (searchVal.value !== "") {
@@ -70,6 +72,10 @@
             searchFile(searchVal.value)
             searchVal.value = ''
         }
+    }
+
+    function closeCollapsible() {
+        showCollapsible.value = false
     }
 </script>
 
@@ -83,7 +89,7 @@
         background-color: var(--bs-gray-300);
     }
 
-    .nav-links > .router-link{
+    .nav-links > .nav-item{
         padding: 0 5px;
     }
 
@@ -108,4 +114,6 @@
     .hover-pointer:hover{
         cursor: pointer;
     }
+
+    
 </style>

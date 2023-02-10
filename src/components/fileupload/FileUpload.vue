@@ -1,6 +1,6 @@
 <template>
     <div class="row justify-content-center">
-        <div class="col-6">
+        <div class="col-lg-6 col-sm-12 col-md-8">
             <div class="card">
                 <div class="card-body">
                     <div class="fs-3">Upload file</div>
