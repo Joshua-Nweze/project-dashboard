@@ -76,6 +76,7 @@
                 showErrMsg.value = false
                 setTimeout(()=> {
                     router.push("/dashboard")
+                    password.value = ""
                 }, 1500)
             } else {
                 console.log('unsuccess');

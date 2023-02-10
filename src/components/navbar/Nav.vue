@@ -29,7 +29,9 @@
                         <span><i class="bi bi-person-circle"></i> Account</span>
                     </router-link>
 
-                    <span class="hover-pointer router-link">Logout</span>
+                    <router-link to="/" class="router-link">
+                        <span class=""><i class="bi bi-box-arrow-left"></i> Logout</span>
+                    </router-link>
                 </div>
             </div>
         </nav>

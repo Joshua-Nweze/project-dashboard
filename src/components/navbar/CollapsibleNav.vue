@@ -42,10 +42,10 @@
 
                     <hr>
 
-                    <div class="col-6 justify-content-center sidebar-items" @click="collapsibleClicked">
+                    <router-link to="/" class="col-6 justify-content-center sidebar-items" @click="collapsibleClicked">
                         <!-- <span class="col-3"><i class="bi bi-person-circle"></i></span> -->
                         <btn class="btn btn-outline-light align-items-center text-light">Logout</btn>
-                    </div>
+                    </router-link>
                 </div>
             </div>
         </div>
