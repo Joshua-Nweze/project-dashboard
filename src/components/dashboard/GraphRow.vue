@@ -38,7 +38,7 @@ import { onMounted } from "@vue/runtime-core";
          data: {
             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
             datasets: [{
-            label: 'My Graph',
+            label: 'File Graph',
             data: [65, 59, 80, 81, 56, 55, 40],
             fill: false,
             borderColor: 'rgb(75, 192, 192)',

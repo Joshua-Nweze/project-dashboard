@@ -78,7 +78,7 @@
         new Chart(pie, {
             type: 'pie',
             data: {
-                labels: ['hujn', 'ujb', 'uy'],
+                labels: ['File1', 'File2', 'File3'],
                 datasets: [{
                     label: '# of Votes',
                     data: [5, 8, 0, 8],

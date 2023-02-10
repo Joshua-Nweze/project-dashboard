@@ -6,42 +6,30 @@
             @closeCollapsible="closeCollapsible"
         />
 
-
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
-                
                 <button @click="showCollapsible = true" class="navbar-toggler" type="button" data-bs-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <a class="navbar-brand"><h1>ESHDC <span class="text-body-secondary">Data Dashboard</span></h1></a>
-                <div class="collapse navbar-collapse">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex justify-content-end nav-links">
-                        <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">
-                            <router-link to="/notifications" class="router-link">
-                                <span class="position-relative">
-                                    <i class="bi bi-bell"></i> 
-                                    Notifications
-                                    <span class="notification-dot position-absolute top-0 start-90 translate-middle p-2 bg-danger border border-light rounded-circl d-none">
-                                    <span class="visually-hidden">New notifications</span>
-                                    </span>
-                                </span>
-                            </router-link>
-                        </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <router-link to="/account" class="router-link">
-                                    <span><i class="bi bi-person-circle"></i> Account</span>
-                                </router-link>
-                            </a>
-                        </li>
-                        <!-- <li class="nav-item">
-                            <a href="" class="nav-item">
-                                <span class="hover-pointer">Logout</span>
-                            </a>
-                        </li> -->
-                    </ul>
+
+                <div class="d-none d-lg-block justify-content-end nav-links">
+
+                    <router-link to="/notifications" class="router-link">
+                        <span class="position-relative">
+                            <i class="bi bi-bell"></i> 
+                            Notifications
+                            <!-- <span class="notification-dot position-absolute top-0 start-90 translate-middle p-2 bg-danger border border-light rounded-circle">
+                            <span class="visually-hidden">New notifications</span>
+                            </span> -->
+                        </span>
+                    </router-link>
+
+                    <router-link to="/account" class="router-link">
+                        <span><i class="bi bi-person-circle"></i> Account</span>
+                    </router-link>
+
+                    <span class="hover-pointer router-link">Logout</span>
                 </div>
             </div>
         </nav>
@@ -89,7 +77,7 @@
         background-color: var(--bs-gray-300);
     }
 
-    .nav-links > .nav-item{
+    .nav-links > .router-link{
         padding: 0 5px;
     }
 
@@ -114,6 +102,4 @@
     .hover-pointer:hover{
         cursor: pointer;
     }
-
-    
 </style>

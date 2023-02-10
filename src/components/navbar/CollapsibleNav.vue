@@ -4,8 +4,9 @@
         <div class="row d-flex justify-content-center pt-4">
             <div class="col-9 sidenav-brand">
                 <div class="row">
-                    <span class="col-3"><img src="../../assets/imgs/logo.png" alt="logo" class="logo rounded-circle"></span>
-                    <span class="col-9 align-items-center">ESHDC</span>
+                    <span class="col-2"><img src="../../assets/imgs/logo.png" alt="logo" class="logo rounded-circle"></span>
+                    <span class="col-8 align-items-center">ESHDC</span>
+                    <span class="col-2" @click="collapsibleClicked"><i class="bi bi-x-circle"></i></span>
                 </div>
                 <hr>
                 <div class="row">

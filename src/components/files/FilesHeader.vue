@@ -4,11 +4,11 @@
 
         <div class="col-6">
             <div class="row">
-                <div class="col-9">
+                <div class="col-9 pe-0">
                     <input type="email" class="form-control" id="searchInput" placeholder="Search files" v-model="searchVal" @keypress.enter="search">
                 </div>
-                <div class="col-3">
-                    <button type="button" class="btn btn-outline-secondary" @click="search">Search</button>
+                <div class="col-3 ps-0">
+                    <button type="button" class="btn btn-outline-secondary" @click="search"> <span class="d-block d-sm-none"><i class="bi bi-search"></i></span> <span class="d-none d-sm-block">Search</span></button>
                 </div>
             </div>
         </div>

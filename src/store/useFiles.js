@@ -24,7 +24,6 @@ export const useFiles = defineStore("files", {
         },
 
         searchFile(query){
-            console.log(query);
             this.queryFiles = this.file.files.map(file => file)
                 .filter(file => file.title.toLowerCase().includes(query.toLowerCase()))
         },
