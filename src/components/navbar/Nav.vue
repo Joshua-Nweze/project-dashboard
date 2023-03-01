@@ -56,6 +56,7 @@
     let router = useRouter()
     let showCollapsible = ref(false)
 
+
     function search(searchVal) {
         if (searchVal.value !== "") {
             router.push({ name: 'search', params: { query: searchVal.value.split(' ').join('-')}})

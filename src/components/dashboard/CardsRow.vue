@@ -4,8 +4,8 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-6 card-icon text-danger"><i class="bi bi-file-earmark"></i></div>
-                        <div class="col-6 card-text text-end">
+                        <div class="col-4 card-icon text-danger"><i class="bi bi-file-earmark"></i></div>
+                        <div class="col-8 card-text text-end">
                             <span class="text-body-secondary">Files</span> 
                             <br> 
                                 <span class="fs-1">
@@ -23,8 +23,8 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-6 card-icon text-secondary"><i class="bi bi-file-earmark"></i></div>
-                        <div class="col-6 card-text text-end">
+                        <div class="col-4 card-icon text-secondary"><i class="bi bi-file-earmark"></i></div>
+                        <div class="col-8 card-text text-end">
                             <span class="text-body-secondary">Categories</span> 
                             <br> 
                             <span class="fs-1">
@@ -42,8 +42,8 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-6 card-icon text-primary"><i class="bi bi-person"></i></div>
-                        <div class="col-6 card-text text-end"><span class="text-body-secondary">Admins</span> <br> <span class="fs-1">0</span></div>
+                        <div class="col-4 card-icon text-primary"><i class="bi bi-person"></i></div>
+                        <div class="col-8 card-text text-end"><span class="text-body-secondary">Admins</span> <br> <span class="fs-1">0</span></div>
                         <hr class="mt-3">
                         <span class="d-flex justify-content-center text-body-secondary updated-text"><i class="bi bi-arrow-clockwise"></i> Updated now</span>
                     </div>
@@ -55,8 +55,8 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-6 card-icon text-success"><i class="bi bi-file-earmark"></i></div>
-                        <div class="col-6 card-text text-end"><span class="text-body-secondary">Files</span> <br> <span class="fs-1">0</span></div>
+                        <div class="col-4 card-icon text-success"><i class="bi bi-pencil-square"></i></div>
+                        <div class="col-8 card-text text-end"><span class="text-body-secondary">Edited</span> <br> <span class="fs-1">0</span></div>
                         <hr class="mt-3">
                         <span class="d-flex justify-content-center text-body-secondary updated-text"><i class="bi bi-arrow-clockwise"></i> Updated now</span>
                     </div>

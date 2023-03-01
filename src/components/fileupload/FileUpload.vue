@@ -17,7 +17,8 @@
                     <input type="text" class="form-control" id="filename">
 
                     <div class="mt-4">Attach document</div>
-                    <div class="attach-doc-div text-center">
+                    <div class="attach-doc-div text-center " ref="dragArea" @dragover="dragOver" @dragleave="dragLeave" @drop="dragDrop">
+                        <div ref="fileFeedback"></div>
                         <span><i class="bi bi-upload fs-1 text-secondary"></i> <br> Drag and drop here</span> <br>
                         <span>or</span> <br>
                         <div>
@@ -42,7 +43,39 @@
 </template>
 
 <script setup>
+    import { ref } from "@vue/reactivity";
 
+    let dragArea = ref(null)
+    let fileFeedback = ref(null)
+    
+    function dragOver(e){
+        e.preventDefault()
+        dragArea.value.classList.add('draggedOver')
+    }
+
+    function dragLeave(e){
+        e.preventDefault()
+        dragArea.value.classList.remove('draggedOver')
+    }
+
+    function dragDrop(e){
+        e.preventDefault()
+
+        let acceptedFiles = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf']
+
+        const FILE = e.dataTransfer.files[0]
+        // console.log(FILE.type, FILE.name);
+
+        
+
+        if (acceptedFiles.includes(FILE.type)) {
+            fileFeedback.value.innerHTML = FILE.name; 
+            fileFeedback.value.style.color = '#212529bf'
+        } else {
+            fileFeedback.value.innerHTML = 'File extension not supported'; 
+            fileFeedback.value.style.color = 'red'
+        }
+    }
 </script>
 
 <style scoped>
@@ -52,6 +85,10 @@
         width: inherit;
         border-radius: 7px;
         padding: 20px 0;
+    }
+
+    .draggedOver{
+        border: 1px solid;
     }
 
     .upload{
