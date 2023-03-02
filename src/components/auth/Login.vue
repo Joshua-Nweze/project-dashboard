@@ -24,12 +24,12 @@
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">@</span>
-                        <input type="email" class="form-control" placeholder="E-mail" aria-label="E-mail" aria-describedby="basic-addon1" v-model="email">
+                        <input type="email" @keypress.enter="login" class="form-control" placeholder="E-mail" aria-label="E-mail" aria-describedby="basic-addon1" v-model="email">
                     </div>
 
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1"><i class="bi bi-lock"></i></span>
-                        <input type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1" v-model="password">
+                        <input type="password" @keypress.enter="login" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1" v-model="password">
                     </div>
 
                     <div class="forgot-pwd">

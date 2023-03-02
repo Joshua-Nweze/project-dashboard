@@ -16,7 +16,7 @@
                     <label class="mt-4" for="filename">File name</label>
                     <input type="text" class="form-control" id="filename">
 
-                    <div class="mt-4">Attach document</div>
+                    <div class="mt-4">Attach document ( images and pdf file )</div>
                     <div class="attach-doc-div text-center " ref="dragArea" @dragover="dragOver" @dragleave="dragLeave" @drop="dragDrop">
                         <div ref="fileFeedback"></div>
                         <span><i class="bi bi-upload fs-1 text-secondary"></i> <br> Drag and drop here</span> <br>
@@ -26,10 +26,12 @@
 
                             <div class="d-flex justify-content-center mt-3">
                                 <div class="input-group mb-3 " style="width: 80%">
-                                    <input type="file" class="form-control" id="inputGroupFile02">
+                                    <input type="file" accept=".png, .jpg, .jpeg, .pdf" @click="inputFile" class="form-control" ref="file">
                                 </div>
                             </div>
-                            
+
+                            <b ref="fileErrMsg"></b>
+
                         </div>
                     </div>
 
@@ -47,9 +49,19 @@
 
     let dragArea = ref(null)
     let fileFeedback = ref(null)
+    let file = ref(null)
+    let fileErrMsg = ref(null)
+
+    let FILE = ref(null)
     
     function dragOver(e){
         e.preventDefault()
+        
+
+// if(!file.value){
+//         console.log('file no dey');
+//     } else{console.log('file dey');}
+
         dragArea.value.classList.add('draggedOver')
     }
 
@@ -61,21 +73,35 @@
     function dragDrop(e){
         e.preventDefault()
 
-        let acceptedFiles = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf']
+        let acceptFiles = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf']
 
-        const FILE = e.dataTransfer.files[0]
-        // console.log(FILE.type, FILE.name);
+        FILE = e.dataTransfer.files[0]
+        console.log();
 
-        
-
-        if (acceptedFiles.includes(FILE.type)) {
-            fileFeedback.value.innerHTML = FILE.name; 
-            fileFeedback.value.style.color = '#212529bf'
+        if (file.value.value != '') {
+            fileFeedback.value.innerHTML = "File has been chosen already"
+            fileFeedback.value.style.color = "#e4e413"
         } else {
-            fileFeedback.value.innerHTML = 'File extension not supported'; 
-            fileFeedback.value.style.color = 'red'
+            if (acceptFiles.includes(FILE.type)) {
+                fileFeedback.value.innerHTML = FILE.name; 
+                fileFeedback.value.style.color = '#212529bf'
+            } else {
+                fileFeedback.value.innerHTML = 'File extension not supported'; 
+                fileFeedback.value.style.color = 'red'
+            }
         }
     }
+
+
+    function inputFile(e) {
+        if (FILE.name != null) {
+            console.log(FILE);
+            e.preventDefault()
+            fileErrMsg.value.innerHTML = "File has been chosen already"
+            fileErrMsg.value.style.color = "#e4e413"
+        }
+    }
+    
 </script>
 
 <style scoped>
