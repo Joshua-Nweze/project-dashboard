@@ -26,7 +26,7 @@
 
                             <div class="d-flex justify-content-center mt-3">
                                 <div class="input-group mb-3 " style="width: 80%">
-                                    <input type="file" accept=".png, .jpg, .jpeg, .pdf" @click="inputFile" class="form-control" ref="file">
+                                    <input type="file" accept=".png, .jpg, .jpeg, .pdf" @click="inputFile" class="form-control" ref="fileFromInput">
                                 </div>
                             </div>
 
@@ -49,19 +49,13 @@
 
     let dragArea = ref(null)
     let fileFeedback = ref(null)
-    let file = ref(null)
+    let fileFromInput = ref(null)
     let fileErrMsg = ref(null)
 
-    let FILE = ref(null)
-    
+    let file = ref(null)
+
     function dragOver(e){
         e.preventDefault()
-        
-
-// if(!file.value){
-//         console.log('file no dey');
-//     } else{console.log('file dey');}
-
         dragArea.value.classList.add('draggedOver')
     }
 
@@ -75,27 +69,31 @@
 
         let acceptFiles = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf']
 
-        FILE = e.dataTransfer.files[0]
-        console.log();
+        file = e.dataTransfer.files[0]
 
-        if (file.value.value != '') {
+        if (fileFromInput.value.value != '') {
             fileFeedback.value.innerHTML = "File has been chosen already"
             fileFeedback.value.style.color = "#e4e413"
+
         } else {
-            if (acceptFiles.includes(FILE.type)) {
-                fileFeedback.value.innerHTML = FILE.name; 
+            if (acceptFiles.includes(file.type)) {
+                fileFeedback.value.innerHTML = file.name; 
                 fileFeedback.value.style.color = '#212529bf'
+
             } else {
                 fileFeedback.value.innerHTML = 'File extension not supported'; 
                 fileFeedback.value.style.color = 'red'
+
+                fileFromInput.value.value = ''
+                file = null
+
             }
         }
     }
 
 
     function inputFile(e) {
-        if (FILE.name != null) {
-            console.log(FILE);
+        if (file.name != null) {
             e.preventDefault()
             fileErrMsg.value.innerHTML = "File has been chosen already"
             fileErrMsg.value.style.color = "#e4e413"

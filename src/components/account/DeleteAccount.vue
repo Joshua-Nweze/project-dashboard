@@ -5,22 +5,36 @@
             <div class="col-12 mt-3">
                 <div class="mb-3">
                     <label for="firstName" class="form-label">Password</label>
-                    <input type="email" class="form-control" id="firstName" placeholder="Enter password">
+                    <input type="text" class="form-control" placeholder="Enter password" v-model="password">
                 </div>
             </div>
 
             <div class="col-12 d-flex justify-content-end">
                 <div class="col-2 d-flex justify-content-end">
-                    <button type="button" class="btn btn-danger">Delete</button>
+                    <button type="button" class="btn btn-danger" ref="button" @mouseover="checkPasswordInput">Delete</button>
                 </div>
             </div>
     </div>
 </template>
 
 <script setup>
+    import { ref } from "@vue/reactivity";
+    import { onMounted, onUpdated } from "@vue/runtime-core";
 
+    let password = ref(null)
+    let button = ref(null)
+
+    function checkPasswordInput() {
+        if (password.value == null || password.value == '') {
+            button.value.classList.add('hover-not-allowed')
+        } else {
+            button.value.classList.remove('hover-not-allowed')
+        }
+    }
 </script>
 
 <style scoped>
-
+    .hover-not-allowed:hover{
+        cursor: not-allowed;
+    }
 </style>
