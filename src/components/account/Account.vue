@@ -7,6 +7,7 @@
                     <EditProfile />
                     <ChangePwd />
                     <hr>
+                    <!-- DeleteAccount shoukdn't be available for super admin -->
                     <DeleteAccount />
                 </div>
             </div>
