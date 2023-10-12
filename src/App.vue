@@ -6,7 +6,7 @@
 
 </script>
 
-<style scoped>
+<style>
     #app {
         font-family: Avenir, Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
@@ -17,7 +17,12 @@
     }
 
     ::-webkit-scrollbar {
-    width: 0;  /* Remove scrollbar space */
-    background: transparent;  /* Optional: just make scrollbar invisible */
-}
+        width: 0;  /* Remove scrollbar space */
+        background: transparent;  /* Optional: just make scrollbar invisible */
+    }
+
+    .form-control:focus{
+        border-color: #6c757d;
+        box-shadow: none;
+    }
 </style>

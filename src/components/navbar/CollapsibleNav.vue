@@ -21,18 +21,13 @@
                     </router-link>
                     
                     <router-link to="/files" class="col-12 sidebar-items" @click="collapsibleClicked">
-                        <span class="col-3"><i class="bi bi-file-earmark"></i></span>
-                        <span class="col-9 align-items-center">Files</span>
-                    </router-link>
-                    
-                    <router-link to="/upload" class="col-12 sidebar-items" @click="collapsibleClicked">
-                        <span class="col-3"><i class="bi bi-upload"></i></span>
-                        <span class="col-9 align-items-center">File Upload</span>
+                        <span class="col-3"><i class="bi bi-cone"></i></span>
+                        <span class="col-9 align-items-center">Projects</span>
                     </router-link>
 
-                    <router-link to="/admins" class="col-12 sidebar-items" @click="collapsibleClicked">
-                        <span class="col-3"><i class="bi bi-person"></i></span>
-                        <span class="col-9 align-items-center">Admins</span>
+                    <router-link to="/staff" class="col-12 sidebar-items" @click="collapsibleClicked">
+                        <span class="col-3"><i class="bi bi-persons"></i></span>
+                        <span class="col-9 align-items-center">Staff</span>
                     </router-link>
 
                     <router-link to="/account" class="col-12 sidebar-items" @click="collapsibleClicked">

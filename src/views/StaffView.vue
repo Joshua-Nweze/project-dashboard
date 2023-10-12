@@ -1,9 +1,9 @@
 <template>
-     <Admins />
+     <Staff />
 </template>
 
 <script setup>
-     import Admins from "@/components/admins/Admins"
+     import Staff from "@/components/staff/Staff"
 </script>
 
 <style>

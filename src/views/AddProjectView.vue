@@ -1,9 +1,9 @@
 <template>
-    <FileUpload />
+    <AddProject />
 </template>
 
 <script setup>
-    import FileUpload from "@/components/fileupload/FileUpload"
+    import AddProject from "@/components/projects/AddProject"
 </script>
 
 <style>

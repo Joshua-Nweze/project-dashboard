@@ -18,7 +18,6 @@
                     <router-link to="/notifications" class="router-link">
                         <span class="position-relative">
                             <i class="bi bi-bell"></i> 
-                            Notifications
                             <!-- <span class="notification-dot position-absolute top-0 start-90 translate-middle p-2 bg-danger border border-light rounded-circle">
                             <span class="visually-hidden">New notifications</span>
                             </span> -->
@@ -26,11 +25,11 @@
                     </router-link>
 
                     <router-link to="/account" class="router-link">
-                        <span><i class="bi bi-person-circle"></i> Account</span>
+                        <span><i class="bi bi-person-circle"></i></span>
                     </router-link>
 
                     <router-link to="/" class="router-link">
-                        <span class=""><i class="bi bi-box-arrow-left"></i> Logout</span>
+                        <span class=""><i class="bi bi-box-arrow-left"></i></span>
                     </router-link>
                 </div>
             </div>

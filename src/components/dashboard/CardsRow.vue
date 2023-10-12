@@ -1,12 +1,12 @@
 <template>
     <div class="row d-flex justify-content-center">
         <div class="col-lg-3 col-sm-6 col-md-6 mb-2">
-            <div class="card">
+            <div class="card bg-primary-subtle">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-4 card-icon text-danger"><i class="bi bi-file-earmark"></i></div>
+                        <div class="col-4 card-icon text-primary"><i class="bi bi-cone"></i></div>
                         <div class="col-8 card-text text-end">
-                            <span class="text-body-secondary">Files</span> 
+                            <span class="text-body-secondary">Total projects</span> 
                             <br> 
                                 <span class="fs-1">
                                     {{ fileLenght }} 
@@ -20,12 +20,12 @@
         </div>
 
         <div class="col-lg-3 col-sm-6 col-md-6 mb-2">
-            <div class="card">
+            <div class="card bg-warning-subtle">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-4 card-icon text-secondary"><i class="bi bi-file-earmark"></i></div>
+                        <div class="col-4 card-icon text-warning"><i class="bi bi-cone"></i></div>
                         <div class="col-8 card-text text-end">
-                            <span class="text-body-secondary">Categories</span> 
+                            <span class="text-body-secondary">Ongoing projects</span> 
                             <br> 
                             <span class="fs-1">
                                 {{ catArr.size }}
@@ -39,29 +39,29 @@
         </div>
 
         <div class="col-lg-3 col-sm-6 col-md-6 mb-2">
-            <div class="card">
+            <div class="card bg-success-subtle">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-4 card-icon text-primary"><i class="bi bi-person"></i></div>
-                        <div class="col-8 card-text text-end"><span class="text-body-secondary">Admins</span> <br> <span class="fs-1">0</span></div>
-                        <hr class="mt-3">
-                        <span class="d-flex justify-content-center text-body-secondary updated-text"><i class="bi bi-arrow-clockwise"></i> Updated now</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-lg-3 col-sm-6 col-md-6 mb-2">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-4 card-icon text-success"><i class="bi bi-pencil-square"></i></div>
-                        <div class="col-8 card-text text-end"><span class="text-body-secondary">Edited</span> <br> <span class="fs-1">0</span></div>
+                        <div class="col-4 card-icon text-success"><i class="bi bi-cone"></i></div>
+                        <div class="col-8 card-text text-end"><span class="text-body-secondary">Finished projects</span> <br> <span class="fs-1">0</span></div>
                         <hr class="mt-3">
                         <span class="d-flex justify-content-center text-body-secondary updated-text"><i class="bi bi-arrow-clockwise"></i> Updated now</span>
                     </div>
                 </div>
             </div>  
+        </div>
+
+        <div class="col-lg-3 col-sm-6 col-md-6 mb-2">
+            <div class="card bg-dark-subtle">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-4 card-icon text-dark"><i class="bi bi-person"></i></div>
+                        <div class="col-8 card-text text-end"><span class="text-body-secondary">Staff   </span> <br> <span class="fs-1">0</span></div>
+                        <hr class="mt-3">
+                        <span class="d-flex justify-content-center text-body-secondary updated-text"><i class="bi bi-arrow-clockwise"></i> Updated now</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>

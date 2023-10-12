@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "chart.js": "^4.2.0",
+    "lightgallery": "^2.7.2",
     "pinia": "^2.0.30",
     "vue": "^3.2.13",
     "vue-chartjs": "^5.2.0",

@@ -18,20 +18,20 @@
                         <span class="col-3"><i class="bi bi-bell"></i></span>
                         <span class="col-9 align-items-center">Notifications</span>
                     </router-link>
-                    
-                    <router-link to="/files" class="col-12 sidebar-items">
-                        <span class="col-3"><i class="bi bi-file-earmark"></i></span>
-                        <span class="col-9 align-items-center">Files</span>
-                    </router-link>
-                    
-                    <router-link to="/upload" class="col-12 sidebar-items">
-                        <span class="col-3"><i class="bi bi-upload"></i></span>
-                        <span class="col-9 align-items-center">File Upload</span>
+
+                    <router-link to="/add-project" class="col-12 sidebar-items" @click="collapsibleClicked">
+                        <span class="col-3"><i class="bi bi-plus"></i></span>
+                        <span class="col-9 align-items-center">Add projects</span>
                     </router-link>
 
-                    <router-link to="/admins" class="col-12 sidebar-items">
-                        <span class="col-3"><i class="bi bi-person"></i></span>
-                        <span class="col-9 align-items-center">Admins</span>
+                    <router-link to="/projects" class="col-12 sidebar-items" @click="collapsibleClicked">
+                        <span class="col-3"><i class="bi bi-cone"></i></span>
+                        <span class="col-9 align-items-center">Projects</span>
+                    </router-link>
+
+                    <router-link to="/staff" class="col-12 sidebar-items">
+                        <span class="col-3"><i class="bi bi-people"></i></span>
+                        <span class="col-9 align-items-center">Staff</span>
                     </router-link>
 
                     <router-link to="/account" class="col-12 sidebar-items">

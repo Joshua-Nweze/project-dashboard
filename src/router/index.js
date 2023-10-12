@@ -27,17 +27,17 @@ const routes = [
         }
       },
       {
-        path: '/files',
-        name: 'files',
+        path: '/projects',
+        name: 'projects',
         component: function () {
-          return import(/* webpackChunkName: "files" */ '../views/FilesView.vue')
+          return import(/* webpackChunkName: "projects" */ '../views/ProjectsView.vue')
         }
       },
       {
-        path: '/files/:filesInCat',
-        name: 'filesInCategory',
+        path: '/project/:id',
+        name: 'project',
         component: function () {
-          return import(/* webpackChunkName: "filecat" */ '../components/files/FilesInCat.vue')
+          return import(/* webpackChunkName: "project" */ '../views/ProjectView.vue')
         }
       },
       {
@@ -48,17 +48,17 @@ const routes = [
         }
       },
       {
-        path: '/upload',
-        name: 'upload',
+        path: '/add-project',
+        name: 'add-project',
         component: function () {
-          return import(/* webpackChunkName: "FileUploadView" */ '../views/FileUploadView.vue')
+          return import(/* webpackChunkName: "add-project" */ '../views/AddProjectView.vue')
         }
       },
       {
-        path: '/admins',
-        name: 'admins',
+        path: '/staff',
+        name: 'staff',
         component: function () {
-          return import(/* webpackChunkName: "AdminsView" */ '../views/AdminsView.vue')
+          return import(/* webpackChunkName: "staff" */ '../views/StaffView.vue')
         }
       },
       {

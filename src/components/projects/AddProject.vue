@@ -3,20 +3,19 @@
         <div class="col-lg-6 col-sm-12 col-md-8">
             <div class="card">
                 <div class="card-body">
-                    <div class="fs-3">Upload file</div>
+                    <div class="fs-3">Add a new project</div>
                     <hr>
-                    <div>Select file category</div>
-                    <select class="form-select" aria-label="Select category">
-                        <option selected>-- Select categoty --</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
-                    </select>
 
-                    <label class="mt-4" for="filename">File name</label>
-                    <input type="text" class="form-control" id="filename">
+                    <label class="mt-4" for="projectname">Project name</label>
+                    <input type="text" class="form-control" id="projectname">
 
-                    <div class="mt-4">Attach document ( images and pdf file )</div>
+                    <label class="mt-4" for="lga">LGA</label>
+                    <input type="text" class="form-control" id="lga">
+
+                    <label class="mt-4" for="description">Project description</label>
+                    <textarea type="text" class="form-control" id="description"></textarea>
+
+                    <div class="mt-4">Attach document ( image(s) )</div>
                     <div class="attach-doc-div text-center " ref="dragArea" @dragover="dragOver" @dragleave="dragLeave" @drop="dragDrop">
                         <div ref="fileFeedback"></div>
                         <span><i class="bi bi-upload fs-1 text-secondary"></i> <br> Drag and drop here</span> <br>
@@ -26,7 +25,7 @@
 
                             <div class="d-flex justify-content-center mt-3">
                                 <div class="input-group mb-3 " style="width: 80%">
-                                    <input type="file" accept=".png, .jpg, .jpeg, .pdf" @click="inputFile" class="form-control" ref="fileFromInput">
+                                    <input type="file" accept=".png, .jpg, .jpeg, .pdf" @click="inputFile" class="form-control" ref="fileFromInput" multiple>
                                 </div>
                             </div>
 
@@ -36,7 +35,7 @@
                     </div>
 
                     <div class="mt-5 bg-secondary upload text-center">
-                        Upload
+                        Add project
                     </div>
                 </div>
             </div>
