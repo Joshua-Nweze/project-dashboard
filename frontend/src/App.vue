@@ -3,7 +3,8 @@
 </template>
 
 <script setup>
-
+// db pwd 0nXUXl2o6QZmb34R
+// user joshuanweze270
 </script>
 
 <style>
@@ -16,13 +17,12 @@
         overflow: hidden;
     }
 
-    ::-webkit-scrollbar {
-        width: 0;  /* Remove scrollbar space */
-        background: transparent;  /* Optional: just make scrollbar invisible */
-    }
-
     .form-control:focus{
         border-color: #6c757d;
         box-shadow: none;
+    }
+
+    .hover-pointer:hover{
+        cursor: pointer;
     }
 </style>

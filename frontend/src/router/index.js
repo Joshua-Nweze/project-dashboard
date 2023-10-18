@@ -40,13 +40,13 @@ const routes = [
           return import(/* webpackChunkName: "project" */ '../views/ProjectView.vue')
         }
       },
-      {
-        path: '/search/:query',
-        name: 'search',
-        component: function () {
-          return import(/* webpackChunkName: "search" */ '../components/files/SearchedFiles.vue')
-        }
-      },
+      // {
+      //   path: '/search/:query',
+      //   name: 'search',
+      //   component: function () {
+      //     return import(/* webpackChunkName: "search" */ '../components/files/SearchedFiles.vue')
+      //   }
+      // },
       {
         path: '/add-project',
         name: 'add-project',
@@ -66,6 +66,13 @@ const routes = [
         name: 'account',
         component: function () {
           return import(/* webpackChunkName: "AccountView" */ '../views/AccountView.vue')
+        }
+      },
+      {
+        path: '/edit-account',
+        name: 'edit-account',
+        component: function () {
+          return import(/* webpackChunkName: "EditAccountView" */ '../views/EditAccountView.vue')
         }
       }
     ]

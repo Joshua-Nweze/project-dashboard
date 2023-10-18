@@ -1,14 +1,8 @@
 <template>
     <div>
-        <CollapsibleNav 
-            class="d-md-block d-lg-none d-xl-none" 
-            v-if="showCollapsible" 
-            @closeCollapsible="closeCollapsible"
-        />
-
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
-                <button @click="showCollapsible = true" class="navbar-toggler" type="button" data-bs-toggle="collapse" aria-expanded="false" aria-label="Toggle navigation">
+                <button  class="navbar-toggler" type="button" aria-expanded="false" aria-label="Toggle navigation" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <a class="navbar-brand"><h1>ESHDC <span class="text-body-secondary">Data Dashboard</span></h1></a>
@@ -17,10 +11,7 @@
 
                     <router-link to="/notifications" class="router-link">
                         <span class="position-relative">
-                            <i class="bi bi-bell"></i> 
-                            <!-- <span class="notification-dot position-absolute top-0 start-90 translate-middle p-2 bg-danger border border-light rounded-circle">
-                            <span class="visually-hidden">New notifications</span>
-                            </span> -->
+                            <i class="bi bi-bell"></i>
                         </span>
                     </router-link>
 
@@ -34,6 +25,8 @@
                 </div>
             </div>
         </nav>
+
+        <CollapsibleNav />
 
     </div>
 </template>
@@ -53,7 +46,7 @@
     let searchVal = ref()
 
     let router = useRouter()
-    let showCollapsible = ref(false)
+    // let showCollapsible = ref(false)
 
 
     function search(searchVal) {
@@ -64,9 +57,9 @@
         }
     }
 
-    function closeCollapsible() {
-        showCollapsible.value = false
-    }
+    // function closeCollapsible() {
+    //     showCollapsible.value = false
+    // }
 </script>
 
 <style scoped>

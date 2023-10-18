@@ -4,42 +4,39 @@
         <div class="row d-flex justify-content-center pt-4">
             <div class="col-9 sidenav-brand">
                 <div class="row">
-                    <span class="col-2"><img src="../../assets/imgs/logo.png" alt="logo" class="logo rounded-circle"></span>
-                    <span class="col-8 align-items-center">ESHDC</span>
-                    <span class="col-2" @click="collapsibleClicked"><i class="bi bi-x-circle"></i></span>
+                    <span class="col-3"><img src="../../assets/imgs/logo.png" alt="logo" class="logo rounded-circle"></span>
+                    <span class="col-9 align-items-center">ESHDC</span>
                 </div>
                 <hr>
                 <div class="row">
-                    <router-link to="/dashboard" class="col-12 sidebar-items" @click="collapsibleClicked">
-                        <span class="col-3"><i class="bi bi-table"></i></span>
+                    <router-link to="/dashboard" class="col-12 sidebar-items">
+                        <span class="col-3"><i class="bi bi-house"></i></span>
                         <span class="col-9 align-items-center">Dashboard</span>
                     </router-link>
                     
-                    <router-link to="/notifications" class="sidebar-items" @click="collapsibleClicked">
+                    <router-link to="/notifications" class="sidebar-items">
                         <span class="col-3"><i class="bi bi-bell"></i></span>
                         <span class="col-9 align-items-center">Notifications</span>
                     </router-link>
-                    
-                    <router-link to="/files" class="col-12 sidebar-items" @click="collapsibleClicked">
+
+                    <router-link to="/add-project" class="col-12 sidebar-items" @click="collapsibleClicked">
+                        <span class="col-3"><i class="bi bi-plus"></i></span>
+                        <span class="col-9 align-items-center">Add project</span>
+                    </router-link>
+
+                    <router-link to="/projects" class="col-12 sidebar-items" @click="collapsibleClicked">
                         <span class="col-3"><i class="bi bi-cone"></i></span>
                         <span class="col-9 align-items-center">Projects</span>
                     </router-link>
 
-                    <router-link to="/staff" class="col-12 sidebar-items" @click="collapsibleClicked">
-                        <span class="col-3"><i class="bi bi-persons"></i></span>
+                    <router-link to="/staff" class="col-12 sidebar-items">
+                        <span class="col-3"><i class="bi bi-people"></i></span>
                         <span class="col-9 align-items-center">Staff</span>
                     </router-link>
 
-                    <router-link to="/account" class="col-12 sidebar-items" @click="collapsibleClicked">
+                    <router-link to="/account" class="col-12 sidebar-items">
                         <span class="col-3"><i class="bi bi-person-circle"></i></span>
                         <span class="col-9 align-items-center">Account</span>
-                    </router-link>
-
-                    <hr>
-
-                    <router-link to="/" class="col-6 justify-content-center sidebar-items" @click="collapsibleClicked">
-                        <!-- <span class="col-3"><i class="bi bi-person-circle"></i></span> -->
-                        <btn class="btn btn-outline-light align-items-center text-light">Logout</btn>
                     </router-link>
                 </div>
             </div>
@@ -49,11 +46,7 @@
 </template>
 
 <script setup>
-    let emit = defineEmits(['closeCollapsible'])
 
-    function collapsibleClicked (){
-        emit('closeCollapsible')
-    }
 </script>
 
 <style scoped>
@@ -62,7 +55,7 @@
         background-color: black;
         margin: 0;
         color: white;
-        width: 85vw;
+        width: inherit;
         position: fixed;
         overflow-y: scroll;
         padding-bottom: 100px;

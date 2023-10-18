@@ -4,8 +4,15 @@
             <div class="col-md-8 offset-md-2">
                 <div class="row">
                     <div class="col-8 fs-3">WHAT IF PROJECT NAME IS LONG</div>
-                    <div class="col-4 fs-3 d-flex justify-content-end"><button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Update</button></div>
+                    <div class="col-4 fs-3 d-flex justify-content-end">
+                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Update</button>
+                    </div>
                 </div>
+
+                <div class="fs-5 mt-3">Ekene Okoi</div>
+
+                <div class="text-muted">Started on : date, Ended on: date</div>
+
                 <div class="stepper d-flex flex-column mt-4 ml-2">
 
                     <div class="d-flex mb-1 mt-3">
@@ -100,7 +107,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Mark as finised</button>
                 <button type="button" class="btn btn-success">Update</button>
             </div>
             </div>

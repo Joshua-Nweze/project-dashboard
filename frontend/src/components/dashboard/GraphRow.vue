@@ -11,9 +11,18 @@
         <div class="col-lg-4 col-12 col-sm-12 col-md-6 mt-4 mb-5 order-lg-3 order-md-2">
             <div class="card">
                 <div class="card-body">
-                    <div class="fs-3 text-secondary">Recent projects</div>
-                    <div class="list-group">
-                        <a href="">Okay</a>
+                    <div class="fs-3 text-success">Recent staff</div>
+                    <div class="list-group p-1 px-2 my-2 recent-project bg-success-subtle">
+                        <div>Ekene Okoi</div>
+                        <div class="text-muted" style="font-size: 13px;">Registered on date</div>
+                    </div>
+                    <div class="list-group p-1 px-2 my-2 recent-project bg-success-subtle">
+                        <div>Ekene Okoi</div>
+                        <div class="text-muted" style="font-size: 13px;">Registered on date</div>
+                    </div>
+                    <div class="list-group p-1 px-2 my-2 recent-project bg-success-subtle">
+                        <div>Ekene Okoi</div>
+                        <div class="text-muted" style="font-size: 13px;">Registered on date</div>
                     </div>
                 </div>
             </div>
@@ -67,10 +76,11 @@
         new Chart(pie, {
             type: 'pie',
             data: {
-                labels: ['File1', 'File2', 'File3'],
+                labels: ['Completed projects', 'Ongoing projects'],
                 datasets: [{
                     label: 'Projects highlight',
-                    data: [5, 8, 8],
+                    data: [5, 2],
+                    backgroundColor: ['rgba(0, 225, 0, 0.5)', 'rgba(255, 255, 0, 0.5)'],
                     borderWidth: 1
                 }]
             },
@@ -114,4 +124,5 @@
         padding: 10px 0;
         border-bottom: 1px solid #c8c9ca;
     }
+
 </style>
