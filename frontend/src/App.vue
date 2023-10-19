@@ -3,8 +3,6 @@
 </template>
 
 <script setup>
-// db pwd 0nXUXl2o6QZmb34R
-// user joshuanweze270
 </script>
 
 <style>
