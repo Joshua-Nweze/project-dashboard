@@ -5,7 +5,7 @@ let inviteeSchema = new Schema({
         type: String,
         required: true
     },
-    tempPwd: {
+    password: {
         type: String,
         required: true
     }
