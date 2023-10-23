@@ -1,5 +1,4 @@
 import Users from "../model/user.model.js";
-import BlockedUsers from "../model/blockedUsers.model.js";
 import Invitee from "../model/invitees.model.js";
 import bcrypt from 'bcrypt'
 
@@ -65,6 +64,15 @@ async function setupAccDetails(req, res) {
             res.status(400).json({ message: 'All inputs are required' })
             return
         }
+
+        let checkIfUserExists = await Users.findOne({ email })
+
+        if (checkIfUserExists) {
+            res.status(403).json({ message: 'User with email already exists' })
+            return
+        }
+
+        password = await bcrypt.hash(password, 10)
 
         let newUser = new Users({
             email,
@@ -164,33 +172,24 @@ async function changePwd(req, res) {
     }
 }
 
-async function login(req, res) {
+async function getDetails(req, res) {
     try {
-        let { email, password } = req.body
+        let { email } = req.query
 
-        let isBlocked = await BlockedUsers.findOne({ email })
+        let details = await Users.findOne({ email })
 
-        if (isBlocked) {
-            res.status(403).json({ message: 'Your account was suspended, contact the admin at admin@gmail.com to rectify this' })
+        if(!details){
+            res.status(404).json({ message: 'User not found' })
             return
         }
 
-        let user = await Users.findOne({ email })
-
-        if (!user) {
-            res.status(403).json({ message: 'Incorrect email or password' })
-            return
-        }
-
-        let comparePwd = await bcrypt.compare(password, user.password)
-
-        if (comparePwd) {
-            res.status(200).json({ message: 'Login successful' })
-            return
-        } else {
-            res.status(403).json({ message: 'Incorrect email or password' })
-            return
-        }
+        res.status(200).json({
+            id: details._id,
+            email: details.email,
+            name: details.name,
+            lga: details.lga,
+            phoneNumber: details.phoneNumber
+        })
     } catch (error) {
         console.log(error)
     }
@@ -199,5 +198,6 @@ async function login(req, res) {
 export default {
     setupAccCheckMail,
     setupAccCheckPwd,
-    setupAccDetails
+    setupAccDetails,
+    getDetails
 }

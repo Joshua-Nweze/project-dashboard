@@ -15,7 +15,7 @@
                     <label class="mt-4" for="description">Project description</label>
                     <textarea type="text" class="form-control" id="description"></textarea>
 
-                    <div class="mt-4">Attach document ( image(s) )</div>
+                    <div class="mt-4">Attach document ( image )</div>
                     <div class="attach-doc-div text-center " ref="dragArea" @dragover="dragOver" @dragleave="dragLeave" @drop="dragDrop">
                         <div ref="fileFeedback"></div>
                         <span><i class="bi bi-upload fs-1 text-secondary"></i> <br> Drag and drop here</span> <br>
@@ -25,7 +25,7 @@
 
                             <div class="d-flex justify-content-center mt-3">
                                 <div class="input-group mb-3 " style="width: 80%">
-                                    <input type="file" accept=".png, .jpg, .jpeg, .pdf" @click="inputFile" class="form-control" ref="fileFromInput" multiple>
+                                    <input type="file" accept=".png, .jpg, .jpeg" @click="inputFile" class="form-control" ref="fileFromInput">
                                 </div>
                             </div>
 
@@ -34,7 +34,7 @@
                         </div>
                     </div>
 
-                    <div class="mt-5 bg-secondary upload text-center">
+                    <div class="mt-5 bg-secondary upload text-center" @click="a">
                         Add project
                     </div>
                 </div>
@@ -44,6 +44,9 @@
 </template>
 
 <script setup>
+function a() {
+    console.log(file.value, fileFromInput.value.value)
+}
     import { ref } from "@vue/reactivity";
 
     let dragArea = ref(null)
@@ -66,13 +69,14 @@
     function dragDrop(e){
         e.preventDefault()
 
-        let acceptFiles = ['image/jpeg', 'image/jpg', 'image/png', 'application/pdf']
+        let acceptFiles = ['image/jpeg', 'image/jpg', 'image/png']
 
-        file = e.dataTransfer.files[0]
+        console.log(e.dataTransfer.files[0], fileFromInput.value)
 
-        if (fileFromInput.value.value != '') {
-            fileFeedback.value.innerHTML = "File has been chosen already"
-            fileFeedback.value.style.color = "#e4e413"
+        file.value = e.dataTransfer.files[0]
+
+        if (fileFromInput.value.value) {
+            file.value = fileFromInput.value.value
 
         } else {
             if (acceptFiles.includes(file.type)) {
@@ -83,21 +87,22 @@
                 fileFeedback.value.innerHTML = 'File extension not supported'; 
                 fileFeedback.value.style.color = 'red'
 
-                fileFromInput.value.value = ''
-                file = null
+                // fileFromInput.value.value = ''
+                file.value = null
 
             }
         }
     }
 
 
-    function inputFile(e) {
-        if (file.name != null) {
-            e.preventDefault()
-            fileErrMsg.value.innerHTML = "File has been chosen already"
-            fileErrMsg.value.style.color = "#e4e413"
-        }
-    }
+    // function inputFile(e) {
+    //     file = fileFromInput.value.value
+    //     // if (file.name != null) {
+    //     //     e.preventDefault()
+    //     //     fileErrMsg.value.innerHTML = "File has been chosen already"
+    //     //     fileErrMsg.value.style.color = "red"
+    //     // }
+    // }
     
 </script>
 
