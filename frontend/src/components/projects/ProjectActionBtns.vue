@@ -32,6 +32,11 @@
                     </div>
 
                     <div class="mb-3">
+                        <label for="location" class="form-label">Location</label>
+                        <input type="text" class="form-control" id="location" placeholder="">
+                    </div>
+
+                    <div class="mb-3">
                         <label for="desc" class="form-label">Description</label>
                         <textarea class="form-control" id="desc" placeholder=""></textarea>
                     </div>

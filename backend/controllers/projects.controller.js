@@ -67,7 +67,105 @@ async function getProject(req, res) {
     }
 }
 
+async function getStaffProjects(req, res) {
+    try {
+        let { staffId } = req.query
+
+        if(!staffId) {
+            res.status(403).json({ message: 'Staff is required' })
+            return
+        }
+
+        let projects = await Project.find({ staffId })
+
+        if (!projects || projects.length < 1) {
+            res.status(404).json({ message: 'No projects found' })
+            return
+        }
+
+        res.status(200).json({ message: projects })
+    } catch (error) {
+        res.status(500).json({ message: 'Something went wrong, try again later' })
+    }
+}
+
+async function delProject(req, res) {
+    try {
+        let { id, staffId } = req.body
+
+        if(!id || !staffId) {
+            res.status(403).json({ message: 'Staff is required' })
+            return
+        }
+
+        let project = await Project.findById(id)
+        let delproject = await Project.findOneAndDelete({ _id: id, staffId })
+
+        if(!project) {
+            res.status(404).json({ message: 'Project not found' })
+            return
+        }
+
+        if(staffId != project.staffId) {
+            res.status(401).json({ message: 'You are not allowed to perform this action' })
+            return
+        }
+
+
+        res.status(200).json({ message: 'Project successfully deleted' })
+    } catch (error) {
+        res.status(500).json({ message: 'Something went wrong, try again later' })
+    }
+}
+
+async function editProject(req, res) {
+    try {
+        let { staffId, id, projectName, lga, location, description, startDate } = req.body
+
+        if(!staffId || !id || !projectName || !lga || !location || !description || !startDate) {
+            res.status(403).json({ message: 'All inputs are required' })
+            return
+        }
+
+        let project = await Project.findOne({ _id: id })
+
+        if(!project) {
+            res.status(404).json({ message: 'Project not found' })
+            return
+        }
+
+        if(staffId != project.staffId) {
+            res.status(401).json({ message: 'You are not allowed to perform this action' })
+            return
+        }
+
+        let updateProject = await Project.findOneAndUpdate(
+            { _id: id },
+            {
+                name: projectName,
+                lga,
+                description,
+                location,
+                startDate
+            }
+        )
+
+        if(!updateProject) {
+            res.status(500).json({ message: 'Something went wrong, try again later' })
+            return
+        }
+
+        res.status(200).json({ message: 'Project successfully updated' })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: 'Something went wrong, try again later' })
+    }
+}
+
 export default {
     addProject,
-    getProject
+    getProject,
+    getStaffProjects,
+    delProject,
+    editProject
 }

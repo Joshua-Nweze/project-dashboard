@@ -15,11 +15,14 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage })
 
-let { addProject, getProject } = projectsController
+let { addProject, getProject, getStaffProjects, delProject, editProject } = projectsController
 
 let router = express.Router()
 
 router.post('/add', upload.single('image'), addProject)
 router.get('/get', getProject)
+router.get('/get-staff-projects', getStaffProjects)
+router.delete('/delete-project', delProject)
+router.patch('/edit-project', editProject)
 
 export default router
