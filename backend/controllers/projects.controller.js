@@ -1,4 +1,5 @@
 import Project from "../model/projects.model.js";
+import Users from "../model/user.model.js";
 import multer from "multer";
 import fs from "fs"
 
@@ -76,6 +77,13 @@ async function getStaffProjects(req, res) {
             return
         }
 
+        let user = await Users.findById( staffId )
+
+        if(!user) {
+            res.status(404).json({ message: 'User not found' })
+            return
+        }
+
         let projects = await Project.find({ staffId })
 
         if (!projects || projects.length < 1) {
@@ -85,6 +93,7 @@ async function getStaffProjects(req, res) {
 
         res.status(200).json({ message: projects })
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: 'Something went wrong, try again later' })
     }
 }

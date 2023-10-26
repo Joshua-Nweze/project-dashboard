@@ -1,5 +1,6 @@
 import Users from "../model/user.model.js";
 import Invitee from "../model/invitees.model.js";
+import Projects from "../model/projects.model.js";
 import bcrypt from 'bcrypt'
 
 async function setupAccCheckMail(req, res) {
@@ -195,9 +196,56 @@ async function getDetails(req, res) {
     }
 }
 
+async function deleteAccount(req, res){
+    try {
+        let { email, password, id } = req.body
+
+        if(!email || !password || !id) {
+            res.status(400).json({ message: 'All inputs are required' })
+            return
+        }
+
+        let user = await Users.findOne({ email })
+
+        if (!user) {
+            res.status(404).json({ message: 'Account not found' })
+            return
+        } else {
+            // compare password in db and password provided by the user
+            let pwdCompare = await bcrypt.compare(password, user.password)
+
+            if (pwdCompare) {
+                // delete user if password matches
+                let delUser = await Users.findOneAndDelete({ email })
+
+                if (!delUser) {
+                    res.status(500).json({ message: 'Something went wrong, try again later' })
+                    return
+                } else {
+                    let del = await Projects.deleteMany({ staffId: id })
+
+                    if (!del) {
+                        res.status(500).json({ message: 'Something went wrong, try again later' })
+                    }
+
+                    res.status(200).json({ message: 'Account deleted' })
+                    return
+                }
+
+            } else {
+                res.status(403).json({ message: 'Incorrect password' })
+                return
+            }
+        }
+    } catch (error) {
+        res.status(500).json({ message: 'Something went wrong, try again later' })
+    }
+}
+
 export default {
     setupAccCheckMail,
     setupAccCheckPwd,
     setupAccDetails,
-    getDetails
+    getDetails,
+    deleteAccount
 }
