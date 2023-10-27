@@ -67,17 +67,30 @@ const routes = [
         component: function () {
           return import(/* webpackChunkName: "AccountView" */ '../views/AccountView.vue')
         }
-      },
-      {
-        path: '/edit-account',
-        name: 'edit-account',
-        component: function () {
-          return import(/* webpackChunkName: "EditAccountView" */ '../views/EditAccountView.vue')
-        }
       }
     ]
+  },
+  {
+    path: '/setup/identify',
+    name: 'setup-identify',
+    component: function () {
+      return import(/* webpackChunkName: "SetupIdentifyView" */ '../views/SetupIdentifyView.vue')
+    }
+  },
+  {
+    path: '/setup/identify-password',
+    name: 'setup-password',
+    component: function () {
+      return import(/* webpackChunkName: "SetupIdentifyPwdView" */ '../views/SetupIdentifyPwdView.vue')
+    }
+  },
+  {
+    path: '/setup/details',
+    name: 'setup-details',
+    component: function () {
+      return import(/* webpackChunkName: "SetupDetailsView" */ '../views/SetupDetailsView.vue')
+    }
   }
-  
 ]
 
 const router = createRouter({

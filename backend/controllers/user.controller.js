@@ -207,6 +207,11 @@ async function deleteAccount(req, res){
 
         let user = await Users.findOne({ email })
 
+        if(user.userType == 'admin') {
+            res.status(401).json({ message: 'You are not allowed to perform this action' })
+            return
+        }
+
         if (!user) {
             res.status(404).json({ message: 'Account not found' })
             return

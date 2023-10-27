@@ -11,14 +11,14 @@
                 <div class="col">Full name</div>
                 <div class="col d-none d-sm-block">Email</div>
                 <div class="col d-none d-md-block">Date added</div>
-                <div class="col">Action</div>
+                <div class="col ">Action</div>
             </div>
 
             <div class="row my-3 align-items-center">
                 <div class="col">Test name</div>
                 <div class="col d-none d-sm-block">Test@mail.com</div>
                 <div class="col d-none d-md-block">date</div>
-                <div class="col flex">
+                <div class="col">
                     <button type="button" class="btn bg-primary-subtle" data-bs-toggle="modal" data-bs-target="#view"><i class="bi bi-eye text-primary"></i></button>
                     <button type="button" class="mx-1 btn bg-warning-subtle" data-bs-toggle="modal" data-bs-target="#block"><i class="bi bi-person-lock text-warning"></i></button>
                     <!-- <button type="button" class="btn bg-danger-subtle"><i class="bi bi-trash text-danger"></i></button> -->

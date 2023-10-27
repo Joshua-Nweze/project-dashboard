@@ -34,7 +34,7 @@
                         <strong>Phone</strong>
                         <span> Kshiti123</span>
                     </div>
-            </div>
+                </div>
             </div>
         </div>
     </div>

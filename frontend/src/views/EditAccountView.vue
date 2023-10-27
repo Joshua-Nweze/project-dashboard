@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class="mx-md-5 px-md-5">
+    <div class="row justify-content-center">
+        <div class="mx-md-5 px-md-5r col col-md-8">
             <div>
                 <h1 class="modal-title fs-5" id="editModalLabel">Edit account</h1>
             </div>

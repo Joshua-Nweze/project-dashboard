@@ -10,7 +10,7 @@
 
                     <div class="justify-content-center d-flex text-secondary fw-bold">Ministry Of Works projects dashboard</div>
 
-                    <div class="fs-3 text-secondary mb-4 mt-5">Login to cotinue</div>
+                    <div class="fs-3 text-secondary mb-4 mt-5">Enter your password</div>
                     <div v-if="showErrMsg">
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             Incorrect username or password
@@ -34,13 +34,9 @@
                         <input type="password" @keypress.enter="login" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1" v-model="password">
                     </div>
 
-                    <div class="forgot-pwd">
-                        Forgot password
-                    </div>
-
                     <div class="d-flex justify-content-end">
                         <!-- <router-link to="/dashboard"> -->
-                            <button class="btn btn-secondary" @click="login">Login</button>
+                            <button class="btn btn-secondary" @click="login">Continue</button>
                         <!-- </router-link> -->
                     </div>
                     
@@ -51,46 +47,7 @@
 </template>
 
 <script setup>
-    // import users from "@/db/users.json"
-    import { ref } from "@vue/reactivity";
-    import { useRouter } from "vue-router";
-    import { useUsers } from "@/store/useUsers"
-    import { storeToRefs } from "pinia";
 
-    let users = useUsers()
-    
-    let {user} = storeToRefs(users)
-
-    let router = useRouter()
-
-    let email = ref('')
-    let password = ref('')
-
-    let userDetails = user.value.userDetails
-    let showErrMsg = ref(false)
-    let showSuccess = ref()
-
-    function login() {
-        for (let i = 0; i < userDetails.length; i++) {
-            if(email.value == userDetails[i].email && password.value == userDetails[i].password){
-                console.log('success');
-                showSuccess.value = true
-                showErrMsg.value = false
-                setTimeout(()=> {
-                    router.push("/dashboard")
-                    password.value = ""
-                }, 1500)
-            } else {
-                console.log('unsuccess');
-                showErrMsg.value = true
-                password.value = ""
-            }
-        }
-    }
-
-    function closeShowErrMsg () {
-        showErrMsg.value = false
-    }
 </script>
 
 <style scoped>
