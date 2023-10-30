@@ -6,7 +6,17 @@
     <title>Document</title>
 </head>
 <body>
-    <img src="data:image/<%=image.img.contentType%>;base64,
-    <%=image.img.data.toString('base64')%>" alt="img" srcset="">
+    <img id="img" src="" alt="img" srcset="">
+
+    <script>
+        let img = document.getElementById('img');
+        fetch('http://localhost:3000/api/projects/get?id=653fc3ec5c00487a7a98f953')
+            .then(res => res.json())
+            .then(data => {
+                console.log(data.imageBase64)
+                img.src='data:image/jpeg;base64,' + data.imageBase64;
+            })
+        console.log(img.src)
+    </script>
 </body>
 </html>

@@ -4,13 +4,8 @@
             <div class="card">
                 <div class="card-body">
                     
-                    <div class="justify-content-center d-flex">
-                        <img src="../assets/imgs/logo.png" alt="" height="100">
-                    </div>
-
-                    <div class="justify-content-center d-flex text-secondary fw-bold">Ministry Of Works projects dashboard</div>
-
-                    <div class="fs-3 text-secondary mb-4 mt-5">Login to cotinue</div>
+                    <Header title="Login to cotinue" />
+                    
                     <div v-if="showErrMsg">
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             Incorrect username or password
@@ -56,6 +51,8 @@
     import { useRouter } from "vue-router";
     import { useUsers } from "@/store/useUsers"
     import { storeToRefs } from "pinia";
+
+    import Header from "./Header.vue";
 
     let users = useUsers()
     

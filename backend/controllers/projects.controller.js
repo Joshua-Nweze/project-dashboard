@@ -5,15 +5,16 @@ import fs from "fs"
 
 async function addProject(req, res) {
     try {
+        // img feild name is image
         let { name, location, lga, description, staffId } = req.body
 
         if (!req.file) {
-            res.status(403).json({ message: 'All inputs are required' })
+            res.status(400).json({ message: 'All inputs are required' })
             return
         }
 
         if(!name || !location || !lga || !description || !staffId) {
-            res.status(403).json({ message: 'All inputs are required' })
+            res.status(400).json({ message: 'All inputs are required' })
             return
         }
 
@@ -35,11 +36,12 @@ async function addProject(req, res) {
 
         res.status(200).json({ message: 'Project added', id: newProject._id })
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: 'Something went wrong, try again later' })
     }
 }
 
-// NOTE: Not fully working
+
 async function getProject(req, res) {
     try {
         let { id } = req.query
@@ -51,17 +53,15 @@ async function getProject(req, res) {
             return
         }
 
-        console.log(project.image)
-
         const imagePath = project.image;
+        const imageBuffer = fs.readFileSync(imagePath);
 
-        if (fs.statSync(imagePath)) {
-            // Send the image as a response
-            res.render(imagePath);
-          }
+        // Encode the image buffer as a Base64 string
+        const imageBase64 = imageBuffer.toString('base64');
 
-        res.contentType(project.image);
-        res.status(200).send(project.image)
+        let message = { project, imageBase64 }
+
+        res.status(200).json(message)
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: 'Something went wrong, try again later' })

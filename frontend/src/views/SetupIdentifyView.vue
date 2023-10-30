@@ -3,14 +3,9 @@
         <div class="col-lg-6 col-xl-4 col-md-8 col-sm-10">
             <div class="card">
                 <div class="card-body">
+                    
+                    <Header title="Enter your email" />
 
-                    <div class="justify-content-center d-flex">
-                        <img src="../assets/imgs/logo.png" alt="" height="100">
-                    </div>
-
-                    <div class="justify-content-center d-flex text-secondary fw-bold">Ministry Of Works projects dashboard</div>
-
-                    <div class="fs-3 text-secondary mb-4 d-flex mt-5">Enter your email</div>
                     <div v-if="showErrMsg">
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             Incorrect username or password
@@ -42,7 +37,7 @@
 </template>
 
 <script setup>
-
+import Header from '@/components/auth/Header.vue';
 </script>
 
 <style scoped>

@@ -16,10 +16,10 @@
                     <textarea type="text" class="form-control" id="description"></textarea>
 
                     <div class="mt-4">Attach document ( image )</div>
-                    <div class="attach-doc-div text-center " ref="dragArea" @dragover="dragOver" @dragleave="dragLeave" @drop="dragDrop">
-                        <div ref="fileFeedback"></div>
+                     <div class="attach-doc-div text-center " ref="dragArea" @dragover="dragOver" @dragleave="dragLeave" @drop="dragDrop"> 
+                        <!-- <div ref="fileFeedback"></div>
                         <span><i class="bi bi-upload fs-1 text-secondary"></i> <br> Drag and drop here</span> <br>
-                        <span>or</span> <br>
+                        <span>or</span> <br> -->
                         <div>
                             Select file <br>
 

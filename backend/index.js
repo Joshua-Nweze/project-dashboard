@@ -2,6 +2,7 @@ import express from "express";
 import bodyParser from 'body-parser'
 import mongoose from "mongoose";
 import { configDotenv } from "dotenv";
+import cors from 'cors'
 
 import authRoutes from './routes/auth.routes.js'
 import adminRoutes from './routes/admin.routes.js'
@@ -13,6 +14,7 @@ const app = express()
 app.use(bodyParser.json())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(cors())
 
 app.use('/api/auth', authRoutes)
 app.use('/api/admin', adminRoutes)
