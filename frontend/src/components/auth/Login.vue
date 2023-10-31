@@ -1,32 +1,41 @@
 <template>
     <div class="row justify-content-center">
         <div class="col-lg-6 col-xl-4 col-md-8 col-sm-10">
-            <div class="card">
+            <div class="card border-0">
                 <div class="card-body">
                     
                     <Header title="Login to cotinue" />
                     
-                    <div v-if="showErrMsg">
-                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                            Incorrect username or password
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" @click="closeShowErrMsg"></button>
+                    <div v-if="feedback">
+                        <div
+                         class="alert alert-dismissible fade show"
+                         :class="{'alert-success': status == 200 || status == 201, 'alert-danger': status != 200  }"
+                         role="alert">
+                            {{ feedback }}
+                            <button type="button" class="btn-close" @click="clearFeedbackAndStatus"></button>
                         </div>
                     </div>
 
-                    <div v-if="showSuccess">
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            Logged in successful
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" @click="closeShowErrMsg"></button>
-                        </div>
-                    </div>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1">@</span>
-                        <input type="email" @keypress.enter="login" class="form-control" placeholder="E-mail" aria-label="E-mail" aria-describedby="basic-addon1" v-model="email">
+                        <span class="input-group-text">@</span>
+                        <input
+                         type="email" 
+                         @keypress.enter="login" 
+                         class="form-control" 
+                         placeholder="E-mail" 
+                         aria-label="E-mail"
+                         v-model="email">
                     </div>
 
                     <div class="input-group mb-3">
-                        <span class="input-group-text" id="basic-addon1"><i class="bi bi-lock"></i></span>
-                        <input type="password" @keypress.enter="login" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="basic-addon1" v-model="password">
+                        <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                        <input
+                         type="password" 
+                         @keypress.enter="login" 
+                         class="form-control" 
+                         placeholder="Password" 
+                         aria-label="Password"
+                         v-model="password">
                     </div>
 
                     <div class="forgot-pwd">
@@ -34,9 +43,15 @@
                     </div>
 
                     <div class="d-flex justify-content-end">
-                        <!-- <router-link to="/dashboard"> -->
-                            <button class="btn btn-secondary" @click="login">Login</button>
-                        <!-- </router-link> -->
+                            <button class="btn btn-secondary" :class="{'disable-click': loading}" @click="login">
+                                <div v-if="!loading">
+                                    Login
+                                </div>
+
+                                <div v-else class="spinner-border spinner-border-sm mx-2  " role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </button>
                     </div>
                     
                 </div>
@@ -46,48 +61,62 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+
     // import users from "@/db/users.json"
-    import { ref } from "@vue/reactivity";
-    import { useRouter } from "vue-router";
-    import { useUsers } from "@/store/useUsers"
-    import { storeToRefs } from "pinia";
+    // import { ref } from "@vue/reactivity";
+    // import { useRouter } from "vue-router";
+    // import { useUsers } from "@/store/useUsers"
+    // import { storeToRefs } from "pinia";
 
     import Header from "./Header.vue";
 
-    let users = useUsers()
+    // let users = useUsers()
     
-    let {user} = storeToRefs(users)
+    // let {user} = storeToRefs(users)
 
-    let router = useRouter()
+    // let router = useRouter()
 
-    let email = ref('')
-    let password = ref('')
+let email = ref('')
+let password = ref('')
 
-    let userDetails = user.value.userDetails
-    let showErrMsg = ref(false)
-    let showSuccess = ref()
+let feedback = ref(null)
+let status = ref(null)
+let loading = ref(false)
 
-    function login() {
-        for (let i = 0; i < userDetails.length; i++) {
-            if(email.value == userDetails[i].email && password.value == userDetails[i].password){
-                console.log('success');
-                showSuccess.value = true
-                showErrMsg.value = false
-                setTimeout(()=> {
-                    router.push("/dashboard")
-                    password.value = ""
-                }, 1500)
-            } else {
-                console.log('unsuccess');
-                showErrMsg.value = true
-                password.value = ""
-            }
-        }
+async function login() {
+    feedback.value = null
+    status.value = null
+
+    if (!email.value || !password.value) {
+        status.value = 400
+        feedback.value = 'All inputs are required'
+        return
     }
 
-    function closeShowErrMsg () {
-        showErrMsg.value = false
-    }
+    loading.value = true
+
+    let req = await fetch('http://localhost:3000/api/auth/login', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {'Content-type': 'application/json'},
+        body: JSON.stringify({
+            email: email.value,
+            password: password.value
+        })
+    })
+
+    let res = await req.json()
+
+    feedback.value = res.message
+    status.value = req.status
+    loading.value = false
+}
+
+function clearFeedbackAndStatus () {
+    feedback.value = null;
+    status.value = null;
+}
 </script>
 
 <style scoped>
@@ -118,5 +147,13 @@
 
     .row{
         margin-top: 80px;
+    }
+
+    .disable-click{
+        opacity: 0.6;
+        pointer-events: none;
+    }
+    .disable-click:hover{
+        cursor: not-allowed;
     }
 </style>

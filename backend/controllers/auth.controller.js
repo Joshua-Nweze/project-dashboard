@@ -5,10 +5,26 @@ import OTP from "../model/otp.model.js"
 import generateOTP from "../utils/generateOtp.js"
 import nodemailer from "nodemailer"
 import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+import dotenv from "dotenv"
+
+dotenv.config()
+
+// create web token
+function createToken(id) {
+    return jwt.sign({ id }, process.env.JWT_SECRET, {
+        expiresIn: 2 * 24 * 60 * 60 /* 2 days in seconds */
+    })
+}
 
 async function login(req, res) {
     try {
         let { email, password } = req.body
+
+        if(!email || !password) {
+            res.status(400).json({ message: 'All inputs are required' })
+            return
+        }
 
         let isBlocked = await BlockedUsers.findOne({ email })
 
@@ -20,13 +36,17 @@ async function login(req, res) {
         let user = await Users.findOne({ email })
 
         if (!user) {
-            res.status(403).json({ message: 'Incorrect email or password' })
+            res.status(401).json({ message: 'Incorrect email or password' })
             return
         }
 
-        let comparePwd = await bcrypt.compare(password, user.password)
+        const isPwdTrue = await bcrypt.compare(password, user.password)
 
-        if (comparePwd) {
+        if (isPwdTrue) {
+            const token = createToken(user._id)
+
+            // NOTE: add secure: true before production
+            res.cookie('token', token, { httpOnly: true, maxAge: 172800000 /* 2 days in milliseconds */})
             res.status(200).json({ message: 'Login successful' })
             return
         } else {

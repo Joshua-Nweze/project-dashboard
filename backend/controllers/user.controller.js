@@ -89,7 +89,7 @@ async function setupAccDetails(req, res) {
             res.status(500).json({ message: 'Something went wrong, try again later' })
         }
 
-        res.status(200).json({ message: 'Account setup successfull, proceed to login page to login' })
+        res.status(201).json({ message: 'Account setup successfull, proceed to login page to login' })
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: 'Something went wrong, try again later' })

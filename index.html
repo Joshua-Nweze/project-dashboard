@@ -10,11 +10,11 @@
 
     <script>
         let img = document.getElementById('img');
-        fetch('http://localhost:3000/api/projects/get?id=653fc3ec5c00487a7a98f953')
+        fetch('http://localhost:3000/api/projects/get?id=6540bd0ef160133b300ad649')
             .then(res => res.json())
             .then(data => {
                 console.log(data.imageBase64)
-                img.src='data:image/jpeg;base64,' + data.imageBase64;
+                img.src=`data:image/jpeg;base64,${data.imageBase64}`;
             })
         console.log(img.src)
     </script>

@@ -1,7 +1,7 @@
 <template>
     <div class="row justify-content-center">
         <div class="col-lg-6 col-xl-4 col-md-8 col-sm-10">
-            <div class="card">
+            <div class="card border-0">
                 <div class="card-body">
                     
                     <Header title="Enter your password" />
