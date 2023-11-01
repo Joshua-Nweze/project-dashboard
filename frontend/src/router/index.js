@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router'
 import AuthView from '../views/AuthView'
 import DashboardContainer from '@/views/DashboardContainer'
 
+import Cookies from 'js-cookie'
+
 const routes = [
   {
     path: '/',
@@ -11,6 +13,9 @@ const routes = [
   {
     path: '/dashboard',
     component: DashboardContainer,
+    meta: {
+      requiresAuth: true
+    },
     children: [
       {
         path: '/dashboard/',
@@ -105,5 +110,19 @@ const router = createRouter({
   routes,
   linkActiveClass: "active"
 })
+
+router.beforeEach((to, from, next) => {
+  console.log(Cookies.get("token"))
+  console.log(document.cookie)
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (Cookies.get("token") == null) {
+      next({ path: "/" });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
 
 export default router

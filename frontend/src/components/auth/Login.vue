@@ -55,6 +55,9 @@
                     </div>
                     
                 </div>
+
+                <button @click="logout">Logout</button>
+                <button @click="check">check</button>
             </div>
         </div>
     </div>
@@ -68,8 +71,9 @@ import { ref } from 'vue';
     // import { useRouter } from "vue-router";
     // import { useUsers } from "@/store/useUsers"
     // import { storeToRefs } from "pinia";
+import Cookies from 'js-cookie'
 
-    import Header from "./Header.vue";
+import Header from "./Header.vue";
 
     // let users = useUsers()
     
@@ -108,6 +112,12 @@ async function login() {
 
     let res = await req.json()
 
+    if(req.status == 200) {
+        Cookies.set('token', res.token, { expires: 2, httpOnly: true })
+    } else {
+        password.value = ''
+    }
+
     feedback.value = res.message
     status.value = req.status
     loading.value = false
@@ -116,6 +126,23 @@ async function login() {
 function clearFeedbackAndStatus () {
     feedback.value = null;
     status.value = null;
+}
+async function logout() {
+    let req = await fetch('http://localhost:3000/api/auth/logout', { credentials: 'include' })
+
+    if(req.status == 200) {
+        Cookies.remove('token')
+    }
+}
+Cookies.set('name', 'value')
+
+async function check() {
+    // let req = await fetch('http://localhost:3000/api/auth/check', { credentials: 'include' })
+    // if(req.status == 200 ) {
+    //     const token = Cookies.get('token'); // Replace 'token' with the actual name of your JWT cookie
+    //     console.log('Token:', token)
+    // }
+    console.log(Cookies.get('name'), Cookies.get('token'))
 }
 </script>
 

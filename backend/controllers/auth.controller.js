@@ -46,14 +46,15 @@ async function login(req, res) {
             const token = createToken(user._id)
 
             // NOTE: add secure: true before production
-            res.cookie('token', token, { httpOnly: true, maxAge: 172800000 /* 2 days in milliseconds */})
-            res.status(200).json({ message: 'Login successful' })
+            res.cookie('token', token, { maxAge: 172800000 /* 2 days in milliseconds */})
+            res.status(200).json({ message: 'Login successful', token })
             return
         } else {
             res.status(403).json({ message: 'Incorrect email or password' })
             return
         }
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: 'Something went wrong, try again later' })
     }
 }
@@ -209,7 +210,7 @@ async function resetPassword(req, res) {
             return 
         } else {
             hashedPwd = await bcrypt.hash(password, 10)
-        }
+        } 
 
         const user = await Users.findOne({ email })
 
@@ -230,9 +231,32 @@ async function resetPassword(req, res) {
     }
 }
 
+async function logout(req, res) {
+    try {
+        res.cookie('token', '', { maxAge: -1});
+        console.log(req.cookies.token || 'none')
+        res.status(200).json({ message: 'Logout successful' })
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+// checking cookie
+// remove later
+function checkCokie(req, res) {
+    try {
+        console.log(req.cookies.token)
+        res.json('ok')
+    } catch (error) {
+        console.log(error)
+    }
+}
+
 export default {
     login,
     forgotPassword,
     validateOTP,
-    resetPassword
+    resetPassword,
+    logout,
+    checkCokie
 }

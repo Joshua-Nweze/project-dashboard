@@ -10,6 +10,8 @@ import adminRoutes from './routes/admin.routes.js'
 import userRoutes from './routes/user.routes.js'
 import projectsRoutes from './routes/projects.routes.js'
 
+import checkAuth from "./middleware/checkAuth.js";
+
 const app = express()
 
 app.use(bodyParser.json())
@@ -22,9 +24,9 @@ app.use(cors({
 app.use(cookieParser())
 
 app.use('/api/auth', authRoutes)
-app.use('/api/admin', adminRoutes)
-app.use('/api/user', userRoutes)
-app.use('/api/projects', projectsRoutes)
+app.use('/api/admin', checkAuth, adminRoutes)
+app.use('/api/user', checkAuth, userRoutes)
+app.use('/api/projects', checkAuth, projectsRoutes)
 
 mongoose.connect(process.env.DB_URI)
     .then(app.listen(3000, () => {
