@@ -65,6 +65,8 @@
 
 <script setup>
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { provide } from 'vue';
 
     // import users from "@/db/users.json"
     // import { ref } from "@vue/reactivity";
@@ -79,7 +81,7 @@ import Header from "./Header.vue";
     
     // let {user} = storeToRefs(users)
 
-    // let router = useRouter()
+let router = useRouter()
 
 let email = ref('')
 let password = ref('')
@@ -114,6 +116,8 @@ async function login() {
 
     if(req.status == 200) {
         Cookies.set('token', res.token, { expires: 2, httpOnly: true })
+        provide('userEmail', email.value)
+        router.push('/dashboard')
     } else {
         password.value = ''
     }
@@ -134,15 +138,14 @@ async function logout() {
         Cookies.remove('token')
     }
 }
-Cookies.set('name', 'value')
 
 async function check() {
-    // let req = await fetch('http://localhost:3000/api/auth/check', { credentials: 'include' })
-    // if(req.status == 200 ) {
-    //     const token = Cookies.get('token'); // Replace 'token' with the actual name of your JWT cookie
-    //     console.log('Token:', token)
-    // }
-    console.log(Cookies.get('name'), Cookies.get('token'))
+    let req = await fetch('http://localhost:3000/api/auth/check', { credentials: 'include' })
+    if(req.status == 200 ) {
+        const token = Cookies.get('token'); // Replace 'token' with the actual name of your JWT cookie
+        console.log('Token:', token)
+    }
+    console.log(await Cookies.get('token'))
 }
 </script>
 

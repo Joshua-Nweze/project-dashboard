@@ -43,14 +43,14 @@ async function login(req, res) {
         const isPwdTrue = await bcrypt.compare(password, user.password)
 
         if (isPwdTrue) {
-            const token = createToken(user._id)
+            const token = createToken(email)
 
             // NOTE: add secure: true before production
             res.cookie('token', token, { maxAge: 172800000 /* 2 days in milliseconds */})
             res.status(200).json({ message: 'Login successful', token })
             return
         } else {
-            res.status(403).json({ message: 'Incorrect email or password' })
+            res.status(401).json({ message: 'Incorrect email or password' })
             return
         }
     } catch (error) {
@@ -234,7 +234,6 @@ async function resetPassword(req, res) {
 async function logout(req, res) {
     try {
         res.cookie('token', '', { maxAge: -1});
-        console.log(req.cookies.token || 'none')
         res.status(200).json({ message: 'Logout successful' })
     } catch (error) {
         console.log(error)

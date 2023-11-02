@@ -11,15 +11,16 @@ async function inviteStaff(req, res) {
     try {
         let { email, adminId } = req.body
 
-        // let isAdmin = await Users.findById(adminId)
+        let isAdmin = await Users.findById(adminId)
 
-        // if(!isAdmin || isAdmin.userType != 'admin') {
-        //     res.status(401).json({ message: 'You are not allowed to perform this action' })
-        //     return
-        // }
+        if(!isAdmin || isAdmin.userType != 'admin') {
+            res.status(401).json({ message: 'You are not allowed to perform this action' })
+            return
+        }
 
         let randPwd = generatePwd()
         let hashedPwd = await bcrypt.hash(randPwd, 10)
+        console.log(randPwd)
 
         let newInvitee = new Invitee({
             email,
@@ -186,5 +187,5 @@ export default {
     getAllStaff,
     blockStaff,
     unblockStaff,
-    getBlockedStaff
+    getBlockedStaff,
 }

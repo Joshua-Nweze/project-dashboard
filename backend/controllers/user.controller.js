@@ -189,7 +189,8 @@ async function getDetails(req, res) {
             email: details.email,
             name: details.name,
             lga: details.lga,
-            phoneNumber: details.phoneNumber
+            phoneNumber: details.phoneNumber,
+            userType: details.userType
         })
     } catch (error) {
         console.log(error)

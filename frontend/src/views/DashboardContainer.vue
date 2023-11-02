@@ -20,10 +20,19 @@
 </template>
 
 <script setup>
-  import Nav from "@/components/navbar/Nav"
-  import Sidenav from "@/components/navbar/Sidenav"
-  import Footer from "@/components/Footer"
+import Nav from "@/components/navbar/Nav"
+import Sidenav from "@/components/navbar/Sidenav"
+import Footer from "@/components/Footer"
 
+
+import { provide } from 'vue'
+import { jwtDecode } from "jwt-decode"
+import Cookies from "js-cookie";
+
+let cookie = Cookies.get('token')
+let decoded = jwtDecode(cookie)
+
+provide('userEmail', decoded.id)
 </script>
 
 <style scoped>
