@@ -1,19 +1,34 @@
 <template>
-    <div class="row">
+    <div class="row" v-if="isDateReady">
 
         <div class="col-12 col-md-8">
-            <div v-if="isDateReady" class="row">
+            <div class="row">
                 <div class="col-12">
                     <div class="card bg-primary mb-2">
                         <div class="card-body p-0">
                             <div class="row align-items-center">
+
                                 <div class="col">
                                     <img src="../../assets/imgs/engineer.png" alt="" class="img-fluid">
                                 </div>
+
                                 <div class="col text-white p-3">
-                                    <div class="fs-3 fw-bold" v-if="user">{{ user.name }}!</div>
-                                    <div style="font-size: 14px;">You have 3 ongoing projects. <br> Keep it going.</div>
+                                    <div v-if="user.userType == 'staff'">
+                                        <div class="fs-3 fw-bold">{{ user.name }}!</div>
+                                        <div>
+                                            <div style="font-size: 14px;" v-if="(projects.ongoingProjects).length > 0">You have {{ (projects.ongoingProjects).length }} ongoing projects. <br> Keep it going.</div>
+                                            <div v-else>
+                                                <RouterLink to="/add-project">Add a project</RouterLink>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div v-if="user.userType == 'admin'">
+                                        <div class="fs-3 fw-bold">Hello Admin!</div>
+                                        <div style="font-size: 14px;">Welcome back.</div>
+                                    </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
@@ -89,7 +104,7 @@
                                         <span class="text-body-secondary">Total projects</span> 
                                         <br> 
                                             <span class="fs-1">
-                                                0
+                                                {{ (projects.projects).length }}
                                             </span>
                                         </div>
                                 </div>
@@ -105,7 +120,7 @@
                                         <span class="text-body-secondary">Ongoing projects</span> 
                                         <br> 
                                         <span class="fs-1">
-                                            0
+                                            {{ (projects.ongoingProjects).length }}
                                         </span>
                                     </div>
                                 </div>
@@ -117,18 +132,13 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-4 card-icon text-success"><i class="bi bi-cone"></i></div>
-                                    <div class="col-8 card-text text-end"><span class="text-body-secondary">Finished projects</span> <br> <span class="fs-1">0</span></div>
+                                    <div class="col-8 card-text text-end">
+                                        <span class="text-body-secondary">Finished projects</span>
+                                        <br> 
+                                        <span class="fs-1">{{ (projects.finishedProjects).length }}</span></div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            <div v-else class="m-5">
-                <div class="text-center">
-                    <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
-                        <span class="visually-hidden">Loading...</span>
                     </div>
                 </div>
             </div>
@@ -138,21 +148,12 @@
             <div class="card">
                 <div class="card-body">
                     <div class="fs-3 text-secondary">Recent projects</div>
-                    <div class="list-group p-1 px-2 my-2 recent-project">
-                        <div class="fs-5">Okay</div>
-                        <div class="text-muted" style="font-size: 13px;">Ekene okoi</div>
-                    </div>
-                    <div class="list-group p-1 px-2 my-2 recent-project">
-                        <div class="fs-5">Okay</div>
-                        <div class="text-muted" style="font-size: 13px;">Ekene okoi</div>
-                    </div>
-                    <div class="list-group p-1 px-2 my-2 recent-project">
-                        <div class="fs-5">Okay</div>
-                        <div class="text-muted" style="font-size: 13px;">Ekene okoi</div>
-                    </div>
-                    <div class="list-group p-1 px-2 my-2 recent-project">
-                        <div class="fs-5">Okay</div>
-                        <div class="text-muted" style="font-size: 13px;">Ekene okoi</div>
+                    <div
+                     v-for="(project, index) in (projects.projects).slice(0, 4)"
+                     :key="project.index"
+                     class="list-group p-1 px-2 my-2 recent-project">
+                        <div class="fs-5">{{ project.projectName }}</div>
+                        <div class="text-muted" style="font-size: 13px;">{{ (project.description).slice(0, 20) }} {{ (project.description).length > 20 ? '...' : '' }}</div>
                     </div>
                 </div>
             </div>
@@ -160,28 +161,34 @@
 
 
     </div>
+
+    <div v-else class="m-5">
+        <div class="text-center">
+            <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script setup>
-import { useFiles } from "@/store/useFiles"
 import { reactive, ref } from "@vue/reactivity";
 import { storeToRefs } from "pinia";
 import { inject } from 'vue'
 
-import { getUserDetails } from "../../composables/getUserDetails.js";
+import { getUserDetails, getStaffProjects } from "../../composables/getDetails.js";
 
 const userEmail = inject('userEmail')
 
-// let files = useFiles()
-// let {file, catArr} = storeToRefs(files)
-// let fileDetails = file.value.files
-
-// let fileLenght = fileDetails.length
 let isDateReady = ref(false)
 let user = ref(null)
+let projects = ref()
 
 let get = (async () => {
     user.value = await getUserDetails(userEmail)
+    projects.value = await getStaffProjects(user.value.id)
+
+    console.log(projects.value)
     isDateReady.value = true
 })()
 

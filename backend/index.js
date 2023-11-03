@@ -26,7 +26,7 @@ app.use(cookieParser())
 app.use('/api/auth', authRoutes)
 app.use('/api/admin', checkAuth, adminRoutes)
 app.use('/api/user', checkAuth, userRoutes)
-app.use('/api/projects', checkAuth, projectsRoutes)
+app.use('/api/projects',  projectsRoutes)
 
 mongoose.connect(process.env.DB_URI)
     .then(app.listen(3000, () => {

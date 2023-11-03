@@ -32,30 +32,7 @@
 </template>
 
 <script setup>
-    import { useRoute, useRouter } from "vue-router";
-    import { useFiles } from "@/store/useFiles"
-    import { reactive, ref } from "@vue/reactivity";
-    import { storeToRefs } from "pinia";
-
-    
-  import CollapsibleNav from "@/components/navbar/CollapsibleNav"
-
-    let files = useFiles()
-    let {searchFile} = files
-
-    let searchVal = ref()
-
-    let router = useRouter()
     // let showCollapsible = ref(false)
-
-
-    function search(searchVal) {
-        if (searchVal.value !== "") {
-            router.push({ name: 'search', params: { query: searchVal.value.split(' ').join('-')}})
-            searchFile(searchVal.value)
-            searchVal.value = ''
-        }
-    }
 
     // function closeCollapsible() {
     //     showCollapsible.value = false

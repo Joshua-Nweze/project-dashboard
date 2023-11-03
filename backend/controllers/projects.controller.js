@@ -6,21 +6,28 @@ import fs from "fs"
 async function addProject(req, res) {
     try {
         // img feild name is image
-        let { name, location, lga, description, staffId } = req.body
+        let { location, lga, description, staff, projectName } = req.body
+
+        let user = await Users.findById(staff)
+
+        if (!user) {
+            res.status(400).json({ message: 'User not found' })
+            return
+        }
 
         if (!req.file) {
             res.status(400).json({ message: 'All inputs are required' })
             return
         }
 
-        if(!name || !location || !lga || !description || !staffId) {
+        if(!location || !lga || !description || !staff || !projectName) {
             res.status(400).json({ message: 'All inputs are required' })
             return
         }
 
         let newProject = new Project({
-            staffId,
-            name,
+            staff,
+            projectName,
             location,
             lga,
             description,
@@ -84,7 +91,7 @@ async function getStaffProjects(req, res) {
             return
         }
 
-        let projects = await Project.find({ staffId })
+        let projects = await Project.find({ staff: staffId })
 
         if (!projects || projects.length < 1) {
             res.status(404).json({ message: 'No projects found' })

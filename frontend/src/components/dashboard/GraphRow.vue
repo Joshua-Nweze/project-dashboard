@@ -38,84 +38,89 @@
 </template>
 
 <script setup>
-    import { storeToRefs } from "pinia";
-    import { useFiles } from "@/store/useFiles"
-    import Chart from 'chart.js/auto';
-    import { onMounted, ref } from "@vue/runtime-core";
+import Chart from 'chart.js/auto';
+import { onMounted, ref } from "@vue/runtime-core";
+import { useProjects } from '@/store/useProjects';
+import { storeToRefs } from 'pinia';
 
-    let files = useFiles()
-    let {file, catArr} = storeToRefs(files)
-    let fileDetails = file.value.files
+let projectsStore = useProjects()
 
-    let num1 = ref(10)
-    onMounted(() => {
-        const bar = document.getElementById('myBarChart')
-        const pie = document.getElementById('myPieChart')
-        const bar2 = document.getElementById('myBarChart2')
+    // onCreated(async () => {
+    //     await projectsStore.getStaffProjects('6540f9ca19e8035e4f45a4a9')
+    // })
+    // let { projects } = storeToRefs(projectsStore)
+    // console.log(projects.value)
 
-        new Chart(bar, {
-            type: 'bar',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
-                datasets: [{
-                    label: '# of projects started per month',
-                    data: [12, 19, 3, 5, 2, 3, num1.value],
-                    borderWidth: 1,
-                    height: 100
-                }]
-            },
-            options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                    }
-                }
-            }
-        });
 
-        new Chart(pie, {
-            type: 'pie',
-            data: {
-                labels: ['Completed projects', 'Ongoing projects'],
-                datasets: [{
-                    label: 'Projects highlight',
-                    data: [5, 2],
-                    backgroundColor: ['rgba(0, 225, 0, 0.5)', 'rgba(255, 255, 0, 0.5)'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-            scales: {
-                y: {
+let num1 = ref(10)
+onMounted(() => {
+    const bar = document.getElementById('myBarChart')
+    const pie = document.getElementById('myPieChart')
+    const bar2 = document.getElementById('myBarChart2')
+
+    new Chart(bar, {
+        type: 'bar',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+            datasets: [{
+                label: '# of projects started per month',
+                data: [12, 19, 3, 5, 2, 3, num1.value],
+                borderWidth: 1,
+                height: 100
+            }]
+        },
+        options: {
+        scales: {
+            y: {
                 beginAtZero: true
                 }
             }
-            }
-        });
+        }
+    });
 
-        new Chart(bar2, {
-            type: 'bar',
-            data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
-                datasets: [{
-                    label: '# of projects completed per month',
-                    data: [12, 19, 3, 5, 2, 3, num1.value],
-                    borderWidth: 1,
-                    backgroundColor: 'rgba(0, 225, 0, 0.2)',
-                    borderColor: 'rgba(0, 225, 0)',
-                    height: 100
-                }]
-            },
-            options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                    }
+    new Chart(pie, {
+        type: 'pie',
+        data: {
+            labels: ['Completed projects', 'Ongoing projects'],
+            datasets: [{
+                label: 'Projects highlight',
+                data: [5, 2],
+                backgroundColor: ['rgba(0, 225, 0, 0.5)', 'rgba(255, 255, 0, 0.5)'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+        scales: {
+            y: {
+            beginAtZero: true
+            }
+        }
+        }
+    });
+
+    new Chart(bar2, {
+        type: 'bar',
+        data: {
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+            datasets: [{
+                label: '# of projects completed per month',
+                data: [12, 19, 3, 5, 2, 3, num1.value],
+                borderWidth: 1,
+                backgroundColor: 'rgba(0, 225, 0, 0.2)',
+                borderColor: 'rgba(0, 225, 0)',
+                height: 100
+            }]
+        },
+        options: {
+        scales: {
+            y: {
+                beginAtZero: true
                 }
             }
-        });
-    })
-    
+        }
+    });
+})
+
 
 </script>
 

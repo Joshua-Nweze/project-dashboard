@@ -15,11 +15,11 @@ let milestoneSchema = new Schema({
 })
 
 let projectSchema = new Schema({
-    staffId: {
+    staff: {
         type: String,
         required: true
     },
-    name: {
+    projectName: {
         type: String,
         required: true
     },

@@ -112,8 +112,6 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log(Cookies.get("token"))
-  console.log(document.cookie)
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (Cookies.get("token") == null) {
       next({ path: "/" });

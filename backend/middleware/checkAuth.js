@@ -8,11 +8,10 @@ export default function checkAuth(req, res, next) {
             if (err) {
                 return res.status(401).json({ message: "Authentification Failed" });
             } else {
-                console.log(decodedToken)
                 next()
             }
         })
     } else {
-        return res.status(401).json({ message: "Authentification Failed" });
+        return res.status(401).json({ message: "Authentification Failed 1" });
     }
 }
