@@ -75,6 +75,42 @@ async function getProject(req, res) {
     }
 }
 
+async function getAllProjects(req, res) {
+    try {
+        let { id } = req.query
+
+        let isAdmin = await Users.findById(id)
+
+        if (isAdmin.userType != 'admin') {
+            res.status(401).json({ message: 'You are not allowed to perform this action' })
+            return
+        }
+
+        let projects = await Project.find()
+
+        if (!projects) {
+            res.status(404).json({ message: 'No project available' })
+            return
+        }
+
+        let allProjects = []
+
+        projects.forEach((project) => {
+            const imagePath = project.image;
+            const imageBuffer = fs.readFileSync(imagePath); 
+            // Encode the image buffer as a Base64 string
+            const imageBase64 = imageBuffer.toString('base64');
+
+            allProjects.push({ project, imageBase64 })
+        })
+
+        res.status(200).json({message: allProjects})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: 'Something went wrong, try again later' })
+    }
+}
+
 async function getStaffProjects(req, res) {
     try {
         let { staffId } = req.query
@@ -98,7 +134,18 @@ async function getStaffProjects(req, res) {
             return
         }
 
-        res.status(200).json({ message: projects })
+        let allProjects = []
+
+        projects.forEach((project) => {
+            const imagePath = project.image;
+            const imageBuffer = fs.readFileSync(imagePath); 
+            // Encode the image buffer as a Base64 string
+            const imageBase64 = imageBuffer.toString('base64'); 
+
+            allProjects.push({ project, imageBase64 })
+        })
+
+        res.status(200).json({ message: allProjects })
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: 'Something went wrong, try again later' })
@@ -183,5 +230,6 @@ export default {
     getProject,
     getStaffProjects,
     delProject,
-    editProject
+    editProject,
+    getAllProjects
 }

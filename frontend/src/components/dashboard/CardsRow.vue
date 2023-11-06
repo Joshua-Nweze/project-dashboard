@@ -1,5 +1,5 @@
 <template>
-    <div class="row" v-if="isDateReady">
+    <div class="row" v-if="isDataReady">
 
         <div class="col-12 col-md-8">
             <div class="row">
@@ -16,7 +16,7 @@
                                     <div v-if="user.userType == 'staff'">
                                         <div class="fs-3 fw-bold">{{ user.name }}!</div>
                                         <div>
-                                            <div style="font-size: 14px;" v-if="(projects.ongoingProjects).length > 0">You have {{ (projects.ongoingProjects).length }} ongoing projects. <br> Keep it going.</div>
+                                            <div style="font-size: 14px;" v-if="(ongoingProjects).length > 0">You have {{ ongoingProjects.length }} ongoing projects. <br> Keep it going.</div>
                                             <div v-else>
                                                 <RouterLink to="/add-project">Add a project</RouterLink>
                                             </div>
@@ -104,7 +104,7 @@
                                         <span class="text-body-secondary">Total projects</span> 
                                         <br> 
                                             <span class="fs-1">
-                                                {{ (projects.projects).length }}
+                                                {{ (projects).length }}
                                             </span>
                                         </div>
                                 </div>
@@ -120,7 +120,7 @@
                                         <span class="text-body-secondary">Ongoing projects</span> 
                                         <br> 
                                         <span class="fs-1">
-                                            {{ (projects.ongoingProjects).length }}
+                                            {{ (ongoingProjects).length }}
                                         </span>
                                     </div>
                                 </div>
@@ -135,7 +135,7 @@
                                     <div class="col-8 card-text text-end">
                                         <span class="text-body-secondary">Finished projects</span>
                                         <br> 
-                                        <span class="fs-1">{{ (projects.finishedProjects).length }}</span></div>
+                                        <span class="fs-1">{{ typeof finishedProjects == null ? '0' : finishedProjects.length }}</span></div>
                                 </div>
                             </div>
                         </div>
@@ -149,16 +149,15 @@
                 <div class="card-body">
                     <div class="fs-3 text-secondary">Recent projects</div>
                     <div
-                     v-for="(project, index) in (projects.projects).slice(0, 4)"
+                     v-for="(project, index) in (projects).slice(0, 4)"
                      :key="project.index"
                      class="list-group p-1 px-2 my-2 recent-project">
-                        <div class="fs-5">{{ project.projectName }}</div>
-                        <div class="text-muted" style="font-size: 13px;">{{ (project.description).slice(0, 20) }} {{ (project.description).length > 20 ? '...' : '' }}</div>
+                        <div class="fs-5">{{ project.project.projectName }}</div>
+                        <div class="text-muted" style="font-size: 13px;">{{ (project.project.description).slice(0, 20) }} {{ (project.project.description).length > 20 ? '...' : '' }}</div>
                     </div>
                 </div>
             </div>
         </div>
-
 
     </div>
 
@@ -175,22 +174,29 @@
 import { reactive, ref } from "@vue/reactivity";
 import { storeToRefs } from "pinia";
 import { inject } from 'vue'
+import { useUser } from "@/store/useUser";
+import { useProjects } from "@/store/useProjects";
 
-import { getUserDetails, getStaffProjects } from "../../composables/getDetails.js";
+let userStore = useUser()
+let projectsStore = useProjects()
+
+let { user } = storeToRefs(userStore)
+let { projects, ongoingProjects, finishedProjects } = storeToRefs(projectsStore)
 
 const userEmail = inject('userEmail')
 
-let isDateReady = ref(false)
-let user = ref(null)
-let projects = ref()
+let isDataReady = ref(false)
 
-let get = (async () => {
-    user.value = await getUserDetails(userEmail)
-    projects.value = await getStaffProjects(user.value.id)
+async function getDataOnLoad() {
+    if (!user.value ) {
+        await userStore.getUserDetails(userEmail)
 
-    console.log(projects.value)
-    isDateReady.value = true
-})()
+        await projectsStore.getStaffProjects(user.value.id)
+        console.log(projects.value)
+    }
+    isDataReady.value = true
+}
+getDataOnLoad()
 
 </script>
 
