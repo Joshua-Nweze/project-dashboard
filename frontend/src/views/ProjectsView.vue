@@ -31,17 +31,14 @@
         </div>
     </div>
     <div v-else class="m-5">
-        <div class="text-center">
-            <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>
+        <LoadingSpinner />
     </div>
 </template>
 
 <script setup>
 import Searchbar from '@/components/Searchbar.vue';
 import ProjectActionBtns from '@/components/projects/ProjectActionBtns.vue';
+import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import { useUser } from '@/store/useUser';
 import { useProjects } from '@/store/useProjects';
 import { storeToRefs } from 'pinia';

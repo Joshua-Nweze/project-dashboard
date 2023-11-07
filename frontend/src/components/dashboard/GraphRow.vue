@@ -34,11 +34,7 @@
 
     </div>
     <div v-else>
-        <div class="text-center">
-            <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>
+        <LoadingSpinner />
     </div>
 
     
@@ -51,6 +47,8 @@ import { useProjects } from '@/store/useProjects';
 import { useUser } from '@/store/useUser';
 import { storeToRefs } from 'pinia';
 import { inject, watch } from 'vue';
+
+import LoadingSpinner from '../LoadingSpinner.vue';
 
 const userEmail = inject('userEmail')
 

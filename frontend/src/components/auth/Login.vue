@@ -48,9 +48,7 @@
                                     Login
                                 </div>
 
-                                <div v-else class="spinner-border spinner-border-sm mx-2  " role="status">
-                                    <span class="visually-hidden">Loading...</span>
-                                </div>
+                                <SmallLoadingSpinner v-else />
                             </button>
                     </div>
                     
@@ -67,6 +65,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { provide } from 'vue';
+import SmallLoadingSpinner from '../SmallLoadingSpinner.vue';
 
     // import users from "@/db/users.json"
     // import { ref } from "@vue/reactivity";

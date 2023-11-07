@@ -77,20 +77,14 @@
                             Add project
                         </div>
 
-                        <div v-else class="spinner-border spinner-border-sm mx-2  " role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
+                        <SmallLoadingSpinner v-else />
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <div v-else class="m-5">
-        <div class="text-center">
-            <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-        </div>
+        <LoadingSpinner />
     </div>
 </template>
 
@@ -99,6 +93,9 @@ import { ref } from "@vue/reactivity";
 import { inject } from "vue";
 import { useUser } from "@/store/useUser";
 import { storeToRefs } from "pinia";
+
+import LoadingSpinner from "../LoadingSpinner.vue";
+import SmallLoadingSpinner from "../SmallLoadingSpinner.vue";
 
 let userStore = useUser()
 let { user } = storeToRefs(userStore)
