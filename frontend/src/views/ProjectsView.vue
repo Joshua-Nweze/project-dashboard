@@ -15,8 +15,14 @@
                 <div class="position-relative">
                     <img :src="`data:image/jpeg;base64,${project.imageBase64}`" class="card-img-top px-0" alt="" style="height: 200px;">
                     <!-- Only for staff -->
-                    <div class="position-absolute top-0 end-0 p-2">
-                        <ProjectActionBtns />
+                    <div
+                     v-if="user.userType == 'staff'"
+                     class="position-absolute top-0 end-0 p-2"
+                    >
+                        <ProjectActionBtns
+                         :user="user"
+                         :project="project.project"
+                        />
                     </div>
                     <!--  -->
                 </div>
@@ -56,9 +62,8 @@ let isDataReady = ref(false)
 async function getDataOnLoad() {
     if (!user.value ) {
         await userStore.getUserDetails(userEmail)
-        await projectsStore.getStaffProjects(user.value.id)
-        console.log(projects.value)
     }
+    await projectsStore.getStaffProjects(user.value.id)
     isDataReady.value = true
 }
 

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="user.userType == 'staff'">
         <div class="">
             <RouterLink to="/project/id" class="p-2 rounded bg-primary-subtle"><i class="bi bi-eye text-primary"></i></RouterLink>
 
@@ -69,7 +69,15 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
+                    <button
+                     type="button" 
+                     class="btn btn-danger" 
+                     @click="async () => {
+                        await projectsStore.deleteProject(project._id, user.id)
+                     }"
+                    >
+                        Delete
+                    </button>
                 </div>
                 </div>
             </div>
@@ -78,7 +86,16 @@
 </template>
 
 <script setup>
+// import { useUser } from '@/store/useUser';
+import { useProjects } from '@/store/useProjects';
+import { storeToRefs } from 'pinia';
 
+// let userStore = useUser()
+// let { user } = storeToRefs(userStore)
+
+let projectsStore = useProjects()
+
+defineProps(['user', 'project'])
 </script>
 
 <style lang="scss" scoped>

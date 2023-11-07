@@ -101,6 +101,12 @@ async function login() {
 
     loading.value = true
 
+    if (!navigator.onLine) {
+        feedback.value = 'Looks like you don\'t have an active internet connection'
+        loading.value = false
+        return
+    }
+
     let req = await fetch('http://localhost:3000/api/auth/login', {
         method: 'POST',
         credentials: 'include',

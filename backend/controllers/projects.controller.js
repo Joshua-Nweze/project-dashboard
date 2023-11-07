@@ -156,27 +156,35 @@ async function delProject(req, res) {
     try {
         let { id, staffId } = req.body
 
-        if(!id || !staffId) {
-            res.status(403).json({ message: 'Staff is required' })
+        if(!staffId) {
+            res.status(403).json({ message: 'User not found' })
+            return
+        }
+        if(!id) {
+            res.status(403).json({ message: 'Project not found' })
             return
         }
 
         let project = await Project.findById(id)
-        let delproject = await Project.findOneAndDelete({ _id: id, staffId })
+        let delproject = await Project.findOneAndDelete({ _id: id, staff: staffId })
 
         if(!project) {
             res.status(404).json({ message: 'Project not found' })
             return
         }
 
-        if(staffId != project.staffId) {
+        if(staffId != project.staff) {
             res.status(401).json({ message: 'You are not allowed to perform this action' })
             return
         }
 
-
-        res.status(200).json({ message: 'Project successfully deleted' })
+        if (delproject) {
+            res.status(200).json({ message: 'Project successfully deleted' })
+        } else {
+            res.status(500).json({ message: 'iSomething went wrong, try again later' })
+        }
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: 'Something went wrong, try again later' })
     }
 }

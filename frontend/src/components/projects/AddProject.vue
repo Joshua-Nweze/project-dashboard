@@ -51,7 +51,7 @@
                     </textarea>
 
                     <div class="mt-4">Attach document ( image )</div>
-                    <div class="attach-doc-div text-center " ref="dragArea" @dragover="dragOver" @dragleave="dragLeave" @drop="dragDrop">
+                    <div class="attach-doc-div text-center " ref="dragArea" >
                         <div>
                             Select file <br>
 
@@ -131,6 +131,12 @@ function clearFeedbackAndStatus () {
     status.value = null;
 }
 async function submit() {
+    if (!navigator.onLine) {
+        feedback.value = 'Looks like you don\'t have an active internet connection'
+        loading.value = false
+        return
+    }
+    
     if (!user.value.id) {
         feedback.value = 'User not found'
         return

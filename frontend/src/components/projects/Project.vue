@@ -1,19 +1,23 @@
 <template>
     <div class="container">
-        <div class="row">
+        <div v-if="project" class="row">
             <div class="col-md-8 offset-md-2">
                 <div class="row">
-                    <div class="col-8 fs-3">WHAT IF PROJECT NAME IS LONG</div>
-                    <div class="col-4 fs-3 d-flex justify-content-end">
+                    <div class="col-8 fs-3">{{ (project.project.projectName).toUpperCase() }}</div>
+                    <div class="col-4 fs-3 d-flex justify-content-end"  v-if="user.userType == 'staff'">
                         <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Update</button>
                     </div>
                 </div>
 
-                <div class="fs-5 mt-3">Ekene Okoi</div>
+                <div class="fs-5 mt-3" v-if="user.userType == 'admin'">Ekene Okoi</div>
+                
+                <div class="text-muted my-3">{{ (project.project.description) }}</div>
+                <div class="text-muted">
+                    Started on : {{ new Date(project.project.startDate).toDateString() }}, 
+                    Ended on: {{ (project.project.endDate) == null ? 'Project is ongoing' : new Date(project.project.endDate).toDateString() }}
+                </div>
 
-                <div class="text-muted">Started on : date, Ended on: date</div>
-
-                <div class="stepper d-flex flex-column mt-4 ml-2">
+                <div v-if="(project.project.milestone).length > 0" class="stepper d-flex flex-column mt-4 ml-2">
 
                     <div class="d-flex mb-1 mt-3">
                         <div class="d-flex flex-column pr-4 align-items-center">
@@ -41,32 +45,12 @@
                         </div>
                     </div>
 
-                    <div class="d-flex mb-1 mt-3">
-                        <div class="d-flex flex-column pr-4 align-items-center">
-                            <div class="rounded-circle py-2 px-2 bg-primary text-white mb-1"></div>
-                            <div class="line h-100"></div>
-                        </div>
-                        <div class="ms-3">
-                            <div class="text-dark timeline-header">Clone application respository</div>
-                            <span class="text-muted date">Date</span>
-                            <p class="lead text-muted pb-3 timeline-about">Go to your dashboard and clone Git respository from the url in the dashboard of your application</p>
-                        </div>
-                    </div>
-
-                    <div class="d-flex mb-1  mt-3">
-                        <div class="d-flex flex-column pr-4 align-items-center">
-                            <div class="rounded-circle py-2 px-2 bg-primary text-white mb-1"></div>
-                            <div class="line h-100"></div>
-                        </div>
-                        <div class="ms-3">
-                            <div class="text-dark timeline-header">Make changes and push!</div>
-                            <span class="text-muted date">Date</span>
-                            <p class="lead text-muted pb-3 timeline-about">Now make changes to your application source code, test it then commit &amp; push</p>
-                        </div>
-                    </div>
-
                 </div>
             </div>
+        </div>
+
+        <div v-else>
+            <LoadingSpinner />
         </div>
     </div>
 
@@ -118,12 +102,37 @@
 </template>
 
 <script setup>
-    import { ref } from 'vue';
-    import Lightgallery from 'lightgallery/vue';
-    import lgThumbnail from 'lightgallery/plugins/thumbnail';
-    import lgZoom from 'lightgallery/plugins/zoom'
+import { inject, ref } from 'vue';
+import Lightgallery from 'lightgallery/vue';
+import lgThumbnail from 'lightgallery/plugins/thumbnail';
+import lgZoom from 'lightgallery/plugins/zoom'
+import { useRoute } from 'vue-router';
+import { useProjects } from '@/store/useProjects';
+import LoadingSpinner from '../LoadingSpinner.vue';
+import { useUser } from '@/store/useUser';
+import { storeToRefs } from 'pinia';
 
-    let plugins = ref([lgThumbnail, lgZoom])
+let projectsStore = useProjects()
+let userStore = useUser()
+
+let { user } = storeToRefs(userStore)
+
+let plugins = ref([lgThumbnail, lgZoom])
+
+let route = useRoute()
+let project = ref(null)
+
+let userEmail = inject('userEmail')
+
+async function getDataOnLoad () {
+    if(!user.value) {
+        await userStore.getUserDetails(userEmail)
+    }
+
+    project.value = await projectsStore.getProject(route.params.id)
+}
+getDataOnLoad()
+
 </script>
 
 <style scoped>
