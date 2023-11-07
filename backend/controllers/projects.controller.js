@@ -48,7 +48,6 @@ async function addProject(req, res) {
     }
 }
 
-
 async function getProject(req, res) {
     try {
         let { id } = req.query
@@ -205,7 +204,7 @@ async function editProject(req, res) {
             return
         }
 
-        if(staffId != project.staffId) {
+        if(staffId != project.staff) {
             res.status(401).json({ message: 'You are not allowed to perform this action' })
             return
         }
@@ -228,6 +227,104 @@ async function editProject(req, res) {
 
         res.status(200).json({ message: 'Project successfully updated' })
     } catch (error) {
+        res.status(500).json({ message: 'Something went wrong, try again later' })
+    }
+}
+
+async function markProjectAsFinished(req, res) {
+    try {
+        let { project, staff } = req.body /* project id */
+
+        if (!project) {
+            res.status(400).json({ message: 'Project not found' })
+            return
+        }
+        if (!staff) {
+            res.status(400).json({ message: 'User not found' })
+            return
+        }
+
+        let user = await Users.findById(staff)
+
+        if(!user) {
+            res.status(404).json({ message: "User not found" })
+            return
+        }
+
+        let projectDetails = await Project.findById(project)
+
+        if(staff != projectDetails.staff) {
+            res.status(401).json({ message: 'You are not allowed to perform this action' })
+            return
+        }
+        
+        let updateProject = await Project.findOneAndUpdate(
+            { _id: project },
+            { endDate: new Date() }
+        )
+
+        if (updateProject) {
+            res.status(200).json({ message: 'Project marked as finished' })
+        } else {
+            res.status(500).json({ message: 'Something went wrong, try again later' })
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: 'Something went wrong, try again later' })
+    }
+}
+
+// NOTE: Not working
+async function addProjectMilestone(req, res) {
+    try {
+        console.log(req.body)
+        let { id, staff, milestone, milestoneDescription } = req.body /* id: project id, staff: staff id */
+
+        if (!id) {
+            res.status(400).json({ message: 'Project ID is missing in the request body' })
+            return
+        }
+
+        if (!staff) {
+            res.status(400).json({ message: 'User ID is missing in the request body' })
+            return
+        }
+
+        if (!id || !staff || !milestone || !milestoneDescription || !req.file) {
+            res.status(400).json({ message: 'All inputs are required' })
+            return
+        }
+
+        let project = await Project.findById(id)
+        if (!project) {
+            res.status(400).json({ message: 'Project not found' })
+            return
+        }
+
+        let user = await Users.findById(staff)
+        if (!user) {
+            res.status(400).json({ message: 'User not found' })
+            return
+        }
+
+        let addMilestone = await Project.findOneAndUpdate(
+            { _id: id },
+            { $push: {
+                milestone: {
+                    milestone,
+                    milestoneDescription,
+                    images
+                }
+            } }
+        )
+
+        if(addMilestone) {
+            res.status(200).json({ message: 'Milestone added' })
+        } else {
+            res.status(500).json({ message: 'Something went wrong, try again later' })
+        }
+
+    } catch (error) {
         console.log(error)
         res.status(500).json({ message: 'Something went wrong, try again later' })
     }
@@ -239,5 +336,7 @@ export default {
     getStaffProjects,
     delProject,
     editProject,
-    getAllProjects
+    getAllProjects,
+    markProjectAsFinished,
+    addProjectMilestone
 }

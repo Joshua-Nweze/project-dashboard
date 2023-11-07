@@ -13,7 +13,7 @@
                 
                 <div class="text-muted my-3">{{ (project.project.description) }}</div>
                 <div class="text-muted">
-                    Started on : {{ new Date(project.project.startDate).toDateString() }}, 
+                    Started on : {{ new Date(project.project.startDate).toDateString() }}. 
                     Ended on: {{ (project.project.endDate) == null ? 'Project is ongoing' : new Date(project.project.endDate).toDateString() }}
                 </div>
 

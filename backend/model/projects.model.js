@@ -9,9 +9,9 @@ let milestoneSchema = new Schema({
         type: String,
         required: true
     },
-    image: {
+    image: [{
         type: Buffer
-    }
+    }]
 })
 
 let projectSchema = new Schema({
