@@ -17,7 +17,7 @@ const fileFilter = (req, file, cb) => {
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, "uploads");
+        cb(null, "uploads/projectThumbnail");
     },
     // This defines the file name for storing files
     filename: function (req, file, cb) {
@@ -35,16 +35,6 @@ let { addProject, getProject, getStaffProjects, delProject, editProject, getAllP
 
 let router = express.Router()
 
-// router.post('/add', (req, res, next) => {
-//     upload.single('image')(req, res, function (err) {
-//         if (req.fileValidationError) {
-//             // Handle the file filter error
-//             return res.status(400).json({ message: 'Error' });
-//         }
-//         // Call the controller function to handle the request
-//         addProject(req, res);
-//     })
-// })
 let uploadr = upload.single('image')
 
 router.post('/add', function (req, res) {

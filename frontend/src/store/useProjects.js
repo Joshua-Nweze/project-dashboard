@@ -13,8 +13,10 @@ export const useProjects = defineStore("project", {
             let res = await req.json()
             
             this.projects = res.message
-            this.ongoingProjects = (res.message).filter(project => project.endDate == null)
-            this.finishedProjects = (res.message).filter(project => project.endDate != null)
+            if (typeof this.projects == 'array') {
+                this.ongoingProjects = (res.message).filter(project => project.endDate == null)
+                this.finishedProjects = (res.message).filter(project => project.endDate != null)
+            }
         },
 
         async getAllProjects() {
@@ -22,8 +24,10 @@ export const useProjects = defineStore("project", {
             let res = await req.json()
             
             this.projects = res.message
-            this.ongoingProjects = (res.message).filter(project => project.endDate == null)
-            this.finishedProjects = (res.message).filter(project => project.endDate != null)
+            if (typeof this.projects == 'array') {
+                this.ongoingProjects = (res.message).filter(project => project.endDate == null)
+                this.finishedProjects = (res.message).filter(project => project.endDate != null)
+            }
         },
 
         async getProject(id) {

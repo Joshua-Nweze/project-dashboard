@@ -73,10 +73,15 @@
                      type="button" 
                      class="btn btn-danger" 
                      @click="async () => {
+                        isDeleting = true
                         await projectsStore.deleteProject(project._id, user.id)
+                        isDeleting = false
                      }"
                     >
-                        Delete
+                        <span v-if="!isDeleting">
+                            Delete
+                        </span>
+                        <SmallLoadingSpinner v-else/>
                     </button>
                 </div>
                 </div>
@@ -89,6 +94,8 @@
 // import { useUser } from '@/store/useUser';
 import { useProjects } from '@/store/useProjects';
 import { storeToRefs } from 'pinia';
+import SmallLoadingSpinner from '../SmallLoadingSpinner.vue';
+import { ref } from 'vue';
 
 // let userStore = useUser()
 // let { user } = storeToRefs(userStore)
@@ -96,6 +103,8 @@ import { storeToRefs } from 'pinia';
 let projectsStore = useProjects()
 
 defineProps(['user', 'project'])
+
+let isDeleting = ref(false)
 </script>
 
 <style lang="scss" scoped>

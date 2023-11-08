@@ -129,7 +129,7 @@ async function getStaffProjects(req, res) {
         let projects = await Project.find({ staff: staffId })
 
         if (!projects || projects.length < 1) {
-            res.status(404).json({ message: 'No projects found' })
+            res.status(200).json({ message: 'No projects found' })
             return
         }
 
