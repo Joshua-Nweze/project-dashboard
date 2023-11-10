@@ -16,7 +16,7 @@
                                     <div v-if="user.userType == 'staff'">
                                         <div class="fs-3 fw-bold">{{ user.name }}!</div>
                                         <div>
-                                            <div style="font-size: 14px;" v-if="(ongoingProjects).length > 0">You have {{ ongoingProjects.length }} ongoing projects. <br> Keep it going.</div>
+                                            <div style="font-size: 14px;" v-if="ongoingProjects.length > 0">You have {{ ongoingProjects.length }} ongoing projects. <br> Keep it going.</div>
                                             <div v-else>
                                                 <RouterLink to="/add-project">Add a project</RouterLink>
                                             </div>
@@ -35,7 +35,7 @@
                 </div>
 
                 <!-- ADMIN -->
-                <div v-if="user.userType == 'admin'" class="row">
+                <div v-if="user.userType == 'admin'" class="row  mx-auto">
                     <div class="col-lg-6 col-sm-6 col-md-6 mb-2">
                         <div class="card bg-primary-subtle">
                             <div class="card-body">
@@ -94,7 +94,7 @@
                 </div>
 
                 <!-- STAFF -->
-                <div  v-if="user.userType == 'staff'" class="row row-gap-3 mb-3">
+                <div  v-if="user.userType == 'staff'" class="row row-gap-3 mb-3 mx-auto">
                     <div class="col-12 col-lg-4">
                         <div class="card bg-primary-subtle">
                             <div class="card-body">
@@ -104,7 +104,7 @@
                                         <span class="text-body-secondary">Total projects</span> 
                                         <br> 
                                             <span class="fs-1">
-                                                {{ (projects).length }}
+                                                {{ typeof projects == 'object' || typeof projects == 'array' ? projects.length : 0 }}
                                             </span>
                                         </div>
                                 </div>
@@ -149,11 +149,17 @@
                 <div class="card-body">
                     <div class="fs-3 text-secondary">Recent projects</div>
                     <div
+                     v-if="(typeof projects == 'object' || typeof project == 'array')"
                      v-for="(project, index) in (projects).slice(0, 4)"
                      :key="project.index"
                      class="list-group p-1 px-2 my-2 recent-project">
-                        <div class="fs-5">{{ project.project.projectName }}</div>
-                        <div class="text-muted" style="font-size: 13px;">{{ (project.project.description).slice(0, 20) }} {{ (project.project.description).length > 20 ? '...' : '' }}</div>
+                        <RouterLink :to="`/project/${project.project._id}`" class="link">
+                            <div class="fs-5 text-muted">{{ project.project.projectName }}</div>
+                            <div class="text-muted" style="font-size: 13px;">{{ (project.project.description).slice(0, 20) }} {{ (project.project.description).length > 20 ? '...' : '' }}</div>
+                        </RouterLink>
+                    </div>
+                    <div v-else>
+                        No recent project
                     </div>
                 </div>
             </div>
@@ -199,20 +205,24 @@ getDataOnLoad()
 </script>
 
 <style scoped>
-    .card-icon{
-        font-size: 40px;
-    }
+.card-icon{
+    font-size: 40px;
+}
 
-    .card-text{
-        line-height: 25px;
-    }
+.card-text{
+    line-height: 25px;
+}
 
-    .updated-text{
-        font-size: 13px;
-        font-weight: 500;
-    }
+.updated-text{
+    font-size: 13px;
+    font-weight: 500;
+}
 
-    .recent-project{
-        background-color: rgb(215, 215, 215);
-    }
+.recent-project{
+    background-color: rgb(215, 215, 215);
+}
+
+.link{
+    text-decoration: none;
+}
 </style>
