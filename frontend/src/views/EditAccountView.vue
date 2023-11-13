@@ -66,24 +66,35 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
+
+                            <div v-if="changePwdFeedback">
+                                <div
+                                    class="alert alert-dismissible fade show"
+                                    :class="{'alert-success': changePwdStatus == 200 || changePwdStatus == 201, 'alert-danger': changePwdStatus != 200  }"
+                                    role="alert">
+                                    {{ changePwdFeedback }}
+                                    <button type="button" class="btn-close" @click="( changePwdFeedback = changePwdStatus = '' )"></button>
+                                </div>
+                            </div>
+
                             <div class="mb-3">
                                 <label for="current-password" class="form-label">Current password</label>
-                                <input type="password" class="form-control" id="current-password" >
+                                <input type="password" class="form-control" id="current-password" v-model="currentPassword">
                             </div>
                             <div class="mb-3">
                                 <label for="new-password" class="form-label">New password</label>
-                                <input type="password" class="form-control" id="new-password" >
+                                <input type="password" class="form-control" id="new-password" v-model="newPassword">
                             </div>
                             <div class="mb-3">
                                 <label for="re-new-password" class="form-label">Enter new password again</label>
-                                <input type="password" class="form-control" id="re-new-password" >
+                                <input type="password" class="form-control" id="re-new-password" v-model="reNewPassword">
                             </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">
+                            <button type="button" class="btn btn-primary" @click="changePassword">
                                 <div>
-                                    <div v-if="!isEditing">
+                                    <div v-if="!isChangingPwd">
                                         Save changes
                                     </div>
                                     <div v-else>
@@ -142,6 +153,21 @@ async function editAccount() {
 
     feedback.value = status.value = ''
 
+    if(!name.value || !phone.value || !lga.value || !useUser || ! user.value.id) {
+        feedback.value = 'All inputs are required'
+        status.value = 400
+
+        isEditing.value = false
+        return
+    }
+    if (typeof phone.value != 'number') {
+        feedback.value = 'Phone number must be a number'
+        status.value = 400
+
+        isEditing.value = false
+        return
+    }
+
     let req = await userStore.editAccount(
         name.value,
         phone.value,
@@ -150,11 +176,58 @@ async function editAccount() {
         userEmail
     )
 
-    console.log(req)
     feedback.value = req.message
     status.value = req.status
 
     isEditing.value = false
+}
+
+let currentPassword = ref('')
+let newPassword = ref('')
+let reNewPassword = ref('')
+
+let changePwdFeedback = ref('')
+let changePwdStatus = ref('')
+let isChangingPwd = ref('')
+
+async function changePassword() {
+    isChangingPwd.value = true
+
+    changePwdFeedback.value = changePwdStatus.value = ''
+
+    if (!user.value.id || !currentPassword.value || !newPassword.value || !reNewPassword.value) {
+        changePwdFeedback.value = 'All inputs are required'
+        changePwdStatus.value = 400
+
+        isChangingPwd.value = false
+        return
+    }
+    if (newPassword.value.length < 6) {
+        changePwdFeedback.value = 'New password length must be greater than 6'
+        changePwdStatus.value = 400
+
+        isChangingPwd.value = false
+        return
+    }
+    if (newPassword.value != reNewPassword.value) {
+        changePwdFeedback.value = 'New password and new password confirmation must match'
+        changePwdStatus.value = 400
+
+        isChangingPwd.value = false
+        return
+    }
+
+    let req = await userStore.changePassword(
+        user.value.id,
+        currentPassword.value,
+        newPassword.value,
+        reNewPassword.value
+    )
+
+    changePwdFeedback.value = req.message
+    changePwdStatus.value = req.status
+    
+    isChangingPwd.value = false
 }
 </script>
 

@@ -126,7 +126,6 @@ async function editAcc(req, res) {
         }
 
     } catch (error) {
-        console.log(error)
         res.status(500).json({ message: 'Something went wrong, try again later' })
     }
 }
@@ -136,12 +135,18 @@ async function changePwd(req, res) {
         let { password, new_password, re_new_password, id } = req.body
         let hashedPwd
 
-        if(!password || !new_password || re_new_password) {
-            res.status(400).json({ message: 'All inputs are required' })
+        console.log(req.body)
+
+        if(!id || !password || !new_password || !re_new_password) {
+            res.status(400).json({ message: 'All inputs are requiredt' })
             return
         }
 
         let user = await Users.findById(id)
+
+        if(!user) {
+            res.status(404).json({ message: 'User not found' })
+        }
 
         let pwdCompare = await bcrypt.compare(password, user.password)
 
@@ -169,7 +174,7 @@ async function changePwd(req, res) {
             .then(() => res.status(200).json({ message: 'Password reset successful' }))
             .catch((e) => res.status(500).json({ message: 'Something went wrong, try again later' }))
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ message: 'Something went wrong, try again later' })
     }
 }
 
@@ -193,7 +198,7 @@ async function getDetails(req, res) {
             userType: details.userType
         })
     } catch (error) {
-        console.log(error)
+        res.status(500).json({ message: 'Something went wrong, try again later' })
     }
 }
 
@@ -254,5 +259,6 @@ export default {
     setupAccDetails,
     getDetails,
     deleteAccount,
-    editAcc
+    editAcc,
+    changePwd
 }

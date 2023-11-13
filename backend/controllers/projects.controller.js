@@ -193,7 +193,7 @@ async function editProject(req, res) {
         let { staffId, id, projectName, lga, location, description, startDate } = req.body
 
         if(!staffId || !id || !projectName || !lga || !location || !description || !startDate) {
-            res.status(403).json({ message: 'All inputs are required' })
+            res.status(400).json({ message: 'All inputs are required' })
             return
         }
 

@@ -34,6 +34,24 @@ export const useUser = defineStore("userStore", {
                 message: res.message,
                 status: req.status
             }
+        },
+
+        async changePassword(id, password, new_password, re_new_password) {
+            let req = await fetch(`http://localhost:3000/api/user/change-password`, {
+                credentials: 'include',
+                method: 'PATCH',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    id, password, new_password, re_new_password
+                })
+            })
+
+            let res = await req.json()
+
+            return {
+                message: res.message,
+                status: req.status
+            }
         }
     }
 })
