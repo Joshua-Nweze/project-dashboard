@@ -253,5 +253,6 @@ export default {
     setupAccCheckPwd,
     setupAccDetails,
     getDetails,
-    deleteAccount
+    deleteAccount,
+    editAcc
 }

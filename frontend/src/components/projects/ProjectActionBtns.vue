@@ -60,7 +60,14 @@
                 <!-- ADD LOADER WHEN UPDATING -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" @click="editProject">Save changes</button>
+                    <button type="button" class="btn btn-primary" @click="editProject">
+                        <div v-if="isEditing">
+                            <SmallLoadingSpinner />
+                        </div>
+                        <div v-else>
+                            Save changes
+                        </div>
+                    </button>
                 </div>
                 </div>
             </div>
@@ -138,8 +145,10 @@ console.log(startDate.value, formattedStartDate.value)
 
 let feedback = ref('')
 let status = ref('')
+let isEditing = ref(false)
 
 async function editProject() {
+    isEditing.value = true
     feedback.value = status.value = ''
 
     let res = await projectsStore.editProject(
@@ -154,6 +163,8 @@ async function editProject() {
     console.log(res.res)
     feedback.value = res.res.message
     status.value = res.status
+
+    isEditing.value = false
 }
 </script>
 
