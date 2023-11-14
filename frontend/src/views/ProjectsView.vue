@@ -10,7 +10,7 @@
 
             <div class="row flex justify-content-center gap-2 px-md-2">
                 <div 
-                v-for="project in projects"
+                v-for="(project, index) in projects"
                 class="card col-sm-12 col-md-3 col-lg-4 col-4 px-0" 
                 style="width: 16rem;"
                 >
@@ -24,6 +24,8 @@
                             <ProjectActionBtns
                             :user="user"
                             :project="project.project"
+                            :editModalId="`editModalId${index}`"
+                            :deleteModalId="`deleteModalId${index}`"
                             />
                         </div>
                         <!--  -->

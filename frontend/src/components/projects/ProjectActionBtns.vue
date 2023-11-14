@@ -3,17 +3,17 @@
         <div class="">
             <RouterLink :to="`/project/${project._id}`" class="p-2 rounded bg-primary-subtle"><i class="bi bi-eye text-primary"></i></RouterLink>
 
-            <span class="p-2 rounded bg-warning-subtle mx-1 hover-pointer" data-bs-toggle="modal" data-bs-target="#editModal">
+            <span class="p-2 rounded bg-warning-subtle mx-1 hover-pointer" data-bs-toggle="modal" :data-bs-target="`#${editModalId}`">
                 <i class="bi bi-pen text-warning"></i>
             </span>
 
-            <span class="p-2 rounded bg-danger-subtle hover-pointer" data-bs-toggle="modal" data-bs-target="#deleteModal">
+            <span class="p-2 rounded bg-danger-subtle hover-pointer" data-bs-toggle="modal" :data-bs-target="`#${deleteModalId}`">
                 <i class="bi bi-trash text-danger"></i>
             </span>
         </div>
 
         <!--Edit Modal -->
-        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal fade" :id="editModalId" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                 <div class="modal-header">
@@ -34,7 +34,7 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="project-name" class="form-label">Proejct name</label>
-                        <input type="text" class="form-control" id="project-name" v-model="name">
+                        <input type="text" class="form-control" id="project-name" v-model="name" >
                     </div>
 
                     <div class="mb-3">
@@ -57,7 +57,7 @@
                         <input type="date" class="form-control" id="start-date" v-model="formattedStartDate">
                     </div>
                 </div>
-                <!-- ADD LOADER WHEN UPDATING -->
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-primary" @click="editProject">
@@ -73,8 +73,8 @@
             </div>
         </div>
 
-        <!--Edit Modal -->
-        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <!--Delete Modal -->
+        <div class="modal fade" :id="deleteModalId" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                 <div class="modal-header">
@@ -87,14 +87,17 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary">Close</button>
                     <button
                      type="button" 
+                     id="delbtn"
+                     data-bs-dismiss="modal"
                      class="btn btn-danger" 
                      @click="async () => {
                         isDeleting = true
                         await projectsStore.deleteProject(project._id, user.id)
                         isDeleting = false
+                        
                      }"
                     >
                         <span v-if="!isDeleting">
@@ -114,14 +117,14 @@ import { useUser } from '@/store/useUser';
 import { useProjects } from '@/store/useProjects';
 import { storeToRefs } from 'pinia';
 import SmallLoadingSpinner from '../SmallLoadingSpinner.vue';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 let userStore = useUser()
 let { user } = storeToRefs(userStore)
 
 let projectsStore = useProjects()
 
-let props = defineProps(['user', 'project'])
+let props = defineProps(['user', 'project', 'editModalId', 'deleteModalId'])
 
 let isDeleting = ref(false)
 
@@ -151,20 +154,22 @@ async function editProject() {
     isEditing.value = true
     feedback.value = status.value = ''
 
-    let res = await projectsStore.editProject(
-        (props.project._id),
-        (user.value.id),
-        (name.value),
-        (lga.value),
-        (location.value),
-        (description.value),
-        (formattedStartDate.value)
-    )
+    let res = await projectsStore.editProject({
+        id: (props.project._id),
+        staffId: (user.value.id),
+        projectName: (name.value),
+        lga: (lga.value),
+        location: (location.value),
+        description: (description.value),
+        startDate: (formattedStartDate.value)
+    })
     console.log(res.res)
     feedback.value = res.res.message
     status.value = res.status
 
     isEditing.value = false
+
+    projectsStore.getStaffProjects(user.value.id)
 }
 </script>
 

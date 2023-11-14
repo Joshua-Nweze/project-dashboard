@@ -212,7 +212,7 @@ async function editProject(req, res) {
         let updateProject = await Project.findOneAndUpdate(
             { _id: id },
             {
-                name: projectName,
+                projectName,
                 lga,
                 description,
                 location,

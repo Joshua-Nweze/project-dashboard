@@ -11,7 +11,6 @@
                                 <div class="col">
                                     <img src="../../assets/imgs/engineer.png" alt="" class="img-fluid">
                                 </div>
-
                                 <div class="col text-white p-3">
                                     <div v-if="user.userType == 'staff'">
                                         <div class="fs-3 fw-bold">{{ user.name }}!</div>
@@ -196,9 +195,10 @@ async function getDataOnLoad() {
         await userStore.getUserDetails(userEmail)
 
         await projectsStore.getStaffProjects(user.value.id)
-        console.log(projects.value)
     }
     isDataReady.value = true
+
+    console.log(projects.value, ongoingProjects.value, finishedProjects.value)
 }
 getDataOnLoad()
 

@@ -13,8 +13,13 @@ export const useProjects = defineStore("project", {
             let res = await req.json()
             
             this.projects = res.message
+
+            if (Array.isArray(this.projects)) {
+                this.projects = (this.projects).reverse()
+            }
+
             if (typeof this.projects == 'array') {
-                this.ongoingProjects = (res.message).filter(project => project.endDate == null)
+                this.ongoingProjects = (this.projects).filter(project => project.endDate == null)
                 this.finishedProjects = (res.message).filter(project => project.endDate != null)
             }
         },
@@ -24,6 +29,11 @@ export const useProjects = defineStore("project", {
             let res = await req.json()
             
             this.projects = res.message
+            
+            if (Array.isArray(this.projects)) {
+                this.projects = (this.projects).reverse()
+            }
+
             if (typeof this.projects == 'array') {
                 this.ongoingProjects = (res.message).filter(project => project.endDate == null)
                 this.finishedProjects = (res.message).filter(project => project.endDate != null)
@@ -52,7 +62,7 @@ export const useProjects = defineStore("project", {
             this.getStaffProjects(staffId)
         },
 
-        async editProject(id, staffId, projectName, lga, location, description, startDate) {
+        async editProject({id, staffId, projectName, lga, location, description, startDate}) {
             let req = await fetch(`http://localhost:3000/api/projects/edit-project`, {
                 method: 'PATCH',
                 headers: {'Content-type': 'application/json'},
