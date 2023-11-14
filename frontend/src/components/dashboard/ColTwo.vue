@@ -1,14 +1,27 @@
 <template>
-    <div v-if="isDataReady" class="row mt-5 d-flex align-items-center">
-        <div class="col-lg-8 col-sm-12 col-md-12 order-md-3 order-lg-1 mt-4 mb-5">
-            <canvas id="myBarChart"></canvas>
+    <div  v-if="isDataReady">
+        <div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="fs-3 text-secondary">Recent projects</div>
+                    <div
+                     v-if="(typeof projects == 'object' || typeof project == 'array')"
+                     v-for="(project, index) in (projects).slice(0, 4)"
+                     :key="project.index"
+                     class="list-group p-1 px-2 my-2 recent-project">
+                        <RouterLink :to="`/project/${project.project._id}`" class="link">
+                            <div class="fs-5 text-muted">{{ project.project.projectName }}</div>
+                            <div class="text-muted" style="font-size: 13px;">{{ (project.project.description).slice(0, 20) }} {{ (project.project.description).length > 20 ? '...' : '' }}</div>
+                        </RouterLink>
+                    </div>
+                    <div v-else>
+                        No recent project
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="col-lg-4 col-sm-12 col-md-6 order-md-2 order-lg-2 mt-4 mb-5">
-            <canvas id="myPieChart"></canvas>
-        </div>
-
-        <div class="col-lg-4 col-12 col-sm-12 col-md-6 mt-4 mb-5 order-lg-3 order-md-2">
+        <div class="mt-3">
             <div class="card">
                 <div class="card-body">
                     <div class="fs-3 text-success">Recent staff</div>
@@ -27,13 +40,9 @@
                 </div>
             </div>
         </div>
-
-        <div class="col-lg-8 col-sm-12 col-md-12 mt-4 mb-5 order-lg-5">
-            <canvas id="myBarChart2"></canvas>
-        </div>
-
     </div>
-    <div v-else>
+    
+    <div v-else class="m-5">
         <LoadingSpinner />
     </div>
 
@@ -41,12 +50,11 @@
 </template>
 
 <script setup>
-import Chart from 'chart.js/auto';
-import { onMounted, ref } from "@vue/runtime-core";
+import { ref } from "@vue/runtime-core";
 import { useProjects } from '@/store/useProjects';
 import { useUser } from '@/store/useUser';
 import { storeToRefs } from 'pinia';
-import { inject, watch } from 'vue';
+import { inject } from 'vue';
 
 import LoadingSpinner from '../LoadingSpinner.vue';
 
@@ -161,9 +169,22 @@ getDataOnLoad()
 </script>
 
 <style scoped>
-    .div-list{
-        padding: 10px 0;
-        border-bottom: 1px solid #c8c9ca;
-    }
+.div-list{
+    padding: 10px 0;
+    border-bottom: 1px solid #c8c9ca;
+}
+
+.updated-text{
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.recent-project{
+    background-color: rgb(215, 215, 215);
+}
+
+.link{
+    text-decoration: none;
+}
 
 </style>

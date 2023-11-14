@@ -144,7 +144,6 @@ day = day.padStart(2, 0)
 
 // Create the formatted date string
 let formattedStartDate = ref(`${year}-${month}-${day}`)
-console.log(startDate.value, formattedStartDate.value)
 
 let feedback = ref('')
 let status = ref('')

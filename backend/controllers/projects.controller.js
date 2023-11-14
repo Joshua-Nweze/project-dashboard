@@ -2,6 +2,7 @@ import Project from "../model/projects.model.js";
 import Users from "../model/user.model.js";
 import multer from "multer";
 import fs from "fs"
+import path from "path";
 
 async function addProject(req, res) {
     try {
