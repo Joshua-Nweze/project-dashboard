@@ -5,14 +5,16 @@
                 <div class="card-body">
                     <div class="fs-3 text-secondary">Recent projects</div>
                     <div
-                     v-if="(typeof projects == 'object' || typeof project == 'array')"
+                     v-if="(typeof projects == 'object' || typeof projects == 'array')"
                      v-for="(project, index) in (projects).slice(0, 4)"
                      :key="project.index"
                      class="list-group p-1 px-2 my-2 recent-project">
+
                         <RouterLink :to="`/project/${project.project._id}`" class="link">
                             <div class="fs-5 text-muted">{{ project.project.projectName }}</div>
                             <div class="text-muted" style="font-size: 13px;">{{ (project.project.description).slice(0, 20) }} {{ (project.project.description).length > 20 ? '...' : '' }}</div>
                         </RouterLink>
+                        
                     </div>
                     <div v-else>
                         No recent project
@@ -21,25 +23,28 @@
             </div>
         </div>
 
-        <div class="mt-3">
+        <div class="mt-3" v-if="user.userType == 'admin'">
             <div class="card">
                 <div class="card-body">
                     <div class="fs-3 text-success">Recent staff</div>
-                    <div class="list-group p-1 px-2 my-2 recent-project bg-success-subtle">
-                        <div>Ekene Okoi</div>
-                        <div class="text-muted" style="font-size: 13px;">Registered on date</div>
+
+                    <div
+                    v-if="(typeof staff == 'object' || typeof staff == 'array')"
+                    v-for="(user, index) in (staff).slice(0, 4)"
+                    >
+                        <div class="list-group p-1 px-2 my-2 recent-project bg-success-subtle">
+                            <div>{{ user.name }}</div>
+                            <div class="text-muted" style="font-size: 13px;">Registered on date</div>
+                        </div>
                     </div>
-                    <div class="list-group p-1 px-2 my-2 recent-project bg-success-subtle">
-                        <div>Ekene Okoi</div>
-                        <div class="text-muted" style="font-size: 13px;">Registered on date</div>
+                    <div v-else>
+                        No recent staff
                     </div>
-                    <div class="list-group p-1 px-2 my-2 recent-project bg-success-subtle">
-                        <div>Ekene Okoi</div>
-                        <div class="text-muted" style="font-size: 13px;">Registered on date</div>
-                    </div>
+
                 </div>
             </div>
         </div>
+        {{ staff }}
     </div>
     
     <div v-else class="m-5">
@@ -53,6 +58,7 @@
 import { ref } from "@vue/runtime-core";
 import { useProjects } from '@/store/useProjects';
 import { useUser } from '@/store/useUser';
+import { useAdmin } from '@/store/useAdmin'
 import { storeToRefs } from 'pinia';
 import { inject } from 'vue';
 
@@ -62,9 +68,11 @@ const userEmail = inject('userEmail')
 
 let userStore = useUser()
 let projectsStore = useProjects()
+let adminStore = useAdmin()
 
 let { user } = storeToRefs(userStore)
 let { projects, ongoingProjects, finishedProjects } = storeToRefs(projectsStore)
+let { staff } = storeToRefs(adminStore)
 
 let isDataReady = ref(false)
 
@@ -73,98 +81,15 @@ async function getDataOnLoad() {
         await userStore.getUserDetails(userEmail)
 
         await projectsStore.getStaffProjects(user.value.id)
-        console.log(projects.value)
-
-        isDataReady.value = true
     }
 
-    if(user.value) {
-        console.log('ok.', finishedProjects.value.length)
-
-    
+    if(user.value.userType == 'admin') {
+        await adminStore.getAllStaff()
     }
 
     isDataReady.value = true
 }
 getDataOnLoad()
-
-// async function getData() {
-//     await userStore.getUserDetails(userEmail)
-//     console.log(user.value.id)
-
-//     await projectsStore.getStaffProjects(user.value.id)
-//     console.log(projects.value)
-// }
-// getData()
-
-
-// onMounted(() => {
-//     const bar = document.getElementById('myBarChart')
-// const pie = document.getElementById('myPieChart')
-// const bar2 = document.getElementById('myBarChart2')
-
-// new Chart(bar, {
-//         type: 'bar',
-//         data: {
-//             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
-//             datasets: [{
-//                 label: '# of projects started per month',
-//                 data: [12, 19, 3, 5, 2, 3],
-//                 borderWidth: 1,
-//                 height: 100
-//             }]
-//         },
-//         options: {
-//         scales: {
-//             y: {
-//                 beginAtZero: true
-//                 }
-//             }
-//         }
-//     });
-
-// new Chart(pie, {
-//     type: 'pie',
-//     data: {
-//         labels: ['Completed projects', 'Ongoing projects'],
-//         datasets: [{
-//             label: 'Projects highlight',
-//             data: [finishedProjects.value.length, ongoingProjects.value.length],
-//             backgroundColor: ['rgba(0, 225, 0, 0.5)', 'rgba(255, 255, 0, 0.5)'],
-//             borderWidth: 1
-//         }]
-//     },
-//     options: {
-//     scales: {
-//         y: {
-//         beginAtZero: true
-//         }
-//     }
-//     }
-// });
-
-// new Chart(bar2, {
-//     type: 'bar',
-//     data: {
-//         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
-//         datasets: [{
-//             label: '# of projects completed per month',
-//             data: [12, 19, 3, 5, 2, 3],
-//             borderWidth: 1,
-//             backgroundColor: 'rgba(0, 225, 0, 0.2)',
-//             borderColor: 'rgba(0, 225, 0)',
-//             height: 100
-//         }]
-//     },
-//     options: {
-//     scales: {
-//         y: {
-//             beginAtZero: true
-//             }
-//         }
-//     }
-// });
-// })
 
 </script>
 

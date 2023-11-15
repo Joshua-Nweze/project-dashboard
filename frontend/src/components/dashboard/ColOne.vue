@@ -15,9 +15,9 @@
                                     <div v-if="user.userType == 'staff'">
                                         <div class="fs-3 fw-bold">{{ user.name }}!</div>
                                         <div>
-                                            <div style="font-size: 14px;" v-if="ongoingProjects.length > 0">You have {{ ongoingProjects.length }} ongoing projects. <br> Keep it going.</div>
+                                            <div style="font-size: 14px;" v-if="(typeof ongoingProjects != 'string' && ongoingProjects.length > 0)">You have {{ ongoingProjects.length }} ongoing projects. <br> Keep it going.</div>
                                             <div v-else>
-                                                <RouterLink to="/add-project">Add a project</RouterLink>
+                                                <RouterLink to="/add-project" class="btn btn-outline-light">Add a project</RouterLink>
                                             </div>
                                         </div>
                                     </div>
@@ -34,9 +34,9 @@
                 </div>
 
                 <!-- ADMIN -->
-                <div v-if="user.userType == 'admin'" class="row  mx-auto">
+                <div v-if="user.userType == 'admin'" class="row mx-auto d-flex">
                     <div class="col-lg-6 col-sm-6 col-md-6 mb-2">
-                        <div class="card bg-primary-subtle">
+                        <div class="card bg-primary-subtle h-100">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-4 card-icon text-primary"><i class="bi bi-cone"></i></div>
@@ -53,7 +53,7 @@
                     </div>
 
                     <div class="col-lg-6 col-sm-6 col-md-6 mb-2">
-                        <div class="card bg-warning-subtle">
+                        <div class="card bg-warning-subtle h-100">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-4 card-icon text-warning"><i class="bi bi-cone"></i></div>
@@ -70,7 +70,7 @@
                     </div>
 
                     <div class="col-lg-6 col-sm-6 col-md-6 mb-2">
-                        <div class="card bg-success-subtle">
+                        <div class="card bg-success-subtle h-100">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-4 card-icon text-success"><i class="bi bi-cone"></i></div>
@@ -81,7 +81,7 @@
                     </div>
 
                     <div class="col-lg-6 col-sm-6 col-md-6 mb-2">
-                        <div class="card bg-dark-subtle">
+                        <div class="card bg-dark-subtle h-100">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-4 card-icon text-dark"><i class="bi bi-person"></i></div>
@@ -93,9 +93,9 @@
                 </div>
 
                 <!-- STAFF -->
-                <div  v-if="user.userType == 'staff'" class="row row-gap-3 mb-3 mx-auto">
+                <div  v-if="user.userType == 'staff'" class="row row-gap-3 mb-3 mx-auto d-flex">
                     <div class="col-12 col-lg-4">
-                        <div class="card bg-primary-subtle">
+                        <div class="card bg-primary-subtle h-100">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-4 card-icon text-primary"><i class="bi bi-cone"></i></div>
@@ -111,7 +111,7 @@
                         </div>
                     </div>
                     <div class="col-12 col-lg-4">
-                        <div class="card bg-warning-subtle">
+                        <div class="card bg-warning-subtle h-100">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-4 card-icon text-warning"><i class="bi bi-cone"></i></div>
@@ -127,7 +127,7 @@
                         </div>
                     </div>
                     <div class="col-12 col-lg-4">
-                        <div class="card bg-success-subtle">
+                        <div class="card bg-success-subtle h-100">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-4 card-icon text-success"><i class="bi bi-cone"></i></div>
@@ -143,9 +143,8 @@
             </div>
         </div>
 
-        
         <div>
-            <canvas id="myGraphChart"></canvas>
+            <canvas id="myBarChart" ref="graph"></canvas>
         </div>
 
         <!-- <div class="col-lg-8 col-sm-12 col-md-12 order-md-3 order-lg-1 mt-4 mb-5">
@@ -157,8 +156,8 @@
         </div>
 
         <div class="col-lg-8 col-sm-12 col-md-12 mt-4 mb-5 order-lg-5">
-            <canvas id="myBarChart2"></canvas>
-        </div> -->
+            <canvas id="myBarChart2"></canvas> -->
+        <!-- </div> -->
 
     </div>
 
@@ -168,12 +167,12 @@
 </template>
 
 <script setup>
-import Chart from 'chart.js/auto';
 import { reactive, ref } from "@vue/reactivity";
 import { storeToRefs } from "pinia";
 import { inject, onMounted } from 'vue'
 import { useUser } from "@/store/useUser";
 import { useProjects } from "@/store/useProjects";
+import Chart from 'chart.js/auto';
 
 
 import LoadingSpinner from "../LoadingSpinner.vue";
@@ -200,83 +199,86 @@ async function getDataOnLoad() {
 }
 getDataOnLoad()
 
-onMounted (() => {
-    const graph = document.getElementById('myGraphChart')
-    new Chart(graph, {
-        type: 'line',
-        data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
-            datasets: [{
-                label: 'File Graph',
-                data: [65, 59, 80, 81, 56, 55, 40],
-                fill: false,
-                borderColor: 'rgb(75, 192, 192)',
-                tension: 0.1
-            }]
-        }
-    })
-        // const bar = document.getElementById('myBarChart')
-        // const pie = document.getElementById('myPieChart')
-        // const bar2 = document.getElementById('myBarChart2')
-        // new Chart(bar, {
-        //     type: 'bar',
-        //     data: {
-        //         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
-        //         datasets: [{
-        //             label: '# of projects started per month',
-        //             data: [12, 19, 3, 5, 2, 3],
-        //             borderWidth: 1,
-        //             height: 100
-        //         }]
-        //     },
-        //     options: {
-        //     scales: {
-        //         y: {
-        //             beginAtZero: true
-        //             }
-        //         }
-        //     }
-        // });
-        // new Chart(pie, {
-        //     type: 'pie',
-        //     data: {
-        //         labels: ['File1', 'File2', 'File3'],
-        //         datasets: [{
-        //             label: 'Projects highlight',
-        //             data: [5, 8, 8],
-        //             borderWidth: 1
-        //         }]
-        //     },
-        //     options: {
-        //     scales: {
-        //         y: {
-        //         beginAtZero: true
-        //         }
-        //     }
-        //     }
-        // });
-        // new Chart(bar2, {
-        //     type: 'bar',
-        //     data: {
-        //         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
-        //         datasets: [{
-        //             label: '# of projects completed per month',
-        //             data: [12, 19, 3, 5, 2, 3, num1.value],
-        //             borderWidth: 1,
-        //             backgroundColor: 'rgba(0, 225, 0, 0.2)',
-        //             borderColor: 'rgba(0, 225, 0)',
-        //             height: 100
-        //         }]
-        //     },
-        //     options: {
-        //     scales: {
-        //         y: {
-        //             beginAtZero: true
-        //             }
-        //         }
-        //     }
-        // });
-})
+// onMounted (() => {
+
+//     const graphy = document.getElementById('myGraphChart')
+//     // const ctx = graph.value.getContext('2d');
+//     // console.log(graph.value)
+//     new Chart(graphy, {
+//         type: 'line',
+//         data: {
+//             labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+//             datasets: [{
+//                 label: 'File Graph',
+//                 data: [65, 59, 80, 81, 56, 55, 40],
+//                 fill: false,
+//                 borderColor: 'rgb(75, 192, 192)',
+//                 tension: 0.1
+//             }]
+//         }
+//     })
+//         const bar = document.getElementById('myBarChart')
+//         // const pie = document.getElementById('myPieChart')
+//         // const bar2 = document.getElementById('myBarChart2')
+//         new Chart(bar, {
+//             type: 'bar',
+//             data: {
+//                 labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+//                 datasets: [{
+//                     label: '# of projects started per month',
+//                     data: [12, 19, 3, 5, 2, 3],
+//                     borderWidth: 1,
+//                     height: 100
+//                 }]
+//             },
+//             options: {
+//             scales: {
+//                 y: {
+//                     beginAtZero: true
+//                     }
+//                 }
+//             }
+//         });
+//         // new Chart(pie, {
+//         //     type: 'pie',
+//         //     data: {
+//         //         labels: ['File1', 'File2', 'File3'],
+//         //         datasets: [{
+//         //             label: 'Projects highlight',
+//         //             data: [5, 8, 8],
+//         //             borderWidth: 1
+//         //         }]
+//         //     },
+//         //     options: {
+//         //     scales: {
+//         //         y: {
+//         //         beginAtZero: true
+//         //         }
+//         //     }
+//         //     }
+//         // });
+//         // new Chart(bar2, {
+//         //     type: 'bar',
+//         //     data: {
+//         //         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec'],
+//         //         datasets: [{
+//         //             label: '# of projects completed per month',
+//         //             data: [12, 19, 3, 5, 2, 3, 2],
+//         //             borderWidth: 1,
+//         //             backgroundColor: 'rgba(0, 225, 0, 0.2)',
+//         //             borderColor: 'rgba(0, 225, 0)',
+//         //             height: 100
+//         //         }]
+//         //     },
+//         //     options: {
+//         //     scales: {
+//         //         y: {
+//         //             beginAtZero: true
+//         //             }
+//         //         }
+//         //     }
+//         // });
+// })
 
 </script>
 

@@ -16,9 +16,7 @@ export const useProjects = defineStore("project", {
 
             if (Array.isArray(this.projects)) {
                 this.projects = (this.projects).reverse()
-            }
 
-            if (typeof this.projects == 'array') {
                 this.ongoingProjects = (this.projects).filter(project => project.endDate == null)
                 this.finishedProjects = (res.message).filter(project => project.endDate != null)
             }
@@ -32,9 +30,7 @@ export const useProjects = defineStore("project", {
             
             if (Array.isArray(this.projects)) {
                 this.projects = (this.projects).reverse()
-            }
 
-            if (typeof this.projects == 'array') {
                 this.ongoingProjects = (res.message).filter(project => project.endDate == null)
                 this.finishedProjects = (res.message).filter(project => project.endDate != null)
             }
