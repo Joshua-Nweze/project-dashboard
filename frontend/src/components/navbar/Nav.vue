@@ -9,12 +9,6 @@
 
                 <div class="d-none d-lg-block justify-content-end nav-links">
 
-                    <router-link to="/notifications" class="router-link">
-                        <span class="position-relative">
-                            <i class="bi bi-bell"></i>
-                        </span>
-                    </router-link>
-
                     <router-link to="/account" class="router-link">
                         <span><i class="bi bi-person-circle"></i></span>
                     </router-link>
@@ -29,7 +23,7 @@
         <!-- Collapsible -->
         <div class="side-nav offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
             <div class="row d-flex justify-content-center pt-4 side-nav-items">
-                <div class="col-9 sidenav-brand">
+                <div class="col-9 sidenav-brand d-flex flex-column" style="height: 90vh">
                     <div class="offcanvas-header p-1" >
                         <div class="offcanvas-title d-flex align-items-center gap-3" id="offcanvasExampleLabel">
                             <span><img src="../../assets/imgs/logo.png" alt="logo" class="logo rounded-circle"></span>
@@ -38,15 +32,10 @@
                         <span data-bs-dismiss="offcanvas" aria-label="Close"><i class="bi bi-x-circle"></i></span>
                     </div>
                     <hr>
-                    <div class="row">
+                    <div class="row items">
                         <div class="col-12 sidebar-items" @click="goTo('/dashboard')"  data-bs-dismiss="offcanvas" aria-label="Close">
                             <span class="col-3"><i class="bi bi-house"></i></span>
                             <span class="col-9 align-items-center">Dashboard</span>
-                        </div>
-                        
-                        <div class="sidebar-items" @click="goTo('/notifications')" data-bs-dismiss="offcanvas" aria-label="Close">
-                            <span class="col-3"><i class="bi bi-bell"></i></span>
-                            <span class="col-9 align-items-center">Notifications</span>
                         </div>
 
                         <div class="col-12 sidebar-items" @click="goTo('/add-project')" data-bs-dismiss="offcanvas" aria-label="Close">
@@ -59,7 +48,7 @@
                             <span class="col-9 align-items-center">Projects</span>
                         </div>
 
-                        <div class="col-12 sidebar-items" @click="goTo('/staff')" data-bs-dismiss="offcanvas" aria-label="Close">
+                        <div v-if="isAdmin" class="col-12 sidebar-items" @click="goTo('/staff')" data-bs-dismiss="offcanvas" aria-label="Close">
                             <span class="col-3"><i class="bi bi-people"></i></span>
                             <span class="col-9 align-items-center">Staff</span>
                         </div>
@@ -67,6 +56,12 @@
                         <div class="col-12 sidebar-items" @click="goTo('/account')" data-bs-dismiss="offcanvas" aria-label="Close">
                             <span class="col-3"><i class="bi bi-person-circle"></i></span>
                             <span class="col-9 align-items-center">Account</span>
+                        </div>
+                    </div>
+
+                    <div class="row mt-auto">
+                        <div class="col-12 btn btn-outline-light">
+                            Logout
                         </div>
                     </div>
                 </div>
@@ -78,12 +73,32 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
+import { useUser } from '@/store/useUser';
+import { storeToRefs } from 'pinia';
+import { inject, ref } from 'vue';
+
+let userStore = useUser()
+const userEmail = inject('userEmail')
+
+let { user } = storeToRefs(userStore)
+
+let isAdmin = ref(false)
 
 let router = useRouter()
 
 function goTo(route) {
     router.push({ path: route })
 }
+
+async function getDataOnLoad() {
+    if (!user.value ) {
+        await userStore.getUserDetails(userEmail)
+    }
+
+    user.value.userType == 'admin' ? isAdmin.value = true : isAdmin.value = false
+console.log(user.value)
+}
+getDataOnLoad()
 </script>
 
 <style scoped>
@@ -103,7 +118,6 @@ h1{
 .p-2{
     padding: 0.2rem!important;
 }
-
 .router-link{
     text-decoration: none;
     color: #212529;

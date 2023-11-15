@@ -25,13 +25,6 @@ const routes = [
         }
       },
       {
-        path: '/notifications',
-        name: 'notifications',
-        component: function () {
-          return import(/* webpackChunkName: "notifications" */ '../views/NotificationsView.vue')
-        }
-      },
-      {
         path: '/projects',
         name: 'projects',
         component: function () {

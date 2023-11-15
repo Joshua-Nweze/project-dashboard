@@ -3,9 +3,7 @@
     <div class="row container-fluid">
       <div class="col-2  d-none d-lg-block">
         <Sidenav class="side-nav"/>
-   
       </div>
-    
 
       <div class="col-lg-10 col-sm-12 col-md-12 main">
           <Nav />
@@ -35,7 +33,6 @@ let decoded = jwtDecode(cookie)
 import { useUser } from "@/store/useUser"
 let userStore = useUser()
 let { user } =  storeToRefs(userStore)
-let a = ref('')
 
 provide('userEmail', decoded.id)
 </script>
@@ -71,9 +68,7 @@ provide('userEmail', decoded.id)
   }
 
   .router-view{
-    /* padding: 30px; */
     position: relative;
-    /* margin-bottom: 30px; */
     flex-grow: 1;
   }
 </style>  
