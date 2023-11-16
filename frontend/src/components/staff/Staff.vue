@@ -20,16 +20,49 @@
                                 </div>
 
                                 <div
-                                v-for="user in staff"
+                                v-for="(user, index) in staff"
+                                :key="index"
                                 class="row my-3 align-items-center">
                                     <div class="col">{{ user.name }}</div>
                                     <div class="col d-none d-sm-block">{{ user.email }}</div>
                                     <div class="col d-none d-md-block">{{ new Date(user.createdAt).toDateString() }}</div>
                                     <div class="col">
-                                        <button type="button" class="btn bg-primary-subtle" data-bs-toggle="modal" data-bs-target="#view"><i class="bi bi-eye text-primary"></i></button>
+
+                                        <button @click="viewUser(user._id)" type="button" class="btn bg-primary-subtle" data-bs-toggle="modal" :data-bs-target="`#view_${index}`">
+                                            <i class="bi bi-eye text-primary"></i>
+                                        </button>
+
                                         <button type="button" class="mx-1 btn bg-warning-subtle" data-bs-toggle="modal" data-bs-target="#block"><i class="bi bi-person-lock text-warning"></i></button>
+                                        
                                         <!-- <button type="button" class="btn bg-danger-subtle"><i class="bi bi-trash text-danger"></i></button> -->
                                     </div>
+
+                                    <!-- View user modal -->
+                                    <div class="modal fade" tabindex="-1"  :id="`view_${index}`" aria-labelledby="view" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div v-if="userDetails">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">{{ userDetails.user.name }}</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div><span class="fw-bold">LGA:</span> {{ userDetails.user.lga }}</div>
+                                                        <div><span class="fw-bold">Phone:</span> {{ userDetails.user.phoneNumber }}</div>
+                                                        <div><span class="fw-bold">Email:</span> {{ userDetails.user.email }}</div>
+                                                        <div><span class="fw-bold">Total number of projects:</span> {{ typeof userDetails.projects == 'object' || typeof userDetails.projects == 'array' ? userDetails.projects.length : 0  }}</div>
+                                                        <div><span class="fw-bold">Projects completed:</span> {{ userDetailsFinisedProjects.length }}</div>
+                                                        <div><span class="fw-bold">Ongoing projects:</span> {{ userDetailsOngoingProjects.length }}</div>
+                                                    </div>
+                                                </div>
+
+                                                <div v-else>
+                                                    <LoadingSpinner />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
 
@@ -58,26 +91,6 @@
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                             <button type="button" class="btn btn-success">Invite</button>
                         </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- View user modal -->
-                <div class="modal fade" tabindex="-1"  id="view" aria-labelledby="view" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Staff Name</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div>LGA</div>
-                                <div>Phone</div>
-                                <div>Email</div>
-                                <div>No of projects</div>
-                                <div>Projects completed</div>
-                                <div>Ongoing projects</div>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -140,6 +153,23 @@ async function getDataOnLoad() {
     isDataReady.value = true
 }
 getDataOnLoad()
+
+let userDetails = ref(null)
+let userDetailsOngoingProjects = ref(0)
+let userDetailsFinisedProjects = ref(0)
+
+async function viewUser(id) {
+    let req = await fetch(`http://localhost:3000/api/admin/view-user-details?id=${id}`)
+    let res = await req.json()
+
+    userDetails.value = res.message
+
+    // check finished and ongoing projects to display in view staff modal
+    if (Array.isArray(res.message.projects)) {
+        userDetailsOngoingProjects.value = (res.message.projects).filter(project => project.endDate == null)
+        userDetailsFinisedProjects.value = (res.message.projects).filter(project => project.endDate != null)
+    }
+}
 </script>
 
 <style scoped>

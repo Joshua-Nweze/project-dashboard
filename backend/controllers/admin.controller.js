@@ -2,6 +2,7 @@ import Admin from "../model/admin.model.js";
 import Users from "../model/user.model.js";
 import Invitee from "../model/invitees.model.js";
 import BlockedUsers from "../model/blockedUsers.model.js"
+import Project from "../model/projects.model.js";
 
 import generatePwd from "../utils/generateRandPwd.js";
 import mailer from "../utils/mailer.js";
@@ -68,7 +69,7 @@ async function getAllStaff(req, res) {
             return
         }
 
-        let users = await Users.find({ userType: { $ne: 'admin'} }).select({ _id: 0, password: 0, updatedAt: 0 })
+        let users = await Users.find({ userType: { $ne: 'admin'} }).select({ password: 0, updatedAt: 0 })
 
         if(!users || users.length < 1) {
             res.status(404).json({ message: 'No staff found' })
@@ -214,6 +215,34 @@ async function createAdminAcc(req, res) {
             res.status(500).json({ message: 'Something went wrong, try again later' })
         }
     } catch (error) {
+        res.status(500).json({ message: 'Something went wrong, try again later' })
+    }
+}
+
+async function viewUser(req, res) {
+    try {
+        let { id } = req.query
+
+        if (!id) {
+            res.status(400).json({ message: 'User\'s Id is required' })
+            return
+        }
+
+        let user = await Users.findById(id).select({ _id: 0, password: 0, updatedAt: 0 })
+
+        let projects = await Project.find({ staff: id })
+
+        let message = {
+            user,
+            projects
+        }
+
+        if (user) {
+            res.status(200).json({ message })
+        } else {
+            res.status(404).json({ message: 'User not found' })
+        }
+    } catch (error) {
         console.log(error)
         res.status(500).json({ message: 'Something went wrong, try again later' })
     }
@@ -225,5 +254,6 @@ export default {
     blockStaff,
     unblockStaff,
     getBlockedStaff,
-    createAdminAcc
+    createAdminAcc,
+    viewUser
 }
