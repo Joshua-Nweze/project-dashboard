@@ -8,13 +8,13 @@
                         <span class="col-9 align-items-center">ESHDC</span>
                     </div>
                     <hr>
-                    <div class="row">
+                    <div class="row" v-if="user">
                         <router-link to="/dashboard" class="col-12 sidebar-items">
                             <span class="col-3"><i class="bi bi-house"></i></span>
                             <span class="col-9 align-items-center">Dashboard</span>
                         </router-link>
 
-                        <router-link to="/add-project" class="col-12 sidebar-items" @click="collapsibleClicked">
+                        <router-link to="/add-project" class="col-12 sidebar-items" @click="collapsibleClicked" v-if="!isAdmin">
                             <span class="col-3"><i class="bi bi-plus"></i></span>
                             <span class="col-9 align-items-center">Add project</span>
                         </router-link>
@@ -58,7 +58,6 @@ async function getDataOnLoad() {
     }
 
     user.value.userType == 'admin' ? isAdmin.value = true : isAdmin.value = false
-console.log(user.value)
 }
 getDataOnLoad()
 </script>

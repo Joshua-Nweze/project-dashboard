@@ -59,12 +59,16 @@ import { useProjects } from '@/store/useProjects';
 import { storeToRefs } from 'pinia';
 import { inject, ref } from 'vue';
 import NothingToShow from '../components/NothingToShow.vue'
+import { useAdmin } from '@/store/useAdmin';
 
 let userStore = useUser()
 let { user } = storeToRefs(userStore)
 
 let projectsStore = useProjects()
 let { projects } = storeToRefs(projectsStore)
+
+let adminStore = useAdmin()
+let { allProjects } = storeToRefs(adminStore)
 
 const userEmail = inject('userEmail')
 let isDataReady = ref(false)
@@ -77,13 +81,12 @@ async function getDataOnLoad() {
     if (user.value.userType == 'staff') {
         await projectsStore.getStaffProjects(user.value.id)
     } else {
-        await projectsStore.getAllProjects()
+        await adminStore.getAllProjects(user.value.id)
+        projects.value = allProjects.value
     }
     
     isDataReady.value = true
 }
-
-
 getDataOnLoad()
 
 </script>

@@ -68,9 +68,7 @@ async function getAllStaff(req, res) {
             return
         }
 
-        let users = await Users.find({ userType: {
-            $ne: 'admin'
-        } })
+        let users = await Users.find({ userType: { $ne: 'admin'} }).select({ _id: 0, password: 0, updatedAt: 0 })
 
         if(!users || users.length < 1) {
             res.status(404).json({ message: 'No staff found' })

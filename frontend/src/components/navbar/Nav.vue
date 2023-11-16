@@ -21,7 +21,7 @@
         </nav>
 
         <!-- Collapsible -->
-        <div class="side-nav offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+        <div v-if="user" class="side-nav offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
             <div class="row d-flex justify-content-center pt-4 side-nav-items">
                 <div class="col-9 sidenav-brand d-flex flex-column" style="height: 90vh">
                     <div class="offcanvas-header p-1" >
@@ -38,7 +38,7 @@
                             <span class="col-9 align-items-center">Dashboard</span>
                         </div>
 
-                        <div class="col-12 sidebar-items" @click="goTo('/add-project')" data-bs-dismiss="offcanvas" aria-label="Close">
+                        <div v-if="!isAdmin" class="col-12 sidebar-items" @click="goTo('/add-project')" data-bs-dismiss="offcanvas" aria-label="Close">
                             <span class="col-3"><i class="bi bi-plus"></i></span>
                             <span class="col-9 align-items-center">Add project</span>
                         </div>

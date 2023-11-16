@@ -80,7 +80,6 @@ async function getAllProjects(req, res) {
         let { id } = req.query
 
         let isAdmin = await Users.findById(id)
-        console.log(isAdmin)
 
         if (isAdmin.userType != 'admin') {
             res.status(401).json({ message: 'You are not allowed to perform this action' })
