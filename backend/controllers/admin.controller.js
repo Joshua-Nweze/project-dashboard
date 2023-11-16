@@ -59,7 +59,7 @@ async function inviteStaff(req, res) {
 
 async function getAllStaff(req, res) {
     try {
-        let { adminId } = req.body
+        let { adminId } = req.query
 
         let isAdmin = await Users.findById(adminId)
 
@@ -68,7 +68,9 @@ async function getAllStaff(req, res) {
             return
         }
 
-        let users = await Users.find()
+        let users = await Users.find({ userType: {
+            $ne: 'admin'
+        } })
 
         if(!users || users.length < 1) {
             res.status(404).json({ message: 'No staff found' })
@@ -77,6 +79,7 @@ async function getAllStaff(req, res) {
 
         res.status(200).json({ message: users })
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: 'Something went wrong, try again later' })
     }
 }
@@ -182,10 +185,47 @@ async function getBlockedStaff (req, res) {
     }
 }
 
+async function createAdminAcc(req, res) {
+    try {
+        let { email, password } = req.body
+
+        if(!email || !password) {
+            res.status(400).json({ message: 'All inputs are required' })
+            return
+        }
+
+        password = await bcrypt.hash(password, 10)
+
+        let adminExist = await Users.findOne({ userType: 'admin' })
+
+        if (adminExist) {
+            res.status(401).json({ message: 'An admin exist already!' })
+            return
+        }
+
+        let admin = new Users({
+            email, 
+            password
+        })
+
+        let createAdmin = await admin.save()
+
+        if (createAdmin) {
+            res.status(200).json({ message: 'Admin created' })
+        } else {
+            res.status(500).json({ message: 'Something went wrong, try again later' })
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: 'Something went wrong, try again later' })
+    }
+}
+
 export default {
     inviteStaff,
     getAllStaff,
     blockStaff,
     unblockStaff,
     getBlockedStaff,
+    createAdminAcc
 }

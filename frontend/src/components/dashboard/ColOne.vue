@@ -44,7 +44,7 @@
                                         <span class="text-body-secondary">Total projects</span> 
                                         <br> 
                                             <span class="fs-1">
-                                                0
+                                                {{ typeof allProjects == 'object' || typeof allProjects == 'array' ? allProjects.length : 0 }}
                                             </span>
                                         </div>
                                 </div>
@@ -61,7 +61,7 @@
                                         <span class="text-body-secondary">Ongoing projects</span> 
                                         <br> 
                                         <span class="fs-1">
-                                            0
+                                            {{ typeof allOngoingProjects == 'object' || typeof allOngoingProjects == 'array' ? allOngoingProjects.length : 0 }}
                                         </span>
                                     </div>
                                 </div>
@@ -74,7 +74,11 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-4 card-icon text-success"><i class="bi bi-cone"></i></div>
-                                    <div class="col-8 card-text text-end"><span class="text-body-secondary">Finished projects</span> <br> <span class="fs-1">0</span></div>
+                                    <div class="col-8 card-text text-end"><span class="text-body-secondary">Finished projects</span> <br> 
+                                        <span class="fs-1">
+                                            {{ typeof allFinishedProjects == 'object' || typeof allFinishedProjects == 'array' ? allFinishedProjects.length : 0 }}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>  
@@ -85,7 +89,7 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-4 card-icon text-dark"><i class="bi bi-person"></i></div>
-                                    <div class="col-8 card-text text-end"><span class="text-body-secondary">Staff   </span> <br> <span class="fs-1">0</span></div>
+                                    <div class="col-8 card-text text-end"><span class="text-body-secondary">Staff   </span> <br> <span class="fs-1">{{ typeof staff == 'object' || typeof staff == 'array' ? staff.length : 0 }}</span></div>
                                 </div>
                             </div>
                         </div>
@@ -134,7 +138,10 @@
                                     <div class="col-8 card-text text-end">
                                         <span class="text-body-secondary">Finished projects</span>
                                         <br> 
-                                        <span class="fs-1">{{ typeof finishedProjects == null ? '0' : finishedProjects.length }}</span></div>
+                                        <span class="fs-1">
+                                            {{ typeof finishedProjects == null ? '0' : finishedProjects.length }}
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -171,6 +178,7 @@ import { reactive, ref } from "@vue/reactivity";
 import { storeToRefs } from "pinia";
 import { inject, onMounted } from 'vue'
 import { useUser } from "@/store/useUser";
+import { useAdmin } from "@/store/useAdmin";
 import { useProjects } from "@/store/useProjects";
 import Chart from 'chart.js/auto';
 
@@ -179,9 +187,11 @@ import LoadingSpinner from "../LoadingSpinner.vue";
 
 let userStore = useUser()
 let projectsStore = useProjects()
+let adminStore = useAdmin()
 
 let { user } = storeToRefs(userStore)
 let { projects, ongoingProjects, finishedProjects } = storeToRefs(projectsStore)
+let { staff, allProjects, allFinishedProjects, allOngoingProjects } = storeToRefs(adminStore)
 
 const userEmail = inject('userEmail')
 
@@ -190,12 +200,18 @@ let isDataReady = ref(false)
 async function getDataOnLoad() {
     if (!user.value ) {
         await userStore.getUserDetails(userEmail)
+    }
 
+    if (user.value.userType == 'staff') {
         await projectsStore.getStaffProjects(user.value.id)
+    } else {
+        await adminStore.getAllProjects(user.value.id)
+    }
+
+    if(user.value.userType == 'admin') {
+        await adminStore.getAllStaff(user.value.id)
     }
     isDataReady.value = true
-
-    console.log(projects.value, ongoingProjects.value, finishedProjects.value)
 }
 getDataOnLoad()
 

@@ -24,7 +24,7 @@ app.use(cors({
 app.use(cookieParser())
 
 app.use('/api/auth', authRoutes)
-app.use('/api/admin', checkAuth, adminRoutes)
+app.use('/api/admin',  adminRoutes)
 app.use('/api/user', checkAuth, userRoutes)
 app.use('/api/projects',  projectsRoutes)
 

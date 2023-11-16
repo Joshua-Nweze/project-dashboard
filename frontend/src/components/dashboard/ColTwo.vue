@@ -44,7 +44,6 @@
                 </div>
             </div>
         </div>
-        {{ staff }}
     </div>
     
     <div v-else class="m-5">
@@ -71,20 +70,26 @@ let projectsStore = useProjects()
 let adminStore = useAdmin()
 
 let { user } = storeToRefs(userStore)
-let { projects, ongoingProjects, finishedProjects } = storeToRefs(projectsStore)
-let { staff } = storeToRefs(adminStore)
+let { projects } = storeToRefs(projectsStore)
+let { staff, allProjects } = storeToRefs(adminStore)
 
 let isDataReady = ref(false)
 
 async function getDataOnLoad() {
     if (!user.value ) {
         await userStore.getUserDetails(userEmail)
+    }
 
+    if (user.value.userType == 'staff') {
         await projectsStore.getStaffProjects(user.value.id)
+    } else {
+        await adminStore.getAllProjects(user.value.id)
+
     }
 
     if(user.value.userType == 'admin') {
-        await adminStore.getAllStaff()
+        await adminStore.getAllStaff(user.value.id)
+        projects.value = allProjects.value
     }
 
     isDataReady.value = true

@@ -22,20 +22,6 @@ export const useProjects = defineStore("project", {
             }
         },
 
-        async getAllProjects() {
-            let req = await fetch(`http://localhost:3000/api/projects/get-all-projects`)
-            let res = await req.json()
-            
-            this.projects = res.message
-            
-            if (Array.isArray(this.projects)) {
-                this.projects = (this.projects).reverse()
-
-                this.ongoingProjects = (res.message).filter(project => project.endDate == null)
-                this.finishedProjects = (res.message).filter(project => project.endDate != null)
-            }
-        },
-
         async getProject(id) {
             let req = await fetch(`http://localhost:3000/api/projects/get?id=${id}`)
             let res = await req.json()

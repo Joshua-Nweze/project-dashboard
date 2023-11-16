@@ -135,8 +135,6 @@ async function changePwd(req, res) {
         let { password, new_password, re_new_password, id } = req.body
         let hashedPwd
 
-        console.log(req.body)
-
         if(!id || !password || !new_password || !re_new_password) {
             res.status(400).json({ message: 'All inputs are requiredt' })
             return
