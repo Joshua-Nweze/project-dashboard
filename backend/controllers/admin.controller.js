@@ -122,6 +122,7 @@ async function blockStaff(req, res) {
                 })
         }
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: 'Something went wrong, try again later' })
     }
 }

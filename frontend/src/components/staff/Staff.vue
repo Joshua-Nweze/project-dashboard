@@ -20,19 +20,19 @@
                                 </div>
 
                                 <div
-                                v-for="(user, index) in staff"
+                                v-for="(staff, index) in staff"
                                 :key="index"
                                 class="row my-3 align-items-center">
-                                    <div class="col">{{ user.name }}</div>
-                                    <div class="col d-none d-sm-block">{{ user.email }}</div>
-                                    <div class="col d-none d-md-block">{{ new Date(user.createdAt).toDateString() }}</div>
+                                    <div class="col">{{ staff.name }}</div>
+                                    <div class="col d-none d-sm-block">{{ staff.email }}</div>
+                                    <div class="col d-none d-md-block">{{ new Date(staff.createdAt).toDateString() }}</div>
                                     <div class="col">
 
-                                        <button @click="viewUser(user._id)" type="button" class="btn bg-primary-subtle" data-bs-toggle="modal" :data-bs-target="`#view_${index}`">
+                                        <button @click="viewUser(staff._id)" type="button" class="btn bg-primary-subtle" data-bs-toggle="modal" :data-bs-target="`#view_${index}`">
                                             <i class="bi bi-eye text-primary"></i>
                                         </button>
 
-                                        <button type="button" class="mx-1 btn bg-warning-subtle" data-bs-toggle="modal" data-bs-target="#block"><i class="bi bi-person-lock text-warning"></i></button>
+                                        <button type="button" class="mx-1 btn bg-warning-subtle" data-bs-toggle="modal" :data-bs-target="`#block_${index}`"><i class="bi bi-person-lock text-warning"></i></button>
                                         
                                         <!-- <button type="button" class="btn bg-danger-subtle"><i class="bi bi-trash text-danger"></i></button> -->
                                     </div>
@@ -63,6 +63,44 @@
                                         </div>
                                     </div>
 
+                                    <!-- Block modal -->
+                                    <div class="modal fade" tabindex="-1"  :id="`block_${index}`" aria-labelledby="block" aria-hidden="true" @click="clearFeedbackAndStatus">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Block {{ staff.name }}</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="clearFeedbackAndStatus"></button>
+                                                </div>
+                                                <div class="modal-body">
+
+                                                    
+                                                    <div v-if="feedback">
+                                                        <div
+                                                        class="alert alert-dismissible fade show"
+                                                        :class="{'alert-success': status == 200 || status == 201, 'alert-danger': status != 200  }"
+                                                        role="alert">
+                                                            {{ feedback }}
+                                                            <button type="button" class="btn-close" @click="clearFeedbackAndStatus"></button>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="alert alert-warning">When a staff is blocked, the staff will not be able to update his project status, and when logged out the staff won't be able to log in.</div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                    <button type="button" class="btn btn-danger" @click="blockUser(staff.email, user.id)">
+                                                        <div v-if="!isBlocking">
+                                                            Block
+                                                        </div>
+                                                        <div v-else>
+                                                            <SmallLoadingSpinner />
+                                                        </div>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
 
@@ -85,7 +123,7 @@
                         </div>
                         <div class="modal-body">
                             <label for="inviteeEmail">Staff email</label>
-                            <input type="text" class="form-control" id="inviteeEmail" placeholder="jogndoe@gmail.com">
+                            <input type="text" class="form-control" id="inviteeEmail" placeholder="johndoe@gmail.com">
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
@@ -95,24 +133,6 @@
                     </div>
                 </div>
 
-                <!-- Block modal -->
-                <div class="modal fade" tabindex="-1"  id="block" aria-labelledby="block" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Block staff name</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="alert alert-warning">When a staff is blocked, the staff will not be able to update his project status, and when logged out the staff won't be able to log in.</div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-danger">Block</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
 
@@ -130,6 +150,7 @@ import { storeToRefs } from 'pinia';
 import { inject, ref } from 'vue';
 import LoadingSpinner from '../LoadingSpinner.vue';
 import NothingToShow from '../NothingToShow.vue';
+import SmallLoadingSpinner from '../SmallLoadingSpinner.vue';
 
 let userStore = useUser()
 let adminStore = useAdmin()
@@ -169,6 +190,34 @@ async function viewUser(id) {
         userDetailsOngoingProjects.value = (res.message.projects).filter(project => project.endDate == null)
         userDetailsFinisedProjects.value = (res.message.projects).filter(project => project.endDate != null)
     }
+}
+
+let isBlocking = ref(false)
+let feedback = ref(null)
+let status = ref(null)
+
+async function blockUser(email, adminId) {
+    isBlocking.value = true
+
+    let req = await fetch('http://localhost:3000/api/admin/block-staff', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            email,
+            adminId
+        })
+    })
+
+    let res = await req.json()
+
+    feedback.value = res.message
+    status.value = req.status
+
+    isBlocking.value = false
+}
+
+function clearFeedbackAndStatus() {
+    feedback.value = status.value = null
 }
 </script>
 

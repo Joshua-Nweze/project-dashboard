@@ -21,7 +21,7 @@
         </nav>
 
         <!-- Collapsible -->
-        <div v-if="user" class="side-nav offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+        <div v-if="dataReady" class="side-nav offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
             <div class="row d-flex justify-content-center pt-4 side-nav-items">
                 <div class="col-9 sidenav-brand d-flex flex-column" style="height: 90vh">
                     <div class="offcanvas-header p-1" >
@@ -90,13 +90,14 @@ function goTo(route) {
     router.push({ path: route })
 }
 
+let dataReady = ref(false)
 async function getDataOnLoad() {
     if (!user.value ) {
         await userStore.getUserDetails(userEmail)
     }
 
     user.value.userType == 'admin' ? isAdmin.value = true : isAdmin.value = false
-console.log(user.value)
+    dataReady.value = true
 }
 getDataOnLoad()
 </script>

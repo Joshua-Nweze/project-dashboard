@@ -8,7 +8,7 @@
                         <span class="col-9 align-items-center">ESHDC</span>
                     </div>
                     <hr>
-                    <div class="row" v-if="user">
+                    <div class="row" v-if="dataReady">
                         <router-link to="/dashboard" class="col-12 sidebar-items">
                             <span class="col-3"><i class="bi bi-house"></i></span>
                             <span class="col-9 align-items-center">Dashboard</span>
@@ -52,12 +52,14 @@ let { user } = storeToRefs(userStore)
 
 let isAdmin = ref(false)
 
+let dataReady = ref(false)
 async function getDataOnLoad() {
     if (!user.value ) {
         await userStore.getUserDetails(userEmail)
     }
 
     user.value.userType == 'admin' ? isAdmin.value = true : isAdmin.value = false
+    dataReady.value = true
 }
 getDataOnLoad()
 </script>
