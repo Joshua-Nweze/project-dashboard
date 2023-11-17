@@ -11,7 +11,11 @@ export const useUser = defineStore("userStore", {
             let res = await req.json()
 
             this.user = res
-            return this.user
+            
+            return {
+                message: res,
+                status: req.status
+            }
         },
 
         async editAccount(name, phoneNumber, lga, id, email) {

@@ -18,7 +18,7 @@
                 <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="editeModalLabel">Edit project</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="clearFeedbackAndStatus"></button>
                 </div>
                 
             <div v-if="feedback" class="p-3">
@@ -27,7 +27,7 @@
                     :class="{'alert-success': status == 200 || status == 201, 'alert-danger': status != 200  }"
                     role="alert">
                     {{ feedback }}
-                    <button type="button" class="btn-close" @click="( feedback = status = '' )"></button>
+                    <button type="button" class="btn-close"  @click="clearFeedbackAndStatus"></button>
                 </div>
             </div>
 
@@ -169,6 +169,14 @@ async function editProject() {
     isEditing.value = false
 
     projectsStore.getStaffProjects(user.value.id)
+
+    setTimeout(() => {
+        clearFeedbackAndStatus()
+    }, 5000)
+}
+
+function clearFeedbackAndStatus() {
+    feedback.value = status.value = ''
 }
 </script>
 

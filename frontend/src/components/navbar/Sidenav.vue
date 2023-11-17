@@ -55,11 +55,13 @@ let isAdmin = ref(false)
 let dataReady = ref(false)
 async function getDataOnLoad() {
     if (!user.value ) {
-        await userStore.getUserDetails(userEmail)
-    }
+        let req = await userStore.getUserDetails(userEmail)
 
-    user.value.userType == 'admin' ? isAdmin.value = true : isAdmin.value = false
-    dataReady.value = true
+        if (req.status == 200) {
+            user.value.userType == 'admin' ? isAdmin.value = true : isAdmin.value = false
+            dataReady.value = true
+        }
+    }
 }
 getDataOnLoad()
 </script>

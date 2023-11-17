@@ -20,6 +20,10 @@ export const useAdmin = defineStore("useAdmin", {
             if (Array.isArray(this.staff)) {
                 this.staff = (this.staff).reverse()
             }
+
+            return {
+                status: req.status
+            }
         },
 
         async getAllProjects(id) {
@@ -33,6 +37,10 @@ export const useAdmin = defineStore("useAdmin", {
 
                 this.allOngoingProjects = (res.message).filter(project => project.endDate == null)
                 this.allFinishedProjects = (res.message).filter(project => project.endDate != null)
+            }
+
+            return {
+                status: req.status
             }
         },
     }

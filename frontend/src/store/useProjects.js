@@ -20,6 +20,10 @@ export const useProjects = defineStore("project", {
                 this.ongoingProjects = (this.projects).filter(project => project.endDate == null)
                 this.finishedProjects = (res.message).filter(project => project.endDate != null)
             }
+
+            return {
+                status: req.status
+            }
         },
 
         async getProject(id) {

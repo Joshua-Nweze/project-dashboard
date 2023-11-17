@@ -76,6 +76,28 @@ async function getAllStaff(req, res) {
             return
         }
 
+        // let isUserBlocked = await BlockedUsers.findOne({ email })
+
+        let message = []
+
+        for (const user of users) {
+            console.log(user);
+          
+            let isUserBlocked = await BlockedUsers.findOne({ email: user.email });
+          
+            if (isUserBlocked) {
+              user.isUserBlocked = true;
+            } else {
+              user.isUserBlocked = false;
+            }
+          
+            // console.log(user);
+            // message.push(user);
+          }
+
+        //   console.log('mes', message)
+          
+
         res.status(200).json({ message: users })
     } catch (error) {
         console.log(error)
@@ -185,6 +207,28 @@ async function getBlockedStaff (req, res) {
     }
 }
 
+async function isUserBlocked(req, res) {
+    try {
+        let { email } = req.query
+
+        if (!email) {
+            res.status(400).json({ message: 'User email is required' })
+            return
+        }
+
+        let isUserBlocked = await BlockedUsers.findOne({ email })
+
+        if (isUserBlocked) {
+            res.status(200).json({ message: true })
+        } else {
+            res.status(200).json({ message: false })
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: 'Something went wrong, try again later' })
+    }
+}
+
 async function createAdminAcc(req, res) {
     try {
         let { email, password } = req.body
@@ -256,5 +300,6 @@ export default {
     unblockStaff,
     getBlockedStaff,
     createAdminAcc,
-    viewUser
+    viewUser,
+    isUserBlocked
 }
