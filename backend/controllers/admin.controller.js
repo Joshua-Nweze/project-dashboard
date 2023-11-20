@@ -81,24 +81,22 @@ async function getAllStaff(req, res) {
         let message = []
 
         for (const user of users) {
-            console.log(user);
+            let updated
+            // console.log(user);
           
             let isUserBlocked = await BlockedUsers.findOne({ email: user.email });
           
             if (isUserBlocked) {
-              user.isUserBlocked = true;
+                updated = {user, isUserBlocked: true};
             } else {
-              user.isUserBlocked = false;
+                updated = {user, isUserBlocked: false};
             }
           
-            // console.log(user);
-            // message.push(user);
+            message.push(updated);
           }
-
-        //   console.log('mes', message)
           
 
-        res.status(200).json({ message: users })
+        res.status(200).json({ message })
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: 'Something went wrong, try again later' })

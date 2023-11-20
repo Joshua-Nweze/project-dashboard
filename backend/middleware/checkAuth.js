@@ -12,6 +12,6 @@ export default function checkAuth(req, res, next) {
             }
         })
     } else {
-        return res.status(401).json({ message: "Authentification Failed 1" });
+        return res.status(401).json({ message: "Authentification Failed" });
     }
 }

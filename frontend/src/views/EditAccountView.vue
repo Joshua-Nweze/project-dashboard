@@ -42,7 +42,6 @@
                         </div>
                     </div>
                     <div class="d-flex justify-content-end gap-2 mt-3">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" @click="editAccount">
                             <div>
                                 <div v-if="!isEditing">

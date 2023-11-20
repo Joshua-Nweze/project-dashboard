@@ -16,59 +16,59 @@
         <div class="modal fade" :id="editModalId" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="editeModalLabel">Edit project</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="clearFeedbackAndStatus"></button>
-                </div>
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="editeModalLabel">Edit project</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="clearFeedbackAndStatus"></button>
+                    </div>
                 
-            <div v-if="feedback" class="p-3">
-                <div
-                    class="alert alert-dismissible fade show"
-                    :class="{'alert-success': status == 200 || status == 201, 'alert-danger': status != 200  }"
-                    role="alert">
-                    {{ feedback }}
-                    <button type="button" class="btn-close"  @click="clearFeedbackAndStatus"></button>
-                </div>
-            </div>
-
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="project-name" class="form-label">Proejct name</label>
-                        <input type="text" class="form-control" id="project-name" v-model="name" >
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="lga" class="form-label">LGA</label>
-                        <input type="text" class="form-control" id="lga" v-model="lga">
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="location" class="form-label">Location</label>
-                        <input type="text" class="form-control" id="location" v-model="location">
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="desc" class="form-label">Description</label>
-                        <textarea class="form-control" id="desc" v-model="description"></textarea>
-                    </div>
-                    
-                    <div class="mb-3">
-                        <label for="start-date" class="form-label">Start date</label>
-                        <input type="date" class="form-control" id="start-date" v-model="formattedStartDate">
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" @click="editProject">
-                        <div v-if="isEditing">
-                            <SmallLoadingSpinner />
+                    <div v-if="feedback" class="p-3">
+                        <div
+                            class="alert alert-dismissible fade show"
+                            :class="{'alert-success': status == 200 || status == 201, 'alert-danger': status != 200  }"
+                            role="alert">
+                            {{ feedback }}
+                            <button type="button" class="btn-close"  @click="clearFeedbackAndStatus"></button>
                         </div>
-                        <div v-else>
-                            Save changes
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="project-name" class="form-label">Proejct name</label>
+                            <input type="text" class="form-control" id="project-name" v-model="name" >
                         </div>
-                    </button>
-                </div>
+
+                        <div class="mb-3">
+                            <label for="lga" class="form-label">LGA</label>
+                            <input type="text" class="form-control" id="lga" v-model="lga">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="location" class="form-label">Location</label>
+                            <input type="text" class="form-control" id="location" v-model="location">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="desc" class="form-label">Description</label>
+                            <textarea class="form-control" id="desc" v-model="description"></textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="start-date" class="form-label">Start date</label>
+                            <input type="date" class="form-control" id="start-date" v-model="formattedStartDate">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" @click="editProject">
+                            <div v-if="isEditing">
+                                <SmallLoadingSpinner />
+                            </div>
+                            <div v-else>
+                                Save changes
+                            </div>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

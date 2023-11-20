@@ -15,7 +15,7 @@
                         <div class="d-flex justify-content-end" v-if="user.userType == 'staff'">
                             <RouterLink to="/edit-account" class="btn btn-outline-secondary">Edit</RouterLink>
                         </div>
-                        <div class="d-flex justify-content-end" v-else>
+                        <div class="d-flex justify-content-end mb-2" v-else>
                             <div class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#changePwdModal">Change password</div>
                         </div>
                     </div>

@@ -24,19 +24,27 @@
                                     </div>
 
                                     <div
-                                    v-for="(staff, index) in staff"
+                                    v-for="(staffDetail, index) in staff"
                                     :key="index"
                                     class="row my-3 align-items-center">
-                                        <div class="col">{{ staff.name }}</div>
-                                        <div class="col d-none d-sm-block">{{ staff.email }}</div>
-                                        <div class="col d-none d-md-block">{{ new Date(staff.createdAt).toDateString() }}</div>
+                                        <div class="col">{{ staffDetail.user.name }}</div>
+                                        <div class="col d-none d-sm-block text-break">{{  staffDetail.user.email }}</div>
+                                        <div class="col d-none d-md-block">{{ new Date(staffDetail.user.createdAt).toDateString() }}</div>
                                         <div class="col">
 
-                                            <button @click="viewUser(staff._id)" type="button" class="btn bg-primary-subtle" data-bs-toggle="modal" :data-bs-target="`#view_${index}`">
+                                            <button @click="viewUser(staffDetail.user._id)" type="button" class="btn bg-primary-subtle" data-bs-toggle="modal" :data-bs-target="`#view_${index}`">
                                                 <i class="bi bi-eye text-primary"></i>
                                             </button>
 
-                                            <button v-if="checkIfUserIsBlocked(staff.email)" type="button" class="mx-1 btn bg-warning-subtle" data-bs-toggle="modal" :data-bs-target="`#block_${index}`"><i class="bi bi-person-lock text-warning"></i></button>
+                                            <span>
+                                                <button v-if="!staffDetail.isUserBlocked" type="button" class="mx-1 btn bg-warning-subtle" data-bs-toggle="modal" :data-bs-target="`#block_${index}`">
+                                                    <i class="bi bi-person-lock text-warning"></i>
+                                                </button>
+                                                
+                                                <button v-if="staffDetail.isUserBlocked" type="button" class="mx-1 btn bg-success-subtle" data-bs-toggle="modal" :data-bs-target="`#unblock_${index}`">
+                                                    <i class="bi bi-person-check text-success"></i>
+                                                </button>
+                                            </span>
                                             
                                             <!-- <button type="button" class="btn bg-danger-subtle"><i class="bi bi-trash text-danger"></i></button> -->
                                         </div>
@@ -72,7 +80,7 @@
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title">Block {{ staff.name }}</h5>
+                                                        <h5 class="modal-title">Block {{ staffDetail.user.name }}</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="clearFeedbackAndStatus"></button>
                                                     </div>
                                                     <div class="modal-body">
@@ -87,13 +95,50 @@
                                                             </div>
                                                         </div>
 
-                                                        <div class="alert alert-warning">When a staff is blocked, the staff will not be able to update his project status, and when logged out the staff won't be able to log in.</div>
+                                                        <div class="alert alert-warning">When a staff is blocked, the staff can no longer log in when logged out.</div>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                        <button type="button" class="btn btn-danger" @click="blockUser(staff.email, user.id)">
+                                                        <button type="button" class="btn btn-danger" @click="blockUser(staffDetail.user.email, user.id)">
                                                             <div v-if="!isBlocking">
                                                                 Block
+                                                            </div>
+                                                            <div v-else>
+                                                                <SmallLoadingSpinner />
+                                                            </div>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Unblock modal -->
+                                        <div class="modal fade" tabindex="-1"  :id="`unblock_${index}`" aria-labelledby="block" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Unblock {{ staffDetail.user.name }}</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="clearFeedbackAndStatus"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+
+                                                        <div v-if="feedback">
+                                                            <div
+                                                            class="alert alert-dismissible fade show"
+                                                            :class="{'alert-success': status == 200 || status == 201, 'alert-danger': status != 200  }"
+                                                            role="alert">
+                                                                {{ feedback }}
+                                                                <button type="button" class="btn-close" @click="clearFeedbackAndStatus"></button>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="alert alert-warning">When a staff is unblocked,the staff can log in whenever.</div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                        <button type="button" class="btn btn-success" @click="unblockUser(staffDetail.user.email, user.id)">
+                                                            <div v-if="!isUnblocking">
+                                                                Unblock
                                                             </div>
                                                             <div v-else>
                                                                 <SmallLoadingSpinner />
@@ -235,20 +280,42 @@ async function blockUser(email, adminId) {
     setTimeout(() => {
         clearFeedbackAndStatus()
     }, 5000)
+
+    await adminStore.getAllStaff(user.value.id)
+}
+
+let isUnblocking = ref(false)
+
+async function unblockUser(email, adminId) {
+    isUnblocking.value = true
+
+    let req = await fetch('http://localhost:3000/api/admin/unblock-staff', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+            email,
+            adminId
+        })
+    })
+
+    let res = await req.json()
+
+    feedback.value = res.message
+    status.value = req.status
+
+    isUnblocking.value = false
+
+    setTimeout(() => {
+        clearFeedbackAndStatus()
+    }, 5000)
+
+    await adminStore.getAllStaff(user.value.id)
 }
 
 function clearFeedbackAndStatus() {
     feedback.value = status.value = null
 }
 
-let isUserBlocked = ref(null)
-
-async function checkIfUserIsBlocked(email) {
-    let req = await fetch(`http://localhost:3000/api/admin/is-user-blocked?email=${email}`)
-    let res = await req.json()
-
-    return res.message
-}
 </script>
 
 <style scoped>

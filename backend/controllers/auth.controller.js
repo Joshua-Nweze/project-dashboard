@@ -29,7 +29,7 @@ async function login(req, res) {
         let isBlocked = await BlockedUsers.findOne({ email })
 
         if (isBlocked) {
-            res.status(403).json({ message: 'Your account has been temporarily suspended, contact the admin at admin@gmail.com to rectify this' })
+            res.status(403).json({ message: 'Your account has been temporarily blocked, contact the admin at admin@gmail.com to rectify this' })
             return
         }
 
