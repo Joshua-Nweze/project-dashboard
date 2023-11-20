@@ -4,7 +4,8 @@ export const useProjects = defineStore("project", {
     state: () => ({
         projects: [],
         ongoingProjects: [],
-        finishedProjects: []
+        finishedProjects: [],
+        project: null
     }),
 
     actions: {
@@ -31,7 +32,9 @@ export const useProjects = defineStore("project", {
             let req = await fetch(`http://localhost:3000/api/projects/get?id=${id}`)
             let res = await req.json()
 
-            return { res: res, status: (req.status) }
+            this.project = res
+
+            return { status: (req.status) }
         },
 
         async deleteProject(id, staffId) {
@@ -80,8 +83,8 @@ export const useProjects = defineStore("project", {
         
             let res = await req.json()
 
-            // updating projects
-            this.getStaffProjects(staffId)
+            // updating project
+            this.getProject(projectId)
 
             return { res: res, status: (req.status) }
         },
@@ -98,8 +101,8 @@ export const useProjects = defineStore("project", {
         
             let res = await req.json()
 
-            // updating projects
-            this.getStaffProjects(staffId)
+            // updating project
+            this.getProject(projectId)
 
             return { res: res, status: (req.status) }
         }

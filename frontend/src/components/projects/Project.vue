@@ -65,6 +65,7 @@
                 <LoadingSpinner />
             </div>
 
+            <!-- update modal -->
             <div v-if="status == 200" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog">
@@ -72,14 +73,14 @@
 
                         <div class="modal-header">
                             <h1 class="modal-title fs-5" id="exampleModalLabel">Project update</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button @click="clearFeedbackAndStatus" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
 
                         <div class="modal-body">
 
-                            <div>
+                            <div v-if="feedback">
                                 <div class="alert alert-dismissible fade show"
-                                    :class="{ 'alert-success': status == 200 || status == 201, 'alert-danger': status != 200 }"
+                                    :class="{ 'alert-success': feedbackStatus == 200 || feedbackStatus == 201, 'alert-danger': feedbackStatus != 200 }"
                                     role="alert">
                                     {{ feedback }}
                                     <button type="button" class="btn-close" @click="clearFeedbackAndStatus"></button>
@@ -113,15 +114,26 @@
                         </div>
                         <div class="modal-footer">
                             <span>
-                                <button v-if="!project.project.endDate" type="button" class="btn btn-outline-success"
-                                    data-bs-dismiss="modal"
-                                    @click="markProjectAsFinished(project.project._id, user.id)">Mark as finised</button>
+                                <span v-if="!project.project.endDate">
+                                    <button v-if="!isUpdatingProjectStatus" type="button" class="btn btn-outline-success"
+                                        @click="markProjectAsFinished(project.project._id, user.id)">Mark as
+                                        finised</button>
 
+                                    <span v-else class="px-3">
+                                        <SmallLoadingSpinner />
+                                    </span>
+                                </span>
 
-                                <button v-if="project.project.endDate" type="button" class="btn btn-outline-secondary"
-                                    data-bs-dismiss="modal"
-                                    @click="unmarkProjectAsFinished(project.project._id, user.id)">Mark as
-                                    unfinised</button>
+                                <span v-if="project.project.endDate">
+                                    <button  v-if="!isUpdatingProjectStatus" type="button" class="btn btn-outline-secondary"
+                                        @click="unmarkProjectAsFinished(project.project._id, user.id)">Mark as
+                                        unfinised</button>
+
+                                        <span v-else class="px-3">
+                                            <SmallLoadingSpinner />
+                                        </span>
+                                </span>
+
                             </span>
 
                             <button type="button" class="btn btn-success">Update</button>
@@ -147,16 +159,17 @@ import { useProjects } from '@/store/useProjects';
 import LoadingSpinner from '../LoadingSpinner.vue';
 import { useUser } from '@/store/useUser';
 import { storeToRefs } from 'pinia';
+import SmallLoadingSpinner from '../SmallLoadingSpinner.vue';
 
 let projectsStore = useProjects()
 let userStore = useUser()
 
 let { user } = storeToRefs(userStore)
+let { project } = storeToRefs(projectsStore)
 
 let plugins = ref([lgThumbnail, lgZoom])
 
 let route = useRoute()
-let project = ref(null)
 
 let userEmail = inject('userEmail')
 
@@ -169,27 +182,51 @@ async function getDataOnLoad() {
     }
 
     let req = await projectsStore.getProject(route.params.id)
+    console.log(project.value)
 
-    project.value = req.res
     status.value = req.status
     isDataReady.value = true
 }
 getDataOnLoad()
 
+let feedback = ref(null)
+let feedbackStatus = ref(null)
+let isUpdatingProjectStatus = ref(false)
 
 async function markProjectAsFinished(projectId, staffId) {
+    isUpdatingProjectStatus.value = true
+
     let req = await projectsStore.markProjectAsFinished(projectId, staffId)
 
-    console.log(req)
+    feedback.value = req.res.message
+    feedbackStatus.value = req.status
+
+    isUpdatingProjectStatus.value = false
+
+    setTimeout(() => {
+        clearFeedbackAndStatus()
+    }, 5000)
 }
 
 async function unmarkProjectAsFinished(projectId, staffId) {
+    isUpdatingProjectStatus.value = true
+
     let req = await projectsStore.unmarkProjectAsFinished(projectId, staffId)
 
-    console.log(req)
+    feedback.value = req.res.message
+    feedbackStatus.value = req.status
+
+
+    isUpdatingProjectStatus.value = false
+
+    setTimeout(() => {
+        clearFeedbackAndStatus()
+    }, 5000)
 }
 
-
+function clearFeedbackAndStatus() {
+    feedback.value = feedbackStatus.value = null
+}
 </script>
 
 <style scoped>
