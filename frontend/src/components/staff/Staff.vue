@@ -27,7 +27,7 @@
                                     v-for="(staffDetail, index) in staff"
                                     :key="index"
                                     class="row my-3 align-items-center">
-                                        <div class="col">{{ staffDetail.user.name }}</div>
+                                        <div class="col text-break">{{ staffDetail.user.name }}</div>
                                         <div class="col d-none d-sm-block text-break">{{  staffDetail.user.email }}</div>
                                         <div class="col d-none d-md-block">{{ new Date(staffDetail.user.createdAt).toDateString() }}</div>
                                         <div class="col">
@@ -69,7 +69,7 @@
                                                     </div>
 
                                                     <div v-else>
-                                                        <LoadingSpinner />
+                                                        <LoadingSpinner class="m-5 p-5"/>
                                                     </div>
                                                 </div>
                                             </div>

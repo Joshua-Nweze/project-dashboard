@@ -275,6 +275,49 @@ async function markProjectAsFinished(req, res) {
     }
 }
 
+async function unmarkProjectAsFinished(req, res) {
+    try {
+        let { project, staff } = req.body /* project id */
+
+        if (!project) {
+            res.status(400).json({ message: 'Project not found' })
+            return
+        }
+        if (!staff) {
+            res.status(400).json({ message: 'User not found' })
+            return
+        }
+
+        let user = await Users.findById(staff)
+
+        if(!user) {
+            res.status(404).json({ message: "User not found" })
+            return
+        }
+
+        let projectDetails = await Project.findById(project)
+
+        if(staff != projectDetails.staff) {
+            res.status(401).json({ message: 'You are not allowed to perform this action' })
+            return
+        }
+        
+        let updateProject = await Project.findOneAndUpdate(
+            { _id: project },
+            { endDate: null }
+        )
+
+        if (updateProject) {
+            res.status(200).json({ message: 'Project unmarked as finished' })
+        } else {
+            res.status(500).json({ message: 'Something went wrong, try again later' })
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: 'Something went wrong, try again later' })
+    }
+}
+
 // NOTE: Not working
 async function addProjectMilestone(req, res) {
     try {
@@ -339,5 +382,6 @@ export default {
     editProject,
     getAllProjects,
     markProjectAsFinished,
+    unmarkProjectAsFinished,
     addProjectMilestone
 }

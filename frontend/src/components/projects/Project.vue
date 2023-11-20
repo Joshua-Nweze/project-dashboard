@@ -1,50 +1,132 @@
 <template>
-    <div class="container">
-        <div v-if="project" class="row">
-            <div class="col-md-8 offset-md-2">
-                <div class="row">
-                    <div class="col-8 fs-3">{{ (project.project.projectName).toUpperCase() }}</div>
-                    <div class="col-4 fs-3 d-flex justify-content-end"  v-if="user.userType == 'staff'">
-                        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Update</button>
-                    </div>
-                </div>
-
-                <div class="fs-5 mt-3" v-if="user.userType == 'admin'">Ekene Okoi</div>
-                
-                <div class="text-muted my-3">{{ (project.project.description) }}</div>
-                <div class="text-muted">
-                    Started on : {{ new Date(project.project.startDate).toDateString() }}. 
-                    Ended on: {{ (project.project.endDate) == null ? 'Project is ongoing' : new Date(project.project.endDate).toDateString() }}
-                </div>
-
-                <div v-if="(project.project.milestone).length > 0" class="stepper d-flex flex-column mt-4 ml-2">
-
-                    <div class="d-flex mb-1 mt-3">
-                        <div class="d-flex flex-column pr-4 align-items-center">
-                            <div class="rounded-circle py-2 px-2 bg-primary text-white mb-1"></div>
-                            <div class="line h-100"></div>
-                        </div>
-                        <div class="ms-3">
-                            <div class="text-dark timeline-header">Create your application respository</div>
-                            <span class="text-muted date">Date</span>
-                            <p class="lead text-muted timeline-about">Choose your website name & create repository</p>
-
-                            <Lightgallery
-                                :settings="{ speed: 500, plugins: plugins }"
-                                :onInit="onInit"
-                                :onBeforeSlide="onBeforeSlide"
-                                class="row"
-                            >
-                                <a href="https://image.freepik.com/free-photo/stylish-young-woman-with-bags-taking-selfie_23-2147962203.jpg" class="col-lg-3 col-md-4 col-6 col-sm my-1" data-fancybox-group="light"> 
-                                    <img class="img-fluid" src="https://image.freepik.com/free-photo/stylish-young-woman-with-bags-taking-selfie_23-2147962203.jpg" alt="">
-                                </a>
-                                <a href="https://image.freepik.com/free-photo/pretty-girl-near-car_1157-16962.jpg" class="col-lg-3 col-md-4 col-6 col-sm my-1" data-fancybox-group="light"> 
-                                    <img class="img-fluid" src="https://image.freepik.com/free-photo/pretty-girl-near-car_1157-16962.jpg" alt="">
-                                </a>
-                            </Lightgallery>
+    <div>
+        <div class="container" v-if="isDataReady">
+            <div v-if="status" class="row">
+                <div v-if="status == 200" class="col-md-8 offset-md-2">
+                    <div class="row">
+                        <div class="col-8 fs-3">{{ (project.project.projectName).toUpperCase() }}</div>
+                        <div class="col-4 fs-3 d-flex justify-content-end" v-if="user.userType == 'staff'">
+                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal">Update</button>
                         </div>
                     </div>
 
+                    <div class="fs-5 mt-3" v-if="user.userType == 'admin'">Ekene Okoi</div>
+
+                    <div class="text-muted my-3">{{ (project.project.description) }}</div>
+                    <div class="text-muted">
+                        Started on : {{ new Date(project.project.startDate).toDateString() }}.
+                        Ended on: {{ (project.project.endDate) == null ? 'Project is ongoing' : new
+                            Date(project.project.endDate).toDateString() }}
+                    </div>
+
+                    <div v-if="(project.project.milestone).length > 0" class="stepper d-flex flex-column mt-4 ml-2">
+                        <!--  v-if="(project.project.milestone).length > 0" -->
+                        <div class="d-flex mb-1 mt-3">
+                            <div class="d-flex flex-column pr-4 align-items-center">
+                                <div class="rounded-circle py-2 px-2 bg-primary text-white mb-1"></div>
+                                <div class="line h-100"></div>
+                            </div>
+                            <div class="ms-3">
+                                <div class="text-dark timeline-header">Create your application respository</div>
+                                <span class="text-muted date">Date</span>
+                                <p class="lead text-muted timeline-about">Choose your website name & create repository</p>
+
+                                <Lightgallery :settings="{ speed: 500, plugins: plugins }" :onInit="onInit"
+                                    :onBeforeSlide="onBeforeSlide" class="row">
+                                    <a href="https://image.freepik.com/free-photo/stylish-young-woman-with-bags-taking-selfie_23-2147962203.jpg"
+                                        class="col-lg-3 col-md-4 col-6 col-sm my-1" data-fancybox-group="light">
+                                        <img class="img-fluid"
+                                            src="https://image.freepik.com/free-photo/stylish-young-woman-with-bags-taking-selfie_23-2147962203.jpg"
+                                            alt="">
+                                    </a>
+                                    <a href="https://image.freepik.com/free-photo/pretty-girl-near-car_1157-16962.jpg"
+                                        class="col-lg-3 col-md-4 col-6 col-sm my-1" data-fancybox-group="light">
+                                        <img class="img-fluid"
+                                            src="https://image.freepik.com/free-photo/pretty-girl-near-car_1157-16962.jpg"
+                                            alt="">
+                                    </a>
+                                </Lightgallery>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div v-else>
+                    <div class="text-center fs-3 mt-5">
+                        {{ project.message }}. <br>
+                        <div class="fs-5 text-muted">Are you sure the link is correct? </div>
+                    </div>
+                </div>
+            </div>
+
+            <div v-else>
+                <LoadingSpinner />
+            </div>
+
+            <div v-if="status == 200" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Project update</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body">
+
+                            <div>
+                                <div class="alert alert-dismissible fade show"
+                                    :class="{ 'alert-success': status == 200 || status == 201, 'alert-danger': status != 200 }"
+                                    role="alert">
+                                    {{ feedback }}
+                                    <button type="button" class="btn-close" @click="clearFeedbackAndStatus"></button>
+                                </div>
+                            </div>
+
+                            <label class="" for="milestone">Milestone</label>
+                            <input type="text" class="form-control" id="milestone">
+
+                            <label class="mt-4" for="description">Milestone description</label>
+                            <textarea type="text" class="form-control" id="description"></textarea>
+
+                            <div class="mt-4">Attach document ( image(s) )</div>
+                            <div class="attach-doc-div text-center " ref="dragArea" @dragover="dragOver"
+                                @dragleave="dragLeave" @drop="dragDrop">
+                                <div ref="fileFeedback"></div>
+                                <span><i class="bi bi-upload fs-1 text-secondary"></i> <br> Drag and drop here</span> <br>
+                                <span>or</span> <br>
+                                <div>
+                                    Select file <br>
+
+                                    <div class="d-flex justify-content-center mt-3">
+                                        <div class="input-group mb-3 " style="width: 80%">
+                                            <input type="file" accept=".png, .jpg, .jpeg, .pdf" @click="inputFile"
+                                                class="form-control" ref="fileFromInput" multiple>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <span>
+                                <button v-if="!project.project.endDate" type="button" class="btn btn-outline-success"
+                                    data-bs-dismiss="modal"
+                                    @click="markProjectAsFinished(project.project._id, user.id)">Mark as finised</button>
+
+
+                                <button v-if="project.project.endDate" type="button" class="btn btn-outline-secondary"
+                                    data-bs-dismiss="modal"
+                                    @click="unmarkProjectAsFinished(project.project._id, user.id)">Mark as
+                                    unfinised</button>
+                            </span>
+
+                            <button type="button" class="btn btn-success">Update</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -53,52 +135,6 @@
             <LoadingSpinner />
         </div>
     </div>
-
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Project update</h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <div class="modal-body">
-
-                <label class="" for="milestone">Milestone</label>
-                <input type="text" class="form-control" id="milestone">
-
-                <label class="mt-4" for="description">Milestone description</label>
-                <textarea type="text" class="form-control" id="description"></textarea>
-
-                <div class="mt-4">Attach document ( image(s) )</div>
-                <div class="attach-doc-div text-center " ref="dragArea" @dragover="dragOver" @dragleave="dragLeave" @drop="dragDrop">
-                    <div ref="fileFeedback"></div>
-                    <span><i class="bi bi-upload fs-1 text-secondary"></i> <br> Drag and drop here</span> <br>
-                    <span>or</span> <br>
-                    <div>
-                        Select file <br>
-
-                        <div class="d-flex justify-content-center mt-3">
-                            <div class="input-group mb-3 " style="width: 80%">
-                                <input type="file" accept=".png, .jpg, .jpeg, .pdf" @click="inputFile" class="form-control" ref="fileFromInput" multiple>
-                            </div>
-                        </div>
-
-                        <b ref="fileErrMsg"></b>
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-success" data-bs-dismiss="modal">Mark as finised</button>
-                <button type="button" class="btn btn-success">Update</button>
-            </div>
-            </div>
-        </div>
-    </div>
-
-
 </template>
 
 <script setup>
@@ -124,14 +160,35 @@ let project = ref(null)
 
 let userEmail = inject('userEmail')
 
-async function getDataOnLoad () {
-    if(!user.value) {
+let isDataReady = ref(false)
+let status = ref(null)
+
+async function getDataOnLoad() {
+    if (!user.value) {
         await userStore.getUserDetails(userEmail)
     }
 
-    project.value = await projectsStore.getProject(route.params.id)
+    let req = await projectsStore.getProject(route.params.id)
+
+    project.value = req.res
+    status.value = req.status
+    isDataReady.value = true
 }
 getDataOnLoad()
+
+
+async function markProjectAsFinished(projectId, staffId) {
+    let req = await projectsStore.markProjectAsFinished(projectId, staffId)
+
+    console.log(req)
+}
+
+async function unmarkProjectAsFinished(projectId, staffId) {
+    let req = await projectsStore.unmarkProjectAsFinished(projectId, staffId)
+
+    console.log(req)
+}
+
 
 </script>
 
@@ -140,26 +197,24 @@ getDataOnLoad()
 @import 'lightgallery/css/lg-thumbnail.css';
 @import 'lightgallery/css/lg-zoom.css';
 
-.stepper {
-  .line {
+.line {
     width: 2px;
     background-color: lightgrey !important;
-  }
 }
 
-.timeline-header{
+.timeline-header {
     font-size: 20px;
 }
 
-.timeline-about{
+.timeline-about {
     font-size: 17px;
 }
 
-.btn{
+.btn {
     height: fit-content;
 }
 
-.date{
+.date {
     font-size: 15px;
 }
 </style>

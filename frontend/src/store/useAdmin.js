@@ -35,8 +35,8 @@ export const useAdmin = defineStore("useAdmin", {
             if (Array.isArray(this.allProjects)) {
                 this.allProjects = (this.allProjects).reverse()
 
-                this.allOngoingProjects = (res.message).filter(project => project.endDate == null)
-                this.allFinishedProjects = (res.message).filter(project => project.endDate != null)
+                this.ongoingProjects = (res.message).filter(project => project.project.endDate == null)
+                this.finishedProjects = (res.message).filter(project => project.project.endDate != null)
             }
 
             return {

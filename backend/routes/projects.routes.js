@@ -31,7 +31,7 @@ const upload = multer({
     limits: { fileSize: 5 * 1024 * 1024 /* 5mb */ } 
 })
 
-let { addProject, getProject, getStaffProjects, delProject, editProject, getAllProjects, markProjectAsFinished, addProjectMilestone } = projectsController
+let { addProject, getProject, getStaffProjects, delProject, editProject, getAllProjects, markProjectAsFinished, addProjectMilestone, unmarkProjectAsFinished } = projectsController
 
 let router = express.Router()
 
@@ -53,6 +53,7 @@ router.delete('/delete-project', delProject)
 router.patch('/edit-project', editProject)
 router.get('/get-all-projects', getAllProjects)
 router.patch('/mark-project-as-finished', markProjectAsFinished)
+router.patch('/unmark-project-as-finished', unmarkProjectAsFinished)
 router.patch('/project-milestone', addProjectMilestone)
 
 export default router
