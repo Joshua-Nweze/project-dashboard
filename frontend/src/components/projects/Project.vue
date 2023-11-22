@@ -11,7 +11,7 @@
                         </div>
                     </div>
 
-                    <div class="fs-5 mt-3" v-if="user.userType == 'admin'">Ekene Okoi</div>
+                    <div class="fs-5 mt-3" v-if="user.userType == 'admin'">{{ usersName }}</div>
 
                     <div class="text-muted my-3">{{ (project.project.description) }}</div>
                     <div class="text-muted">
@@ -21,16 +21,15 @@
                     </div>
 
                     <div v-if="(project.project.milestone).length > 0" class="stepper d-flex flex-column mt-4 ml-2">
-                        <!--  v-if="(project.project.milestone).length > 0" -->
-                        <div class="d-flex mb-1 mt-3">
+                        <div class="d-flex mb-1 mt-3" v-for="(milestone, index) in project.project.milestone" :key="index">
                             <div class="d-flex flex-column pr-4 align-items-center">
                                 <div class="rounded-circle py-2 px-2 bg-primary text-white mb-1"></div>
                                 <div class="line h-100"></div>
                             </div>
                             <div class="ms-3">
-                                <div class="text-dark timeline-header">Create your application respository</div>
-                                <span class="text-muted date">Date</span>
-                                <p class="lead text-muted timeline-about">Choose your website name & create repository</p>
+                                <div class="text-dark timeline-header">{{ milestone.milestone }}</div>
+                                <p class="lead text-muted timeline-about" v-if="milestone.description">{{ milestone.description }}</p>
+                                <span class="text-muted date">Date: {{ new Date(milestone.date).toDateString() }}</span>
 
                                 <Lightgallery :settings="{ speed: 500, plugins: plugins }" :onInit="onInit"
                                     :onBeforeSlide="onBeforeSlide" class="row">
@@ -47,6 +46,10 @@
                                             alt="">
                                     </a>
                                 </Lightgallery>
+
+                                <div v-if="user.userType == 'staff'" class="btn btn-outline-danger mt-3">
+                                    Delete milestone
+                                </div>
                             </div>
                         </div>
 
@@ -160,6 +163,7 @@ import LoadingSpinner from '../LoadingSpinner.vue';
 import { useUser } from '@/store/useUser';
 import { storeToRefs } from 'pinia';
 import SmallLoadingSpinner from '../SmallLoadingSpinner.vue';
+import { useAdmin } from '@/store/useAdmin';
 
 let projectsStore = useProjects()
 let userStore = useUser()
@@ -176,13 +180,17 @@ let userEmail = inject('userEmail')
 let isDataReady = ref(false)
 let status = ref(null)
 
+let usersName = ref(null)
+
 async function getDataOnLoad() {
     if (!user.value) {
         await userStore.getUserDetails(userEmail)
     }
 
     let req = await projectsStore.getProject(route.params.id)
-    console.log(project.value)
+
+    let getUserNameReq = await viewUser(project.value.project.staff)
+    usersName.value = getUserNameReq.message.user.name
 
     status.value = req.status
     isDataReady.value = true
@@ -226,6 +234,13 @@ async function unmarkProjectAsFinished(projectId, staffId) {
 
 function clearFeedbackAndStatus() {
     feedback.value = feedbackStatus.value = null
+}
+
+async function viewUser(id) {
+    let req = await fetch(`http://localhost:3000/api/admin/view-user-details?id=${id}`)
+    let res = await req.json()
+
+    return res
 }
 </script>
 

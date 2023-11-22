@@ -6,10 +6,13 @@ let milestoneSchema = new Schema({
         required: true
     },
     description: {
-        type: String,
+        type: String
+    },
+    date: {
+        type: Date,
         required: true
     },
-    image: [{
+    images: [{
         type: Buffer
     }]
 })

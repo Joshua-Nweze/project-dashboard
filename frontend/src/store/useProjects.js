@@ -105,6 +105,10 @@ export const useProjects = defineStore("project", {
             this.getProject(projectId)
 
             return { res: res, status: (req.status) }
+        },
+
+        async deleteMilestone(projectId, milestoneId, staffId) {
+
         }
     }
 })

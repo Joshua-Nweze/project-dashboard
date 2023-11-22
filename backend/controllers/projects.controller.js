@@ -6,6 +6,7 @@ import path from "path";
 
 async function addProject(req, res) {
     try {
+        console.log(req.file)
         // img feild name is image
         let { location, lga, description, staff, projectName } = req.body
 
@@ -67,6 +68,37 @@ async function getProject(req, res) {
         const imageBase64 = imageBuffer.toString('base64');
 
         let message = { project, imageBase64 }
+
+        // milestone images to Base64 string
+
+        let milestoneArr = message.project.milestone
+        let milestoneImagesBuffers = []
+
+        // console.log(typeof milestoneArr)
+        for (const milestone of milestoneArr) {
+
+            if (milestone.images.length > 0) {
+                let temp = {}
+                let id = milestone._id
+                let imagesArr = []
+                let images = milestone.images
+                // converting the images to Base64 string
+                for (let image of images) {
+                    let milestoneImagePath = image;
+                    let milestoneImageBuffer = fs.readFileSync(milestoneImagePath)
+
+                    // Encode the image buffer as a Base64 string
+                    const milestoneImageBase64 = milestoneImageBuffer.toString('base64');
+
+                    imagesArr.push(milestoneImageBase64)
+                }
+                temp.id = id
+                temp.images = imagesArr
+                milestoneImagesBuffers.push(temp)
+            }
+
+            message.milestoneImagesBuffers = milestoneImagesBuffers
+        }
 
         res.status(200).json(message)
     } catch (error) {
@@ -318,10 +350,8 @@ async function unmarkProjectAsFinished(req, res) {
     }
 }
 
-// NOTE: Not working
 async function addProjectMilestone(req, res) {
     try {
-        console.log(req.body)
         let { id, staff, milestone, milestoneDescription } = req.body /* id: project id, staff: staff id */
 
         if (!id) {
@@ -334,8 +364,13 @@ async function addProjectMilestone(req, res) {
             return
         }
 
-        if (!id || !staff || !milestone || !milestoneDescription || !req.file) {
+        if (!id || !staff || !milestone || !milestoneDescription ) {
             res.status(400).json({ message: 'All inputs are required' })
+            return
+        }
+
+        if (!req.files) {
+            res.status(400).json({ message: 'All inputs are required file' })
             return
         }
 
@@ -351,13 +386,19 @@ async function addProjectMilestone(req, res) {
             return
         }
 
+        let imagePaths = [];
+        for (const file of req.files) {
+            imagePaths.push(file.path);
+        }
+
         let addMilestone = await Project.findOneAndUpdate(
             { _id: id },
             { $push: {
                 milestone: {
                     milestone,
-                    milestoneDescription,
-                    images
+                    description: milestoneDescription,
+                    date: new Date(),
+                    images: imagePaths
                 }
             } }
         )
@@ -374,6 +415,33 @@ async function addProjectMilestone(req, res) {
     }
 }
 
+async function deleteMilestone(req, res) {
+    try {
+        let { projectId, milestoneId, staffId } = req.body
+
+        if (!projectId || !milestoneId || !staffId) {
+            res.status(400).json({ message: 'Required ID\'s missing in request body' })
+            return
+        }
+
+        const updatedProject = await Project.findOneAndUpdate(
+            { _id: projectId },
+            { $pull: { milestone: { _id: milestoneId } } }
+          )
+
+          if (updatedProject) {
+            res.status(200).json({ message: 'Milestone deleted successfully' })
+            return
+          } else {
+            res.status(500).json({ message: 'Something went wrong, try again later' })
+            return
+          }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: 'Something went wrong, try again later' })
+    }
+}
+
 export default {
     addProject,
     getProject,
@@ -383,5 +451,6 @@ export default {
     getAllProjects,
     markProjectAsFinished,
     unmarkProjectAsFinished,
-    addProjectMilestone
+    addProjectMilestone,
+    deleteMilestone
 }
