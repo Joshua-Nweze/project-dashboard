@@ -70,6 +70,7 @@ router.post('/add', function (req, res) {
         addProject(req, res)
     })
 })
+
 router.get('/get', getProject)
 router.get('/get-staff-projects', getStaffProjects)
 router.delete('/delete-project', delProject)
@@ -77,8 +78,10 @@ router.patch('/edit-project', editProject)
 router.get('/get-all-projects', getAllProjects)
 router.patch('/mark-project-as-finished', markProjectAsFinished)
 router.patch('/unmark-project-as-finished', unmarkProjectAsFinished)
-router.patch('/project-milestone', checkMilestoneImageCount, function (req, res) {
+
+router.patch('/add-project-milestone',  function (req, res) {
     milestoneUploadr(req, res, function (err) {
+    // console.log(req.files)
 
         if (err) {
             return res.status(400).json({ message: err.message })
@@ -87,6 +90,7 @@ router.patch('/project-milestone', checkMilestoneImageCount, function (req, res)
         addProjectMilestone(req, res)
     })
 })
+
 router.delete('/delete-milestone', deleteMilestone)
 
 export default router

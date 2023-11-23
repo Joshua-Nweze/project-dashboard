@@ -21,7 +21,7 @@
                         style="width: 16rem;"
                         >
                             <div class="position-relative">
-                                <img :src="`data:image/jpeg;base64,${project.imageBase64}`" class="card-img-top px-0" alt="" style="height: 200px;">
+                                <img :src="`data:image/jpeg;base64,${project.image.imageBase64}`" class="card-img-top px-0" alt="" style="height: 200px;">
                                 <!-- Only for staff -->
                                 <div
                                 v-if="user.userType == 'staff'"
@@ -29,7 +29,7 @@
                                 >
                                     <ProjectActionBtns
                                     :user="user"
-                                    :project="project.project"
+                                    :project="project"
                                     :editModalId="`editModalId${index}`"
                                     :deleteModalId="`deleteModalId${index}`"
                                     />
@@ -37,10 +37,10 @@
                                 <!--  -->
                             </div>
                             <div class="card-body px-2">
-                                <h5 class="card-title col">{{ project.project.projectName }}</h5>
+                                <h5 class="card-title col">{{ project.projectName }}</h5>
 
-                                <p class="card-text mt-2">{{ (project.project.description).slice(0, 95) }} {{ (project.project.description).length > 95 ? '...' : '' }}</p>
-                                <RouterLink :to="`/project/${project.project._id}`" class="btn btn-primary">See more</RouterLink>
+                                <p class="card-text mt-2">{{ (project.description).slice(0, 95) }} {{ (project.description).length > 95 ? '...' : '' }}</p>
+                                <RouterLink :to="`/project/${project._id}`" class="btn btn-primary">See more</RouterLink>
                             </div>
                         </div>
 
@@ -114,7 +114,6 @@ async function getDataOnLoad() {
         projects.value = allProjects.value
         isDataReady.value = true
     }
-    
 }
 getDataOnLoad()
 

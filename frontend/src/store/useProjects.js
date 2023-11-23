@@ -18,8 +18,8 @@ export const useProjects = defineStore("project", {
             if (Array.isArray(this.projects)) {
                 this.projects = (this.projects).reverse()
 
-                this.ongoingProjects = (res.message).filter(project => project.project.endDate == null)
-                this.finishedProjects = (res.message).filter(project => project.project.endDate != null)
+                this.ongoingProjects = (res.message).filter(project => project.endDate == null)
+                this.finishedProjects = (res.message).filter(project => project.endDate != null)
             }
 
 
@@ -32,7 +32,7 @@ export const useProjects = defineStore("project", {
             let req = await fetch(`http://localhost:3000/api/projects/get?id=${id}`)
             let res = await req.json()
 
-            this.project = res
+            this.project = res.message
 
             return { status: (req.status) }
         },
@@ -108,7 +108,22 @@ export const useProjects = defineStore("project", {
         },
 
         async deleteMilestone(projectId, milestoneId, staffId) {
+            let req = await fetch('http://localhost:3000/api/projects/delete-milestone', {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    projectId,
+                    milestoneId,
+                    staffId
+                })
+            })
 
+            let res = await req.json()
+
+            // updating project
+            this.getProject(projectId)
+
+            return { res: res, status: (req.status) }
         }
     }
 })

@@ -48,9 +48,9 @@ let projectSchema = new Schema({
         required: true
     },
     image: {
-        type: Buffer,
-        required: true
-    },
+        path: { type: String, required: true },
+        imageBase64: { type: String, required: true },
+      },
     milestone: [milestoneSchema]
 })
 

@@ -123,7 +123,6 @@ let loading = ref(false)
 
 function handleFileChange (event) {
     image = event.target.files[0];
-    console.log(image)
 }
 
 function clearFeedbackAndStatus () {

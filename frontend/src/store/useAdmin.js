@@ -31,12 +31,12 @@ export const useAdmin = defineStore("useAdmin", {
             let res = await req.json()
             
             this.allProjects = res.message
-            
+
             if (Array.isArray(this.allProjects)) {
                 this.allProjects = (this.allProjects).reverse()
 
-                this.ongoingProjects = (res.message).filter(project => project.project.endDate == null)
-                this.finishedProjects = (res.message).filter(project => project.project.endDate != null)
+                this.allOngoingProjects = (res.message).filter(project => project.endDate == null)
+                this.allFinishedProjects = (res.message).filter(project => project.endDate != null)
             }
 
             return {

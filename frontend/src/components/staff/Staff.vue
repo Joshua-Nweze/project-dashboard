@@ -45,8 +45,6 @@
                                                     <i class="bi bi-person-check text-success"></i>
                                                 </button>
                                             </span>
-                                            
-                                            <!-- <button type="button" class="btn bg-danger-subtle"><i class="bi bi-trash text-danger"></i></button> -->
                                         </div>
 
                                         <!-- View user modal -->

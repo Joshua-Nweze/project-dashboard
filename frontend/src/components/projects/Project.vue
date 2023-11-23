@@ -4,31 +4,32 @@
             <div v-if="status" class="row">
                 <div v-if="status == 200" class="col-md-8 offset-md-2">
                     <div class="row">
-                        <div class="col-8 fs-3">{{ (project.project.projectName).toUpperCase() }}</div>
-                        <div class="col-4 fs-3 d-flex justify-content-end" v-if="user.userType == 'staff'">
+                        <div class="col-9 col-lg-10 fs-3">{{ (project.projectName).toUpperCase() }}</div>
+                        <div class="col-3 col-lg-2 fs-3 d-flex justify-content-end" v-if="user.userType == 'staff'">
                             <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">Update</button>
+                                data-bs-target="#updateModal">Update</button>
                         </div>
                     </div>
 
                     <div class="fs-5 mt-3" v-if="user.userType == 'admin'">{{ usersName }}</div>
 
-                    <div class="text-muted my-3">{{ (project.project.description) }}</div>
+                    <div class="text-muted my-3">{{ (project.description) }}</div>
                     <div class="text-muted">
-                        Started on : {{ new Date(project.project.startDate).toDateString() }}.
-                        Ended on: {{ (project.project.endDate) == null ? 'Project is ongoing' : new
-                            Date(project.project.endDate).toDateString() }}
+                        Started on : {{ new Date(project.startDate).toDateString() }}.
+                        Ended on: {{ (project.endDate) == null ? 'Project is ongoing' : new
+                            Date(project.endDate).toDateString() }}
                     </div>
 
-                    <div v-if="(project.project.milestone).length > 0" class="stepper d-flex flex-column mt-4 ml-2">
-                        <div class="d-flex mb-1 mt-3" v-for="(milestone, index) in project.project.milestone" :key="index">
+                    <div v-if="(project.milestone).length > 0" class="stepper d-flex flex-column mt-4 ml-2">
+                        <div class="d-flex mb-1 mt-3" v-for="(milestone, index) in project.milestone" :key="index">
                             <div class="d-flex flex-column pr-4 align-items-center">
                                 <div class="rounded-circle py-2 px-2 bg-primary text-white mb-1"></div>
                                 <div class="line h-100"></div>
                             </div>
                             <div class="ms-3">
                                 <div class="text-dark timeline-header">{{ milestone.milestone }}</div>
-                                <p class="lead text-muted timeline-about" v-if="milestone.description">{{ milestone.description }}</p>
+                                <p class="lead text-muted timeline-about" v-if="milestone.description">{{
+                                    milestone.description }}</p>
                                 <span class="text-muted date">Date: {{ new Date(milestone.date).toDateString() }}</span>
 
                                 <Lightgallery :settings="{ speed: 500, plugins: plugins }" :onInit="onInit"
@@ -47,8 +48,49 @@
                                     </a>
                                 </Lightgallery>
 
-                                <div v-if="user.userType == 'staff'" class="btn btn-outline-danger mt-3">
+                                <div v-if="user.userType == 'staff'" class="btn btn-outline-danger mt-3" data-bs-toggle="modal"  :data-bs-target="`#del_milestone_${index}`">
                                     Delete milestone
+                                </div>
+
+                                <!-- del milstone modal -->
+                                <div class="modal fade"
+                                    :id="`del_milestone_${index}`" tabindex="-1" aria-labelledby="delMilestoneLabel"
+                                    aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="delMilestoneLabel">Delete '{{ milestone.milestone }}' milestone</h1>
+                                                <button @click="deleteMilestoneFeedback = null" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+
+                                            <div class="modal-body">
+
+                                                <div v-if="deleteMilestoneFeedback">
+                                                    <div class="alert alert-dismissible fade show" :class="{ 'alert-success': deleteMilestoneStatus == 200 || deleteMilestoneStatus == 201,  'alert-danger':   deleteMilestoneStatus != 200 }"
+                                                        role="alert">
+                                                        {{ deleteMilestoneFeedback }}
+                                                        <button type="button" class="btn-close"
+                                                            @click="deleteMilestoneFeedback = null"></button>
+                                                    </div>
+                                                </div>
+
+                                                <div class="alert alert-danger">
+                                                    Are you sure you want to delete milestone?
+                                                </div>
+
+                                            </div>
+                                            <div class="modal-footer">
+
+                                                <span>
+                                                    <button type="button" class="btn btn-outline-danger" @click="deleteMilestone(project._id, milestone._id, user.id)">
+                                                        <span v-if="!isDeletingMilestone" data-bs-dismiss="modal">Delete milestone</span>
+                                                        <span v-else class="px-3"><SmallLoadingSpinner /></span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -69,14 +111,15 @@
             </div>
 
             <!-- update modal -->
-            <div v-if="status == 200" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            <div v-if="status == 200" class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
 
                         <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Project update</h1>
-                            <button @click="clearFeedbackAndStatus" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <h1 class="modal-title fs-5" id="updateModalLabel">Project update</h1>
+                            <button @click="clearFeedbackAndStatus" type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                         </div>
 
                         <div class="modal-body">
@@ -91,14 +134,14 @@
                             </div>
 
                             <label class="" for="milestone">Milestone</label>
-                            <input type="text" class="form-control" id="milestone">
+                            <input type="text" class="form-control" id="milestone" v-model="milestone">
 
                             <label class="mt-4" for="description">Milestone description</label>
-                            <textarea type="text" class="form-control" id="description"></textarea>
+                            <textarea type="text" class="form-control" id="description"
+                                v-model="milestoneDescription"></textarea>
 
                             <div class="mt-4">Attach document ( image(s) )</div>
-                            <div class="attach-doc-div text-center " ref="dragArea" @dragover="dragOver"
-                                @dragleave="dragLeave" @drop="dragDrop">
+                            <div class="attach-doc-div text-center">
                                 <div ref="fileFeedback"></div>
                                 <span><i class="bi bi-upload fs-1 text-secondary"></i> <br> Drag and drop here</span> <br>
                                 <span>or</span> <br>
@@ -107,7 +150,7 @@
 
                                     <div class="d-flex justify-content-center mt-3">
                                         <div class="input-group mb-3 " style="width: 80%">
-                                            <input type="file" accept=".png, .jpg, .jpeg, .pdf" @click="inputFile"
+                                            <input type="file" accept=".png, .jpg, .jpeg" @change="handleFileChange"
                                                 class="form-control" ref="fileFromInput" multiple>
                                         </div>
                                     </div>
@@ -117,9 +160,9 @@
                         </div>
                         <div class="modal-footer">
                             <span>
-                                <span v-if="!project.project.endDate">
+                                <span v-if="!project.endDate">
                                     <button v-if="!isUpdatingProjectStatus" type="button" class="btn btn-outline-success"
-                                        @click="markProjectAsFinished(project.project._id, user.id)">Mark as
+                                        @click="markProjectAsFinished(project._id, user.id)">Mark as
                                         finised</button>
 
                                     <span v-else class="px-3">
@@ -127,19 +170,24 @@
                                     </span>
                                 </span>
 
-                                <span v-if="project.project.endDate">
-                                    <button  v-if="!isUpdatingProjectStatus" type="button" class="btn btn-outline-secondary"
-                                        @click="unmarkProjectAsFinished(project.project._id, user.id)">Mark as
+                                <span v-if="project.endDate">
+                                    <button v-if="!isUpdatingProjectStatus" type="button" class="btn btn-outline-secondary"
+                                        @click="unmarkProjectAsFinished(project._id, user.id)">Mark as
                                         unfinised</button>
 
-                                        <span v-else class="px-3">
-                                            <SmallLoadingSpinner />
-                                        </span>
+                                    <span v-else class="px-3">
+                                        <SmallLoadingSpinner />
+                                    </span>
                                 </span>
 
                             </span>
 
-                            <button type="button" class="btn btn-success">Update</button>
+                            <button type="button" class="btn btn-success" @click="addMilestone">
+                                <span v-if="!addingMilestone">Add milestone</span>
+                                <span v-else class="px-2">
+                                    <SmallLoadingSpinner />
+                                </span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -189,7 +237,7 @@ async function getDataOnLoad() {
 
     let req = await projectsStore.getProject(route.params.id)
 
-    let getUserNameReq = await viewUser(project.value.project.staff)
+    let getUserNameReq = await viewUser(project.value.staff)
     usersName.value = getUserNameReq.message.user.name
 
     status.value = req.status
@@ -233,7 +281,8 @@ async function unmarkProjectAsFinished(projectId, staffId) {
 }
 
 function clearFeedbackAndStatus() {
-    feedback.value = feedbackStatus.value = null
+    feedback.value = null
+    feedbackStatus.value = null
 }
 
 async function viewUser(id) {
@@ -241,6 +290,88 @@ async function viewUser(id) {
     let res = await req.json()
 
     return res
+}
+
+let isDeletingMilestone = ref(false)
+let deleteMilestoneFeedback = ref(null)
+let deleteMilestoneStatus = ref(null)
+
+async function deleteMilestone(projectId, milestoneId, staffId) {
+    isDeletingMilestone.value = true
+
+    let req = await projectsStore.deleteMilestone(projectId, milestoneId, staffId)
+    deleteMilestoneFeedback.value = req.res.message
+    deleteMilestoneStatus = req.status
+
+    isDeletingMilestone.value = false
+    deleteMilestoneFeedback.value = null
+}
+
+let milestone = ref('')
+let milestoneDescription = ref('')
+let addingMilestone = ref(false)
+let images = ref([])
+
+function handleFileChange(event) {
+    for (const image of (event.target.files)) {
+        images.value.push(image)
+    }
+    console.log(images.value)
+}
+
+async function addMilestone() {
+    console.log(images.value)
+    if (!navigator.onLine) {
+        feedback.value = 'Looks like you don\'t have an active internet connection'
+        loading.value = false
+        return
+    }
+
+    if (!user.value.id) {
+        feedback.value = 'User not found'
+        return
+    }
+
+    if (!milestone.value || !milestoneDescription.value) {
+        feedback.value = 'All inputs are required'
+        return
+    }
+
+    // addingMilestone.value = true
+
+    const formData = new FormData();
+
+    formData.append('milestone', milestone.value)
+    formData.append('milestoneDescription', milestoneDescription.value)
+    formData.append('staff', user.value.id)
+    formData.append('id', project.value.project._id)
+    formData.append('images', images.value)
+
+
+    let req = await fetch('http://localhost:3000/api/projects/add-project-milestone', {
+        method: 'PATCH',
+        body: formData
+    })
+
+    let res = await req.json()
+
+    feedbackStatus.value = req.status
+    feedback.value = res.message
+
+    await projectsStore.getProject(project.value.project._id)
+
+    // addingMilestone.value = false
+
+    milestone.value = milestoneDescription.value = ''
+    images.value = []
+
+    setTimeout(() => {
+        clearFeedbackAndStatus()
+    }, 5000)
+}
+
+function deleteMilestoneFeedbackAndStatus() {
+    deleteMilestoneFeedback.value = deleteMilestoneStatus.value = null
 }
 </script>
 
@@ -268,5 +399,4 @@ async function viewUser(id) {
 
 .date {
     font-size: 15px;
-}
-</style>
+}</style>

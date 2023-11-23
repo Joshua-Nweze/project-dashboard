@@ -7,14 +7,14 @@
 
                     <div v-if="(typeof projects == 'object' || typeof projects == 'array')">
                         <div
-                            v-for="(project, index) in (projects).slice(0, 4)"
+                            v-for="(project) in (projects).slice(0, 4)"
                             :key="project.index"
                             class="list-group p-1 px-2 my-2 recent-project"
                         >
 
-                            <RouterLink :to="`/project/${project.project._id}`" class="link">
-                                <div class="fs-5 text-muted">{{ project.project.projectName }}</div>
-                                <div class="text-muted" style="font-size: 13px;">{{ (project.project.description).slice(0, 20) }} {{ (project.project.description).length > 20 ? '...' : '' }}</div>
+                            <RouterLink :to="`/project/${project._id}`" class="link">
+                                <div class="fs-5 text-muted">{{ project.projectName }}</div>
+                                <div class="text-muted" style="font-size: 13px;">{{ (project.description).slice(0, 20) }} {{ (project.description).length > 20 ? '...' : '' }}</div>
                             </RouterLink>
                             
                         </div>
@@ -33,11 +33,11 @@
 
                     <div v-if="(typeof staff == 'object' || typeof staff == 'array')">
                         <div
-                            v-for="(user, index) in (staff).slice(0, 4)"
+                            v-for="(user, index) in (staff).slice(0, 4)" :key="index"
                         >
                             <div class="list-group p-1 px-2 my-2 recent-project bg-success-subtle">
-                                <div>{{ user.name }}</div>
-                                <div class="text-muted" style="font-size: 13px;">Registered on {{ new Date(user.createdAt).toDateString() }}</div>
+                                <div>{{ user.user.name }}</div>
+                                <div class="text-muted" style="font-size: 13px;">Registered on {{ new Date(user.user.createdAt).toDateString() }}</div>
                             </div>
                         </div>
                     </div>

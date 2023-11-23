@@ -27,13 +27,22 @@ async function addProject(req, res) {
             return
         }
 
+        const imagePath = req.file.path;
+        const imageBuffer = fs.readFileSync(imagePath);
+
+        // Encode the image buffer as a Base64 string
+        const imageBase64 = imageBuffer.toString('base64');
+
         let newProject = new Project({
             staff,
             projectName,
             location,
             lga,
             description,
-            image: req.file.path
+            image: {
+                path: req.file.path,
+                imageBase64
+            }
         })
 
         let addproject = await newProject.save()
@@ -61,46 +70,38 @@ async function getProject(req, res) {
             return
         }
 
-        const imagePath = project.image;
-        const imageBuffer = fs.readFileSync(imagePath);
-
-        // Encode the image buffer as a Base64 string
-        const imageBase64 = imageBuffer.toString('base64');
-
-        let message = { project, imageBase64 }
-
         // milestone images to Base64 string
 
-        let milestoneArr = message.project.milestone
-        let milestoneImagesBuffers = []
+        // let milestoneArr = message.project.milestone
+        // let milestoneImagesBuffers = []
 
         // console.log(typeof milestoneArr)
-        for (const milestone of milestoneArr) {
+        // for (const milestone of milestoneArr) {
 
-            if (milestone.images.length > 0) {
-                let temp = {}
-                let id = milestone._id
-                let imagesArr = []
-                let images = milestone.images
-                // converting the images to Base64 string
-                for (let image of images) {
-                    let milestoneImagePath = image;
-                    let milestoneImageBuffer = fs.readFileSync(milestoneImagePath)
+        //     if (milestone.images.length > 0) {
+        //         let temp = {}
+        //         let id = milestone._id
+        //         let imagesArr = []
+        //         // let images = milestone.images
+        //         // // converting the images to Base64 string
+        //         // for (let image of images) {
+        //         //     let milestoneImagePath = image;
+        //         //     let milestoneImageBuffer = fs.readFileSync(milestoneImagePath)
 
-                    // Encode the image buffer as a Base64 string
-                    const milestoneImageBase64 = milestoneImageBuffer.toString('base64');
+        //         //     // Encode the image buffer as a Base64 string
+        //         //     const milestoneImageBase64 = milestoneImageBuffer.toString('base64');
 
-                    imagesArr.push(milestoneImageBase64)
-                }
-                temp.id = id
-                temp.images = imagesArr
-                milestoneImagesBuffers.push(temp)
-            }
+        //         //     imagesArr.push(milestoneImageBase64)
+        //         // }
+        //         temp.id = id
+        //         temp.images = imagesArr
+        //         milestoneImagesBuffers.push(temp)
+        //     }
 
-            message.milestoneImagesBuffers = milestoneImagesBuffers
-        }
+            // message.milestoneImagesBuffers = milestoneImagesBuffers
+        // }
 
-        res.status(200).json(message)
+        res.status(200).json({ message: project })
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: 'Something went wrong, try again later' })
@@ -125,18 +126,7 @@ async function getAllProjects(req, res) {
             return
         }
 
-        let allProjects = []
-
-        projects.forEach((project) => {
-            const imagePath = project.image;
-            const imageBuffer = fs.readFileSync(imagePath); 
-            // Encode the image buffer as a Base64 string
-            const imageBase64 = imageBuffer.toString('base64');
-
-            allProjects.push({ project, imageBase64 })
-        })
-
-        res.status(200).json({message: allProjects})
+        res.status(200).json({message: projects})
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: 'Something went wrong, try again later' })
@@ -166,18 +156,7 @@ async function getStaffProjects(req, res) {
             return
         }
 
-        let allProjects = []
-
-        projects.forEach((project) => {
-            const imagePath = project.image;
-            const imageBuffer = fs.readFileSync(imagePath); 
-            // Encode the image buffer as a Base64 string
-            const imageBase64 = imageBuffer.toString('base64'); 
-
-            allProjects.push({ project, imageBase64 })
-        })
-
-        res.status(200).json({ message: allProjects })
+        res.status(200).json({ message: projects })
     } catch (error) {
         console.log(error)
         res.status(500).json({ message: 'Something went wrong, try again later' })
@@ -369,11 +348,6 @@ async function addProjectMilestone(req, res) {
             return
         }
 
-        if (!req.files) {
-            res.status(400).json({ message: 'All inputs are required file' })
-            return
-        }
-
         let project = await Project.findById(id)
         if (!project) {
             res.status(400).json({ message: 'Project not found' })
@@ -386,28 +360,31 @@ async function addProjectMilestone(req, res) {
             return
         }
 
-        let imagePaths = [];
-        for (const file of req.files) {
-            imagePaths.push(file.path);
-        }
+        console.log(req.files)
 
-        let addMilestone = await Project.findOneAndUpdate(
-            { _id: id },
-            { $push: {
-                milestone: {
-                    milestone,
-                    description: milestoneDescription,
-                    date: new Date(),
-                    images: imagePaths
-                }
-            } }
-        )
+        let images = req.files.map(file => ({
+            originalname: file.originalname,
+            buffer: file.buffer.toString('base64')
+        }));
+        console.log(images)
 
-        if(addMilestone) {
-            res.status(200).json({ message: 'Milestone added' })
-        } else {
-            res.status(500).json({ message: 'Something went wrong, try again later' })
-        }
+        // let addMilestone = await Project.findOneAndUpdate(
+        //     { _id: id },
+        //     { $push: {
+        //         milestone: {
+        //             milestone,
+        //             description: milestoneDescription,
+        //             date: new Date(),
+        //             images
+        //         }
+        //     } }
+        // )
+
+        // if(addMilestone) {
+        //     res.status(200).json({ message: 'Milestone added' })
+        // } else {
+        //     res.status(500).json({ message: 'Something went wrong, try again later' })
+        // }
 
     } catch (error) {
         console.log(error)
@@ -425,7 +402,7 @@ async function deleteMilestone(req, res) {
         }
 
         const updatedProject = await Project.findOneAndUpdate(
-            { _id: projectId },
+            { _id: projectId, staff: staffId },
             { $pull: { milestone: { _id: milestoneId } } }
           )
 
