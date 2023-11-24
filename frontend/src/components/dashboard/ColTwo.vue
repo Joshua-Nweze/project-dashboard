@@ -13,7 +13,7 @@
                         >
 
                             <RouterLink :to="`/project/${project._id}`" class="link">
-                                <div class="fs-5 text-muted">{{ project.projectName }}</div>
+                                <div class="fs-6 text-muted fw-medium">{{ project.projectName }}</div>
                                 <div class="text-muted" style="font-size: 13px;">{{ (project.description).slice(0, 20) }} {{ (project.description).length > 20 ? '...' : '' }}</div>
                             </RouterLink>
                             

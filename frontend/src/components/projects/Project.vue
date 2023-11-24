@@ -30,24 +30,18 @@
                                 <div class="text-dark timeline-header">{{ milestone.milestone }}</div>
                                 <p class="lead text-muted timeline-about" v-if="milestone.description">{{
                                     milestone.description }}</p>
-                                <span class="text-muted date">Date: {{ new Date(milestone.date).toDateString() }}</span>
+                                <div class="text-muted date">Date: {{ new Date(milestone.date).toDateString() }}</div>
 
-                                <Lightgallery :settings="{ speed: 500, plugins: plugins }" :onInit="onInit"
+                                <Lightgallery v-if="milestone.images.length > 0" :settings="{ speed: 500, plugins: plugins }" :onInit="onInit"
                                     :onBeforeSlide="onBeforeSlide" class="row">
-                                    <a href="https://image.freepik.com/free-photo/stylish-young-woman-with-bags-taking-selfie_23-2147962203.jpg"
+                                    <a v-for="image in milestone.images" :href="`data:image/jpeg;base64,${image.imageBase64}`"
                                         class="col-lg-3 col-md-4 col-6 col-sm my-1" data-fancybox-group="light">
                                         <img class="img-fluid"
-                                            src="https://image.freepik.com/free-photo/stylish-young-woman-with-bags-taking-selfie_23-2147962203.jpg"
-                                            alt="">
-                                    </a>
-                                    <a href="https://image.freepik.com/free-photo/pretty-girl-near-car_1157-16962.jpg"
-                                        class="col-lg-3 col-md-4 col-6 col-sm my-1" data-fancybox-group="light">
-                                        <img class="img-fluid"
-                                            src="https://image.freepik.com/free-photo/pretty-girl-near-car_1157-16962.jpg"
-                                            alt="">
+                                        :src="`data:image/jpeg;base64,${image.imageBase64}`"
+                                            alt="milestone image">
                                     </a>
                                 </Lightgallery>
-
+                                <!-- <br> -->
                                 <div v-if="user.userType == 'staff'" class="btn btn-outline-danger mt-3" data-bs-toggle="modal"  :data-bs-target="`#del_milestone_${index}`">
                                     Delete milestone
                                 </div>
@@ -83,8 +77,8 @@
                                             <div class="modal-footer">
 
                                                 <span>
-                                                    <button type="button" class="btn btn-outline-danger" @click="deleteMilestone(project._id, milestone._id, user.id)">
-                                                        <span v-if="!isDeletingMilestone" data-bs-dismiss="modal">Delete milestone</span>
+                                                    <button type="button" class="btn btn-outline-danger" @click="deleteMilestone(project._id, milestone._id, user.id)" data-bs-dismiss="modal">
+                                                        <span v-if="!isDeletingMilestone">Delete milestone</span>
                                                         <span v-else class="px-3"><SmallLoadingSpinner /></span>
                                                     </button>
                                                 </span>
@@ -150,8 +144,7 @@
 
                                     <div class="d-flex justify-content-center mt-3">
                                         <div class="input-group mb-3 " style="width: 80%">
-                                            <input type="file" accept=".png, .jpg, .jpeg" @change="handleFileChange"
-                                                class="form-control" ref="fileFromInput" multiple>
+                                            <input type="file" accept=".png, .jpg, .jpeg" @change="handleFileChange" class="form-control" ref="fileFromInput" multiple>
                                         </div>
                                     </div>
 
@@ -320,7 +313,7 @@ function handleFileChange(event) {
 }
 
 async function addMilestone() {
-    console.log(images.value)
+    
     if (!navigator.onLine) {
         feedback.value = 'Looks like you don\'t have an active internet connection'
         loading.value = false
@@ -337,16 +330,23 @@ async function addMilestone() {
         return
     }
 
-    // addingMilestone.value = true
+    addingMilestone.value = true
 
     const formData = new FormData();
 
     formData.append('milestone', milestone.value)
     formData.append('milestoneDescription', milestoneDescription.value)
     formData.append('staff', user.value.id)
-    formData.append('id', project.value.project._id)
-    formData.append('images', images.value)
+    formData.append('id', project.value._id)
 
+    const fileInput = images.value;
+    for (let i = 0; i < fileInput.length; i++) {
+        console.log(fileInput[i])
+      formData.append('images', fileInput[i]);
+    }
+    console.log(fileInput)
+
+    console.log([...formData.entries()]);
 
     let req = await fetch('http://localhost:3000/api/projects/add-project-milestone', {
         method: 'PATCH',
@@ -358,12 +358,12 @@ async function addMilestone() {
     feedbackStatus.value = req.status
     feedback.value = res.message
 
-    await projectsStore.getProject(project.value.project._id)
+    addingMilestone.value = false
 
-    // addingMilestone.value = false
+    await projectsStore.getProject(project.value._id)
+
 
     milestone.value = milestoneDescription.value = ''
-    images.value = []
 
     setTimeout(() => {
         clearFeedbackAndStatus()

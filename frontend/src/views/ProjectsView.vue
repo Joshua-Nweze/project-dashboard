@@ -21,7 +21,7 @@
                         style="width: 16rem;"
                         >
                             <div class="position-relative">
-                                <img :src="`data:image/jpeg;base64,${project.image.imageBase64}`" class="card-img-top px-0" alt="" style="height: 200px;">
+                                <img :src="`data:image/jpeg;base64,${project.image.imageBase64}`" class="card-img-top px-0" alt="project image thumbnail" style="height: 200px;">
                                 <!-- Only for staff -->
                                 <div
                                 v-if="user.userType == 'staff'"
