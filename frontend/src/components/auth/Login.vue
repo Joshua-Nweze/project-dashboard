@@ -67,18 +67,9 @@ import { useRouter } from 'vue-router';
 import { provide } from 'vue';
 import SmallLoadingSpinner from '../SmallLoadingSpinner.vue';
 
-    // import users from "@/db/users.json"
-    // import { ref } from "@vue/reactivity";
-    // import { useRouter } from "vue-router";
-    // import { useUsers } from "@/store/useUsers"
-    // import { storeToRefs } from "pinia";
 import Cookies from 'js-cookie'
 
 import Header from "./Header.vue";
-
-    // let users = useUsers()
-    
-    // let {user} = storeToRefs(users)
 
 let router = useRouter()
 

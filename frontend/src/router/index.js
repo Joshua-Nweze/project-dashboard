@@ -83,7 +83,7 @@ const routes = [
     }
   },
   {
-    path: '/setup/identify-password',
+    path: '/setup/password',
     name: 'setup-password',
     component: function () {
       return import(/* webpackChunkName: "SetupIdentifyPwdView" */ '../views/SetupIdentifyPwdView.vue')

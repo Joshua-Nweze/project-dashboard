@@ -9,6 +9,7 @@ import authRoutes from './routes/auth.routes.js'
 import adminRoutes from './routes/admin.routes.js'
 import userRoutes from './routes/user.routes.js'
 import projectsRoutes from './routes/projects.routes.js'
+import setupRoutes from './routes/setup.routes.js'
 
 import checkAuth from "./middleware/checkAuth.js";
 
@@ -25,6 +26,7 @@ app.use(cookieParser())
 
 app.use('/api/auth', authRoutes)
 app.use('/api/admin',  adminRoutes)
+app.use('/api/setup', setupRoutes)
 app.use('/api/user', checkAuth, userRoutes)
 app.use('/api/projects',  projectsRoutes)
 
