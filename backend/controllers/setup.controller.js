@@ -9,7 +9,7 @@ async function setupAccCheckMail(req, res) {
         let user = await Invitee.findOne({ email })
 
         if(!user) {
-            res.status(403).json({ message: 'You have not been invited to be a staff' })
+            res.status(401).json({ message: 'You have not been invited to be a staff' })
             return
         }
 
@@ -33,10 +33,10 @@ async function setupAccCheckPwd(req, res) {
         let comparePwd = await bcrypt.compare(password, user.password)
 
         if (comparePwd) {
-            res.status(200).json({ message: 'Login successful' })
+            res.status(200).json({ message: 'Authentication successful' })
             return
         } else {
-            res.status(403).json({ message: 'Incorrect password' })
+            res.status(401).json({ message: 'Incorrect password' })
             return
         }
     } catch (error) {
@@ -56,11 +56,16 @@ async function setupAccDetails(req, res) {
             return
         }
         if (!comparePwd) {
-            res.status(403).json({ message: 'Incorrect password' })
+            res.status(401).json({ message: 'Incorrect password' })
             return
         }
 
-        if (!email || !password || !name || !lga || !phoneNumber) {
+        if (!email || !password) {
+            res.status(400).json({ message: 'Something went wrong, try inputting your password again' })
+            return
+        }
+
+        if (!name || !lga || !phoneNumber) {
             res.status(400).json({ message: 'All inputs are required' })
             return
         }

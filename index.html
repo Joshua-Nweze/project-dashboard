@@ -1,22 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Text Effect</title>
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f0f0f0;
+    }
+
+    #text {
+      font-size: 2em;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+  </style>
 </head>
 <body>
-    <img id="img" src="" alt="img" srcset="">
+  <div id="text">FOLLOW ME FOR MORE WEB DEV TIPS</div>
 
-    <script>
-        let img = document.getElementById('img');
-        fetch('http://localhost:3000/api/projects/get?id=6548d29c65e0168971be8cf8')
-            .then(res => res.json())
-            .then(data => {
-                console.log(data.imageBase64)
-                img.src=`data:image/jpeg;base64,${data.imageBase64}`;
-            })
-        console.log(img.src)
-    </script>
+  <script>
+    const textElement = document.getElementById('text');
+    const originalText = textElement.innerText;
+
+    // Enter all characters in the word you want to animate including space if 
+    // there is any
+    let chars = ' ABCDEFGHIJKLMNOPGRSTUVWXYZ'
+    chars = chars.split('')
+
+    async function animateText() {
+        textElement.innerHTML = '';
+        let newHTML = [];
+
+        for (let i = 0; i < originalText.length; i++) {
+            let foundMatch = false;
+
+            for (let j = 0; j < chars.length; j++) {
+                if (originalText.charAt(i) == chars[j]) {
+                    await delay(50) // enter your desired speed in milliseconds;
+                    console.log(originalText.charAt(i));
+                    newHTML[i] = originalText[i]
+                    textElement.innerHTML = newHTML.join('')
+                    foundMatch = true;
+                    break; // Exit the loop when a match is found
+                }
+
+                if (!foundMatch) {
+                    await delay(50) // enter your desired speed in milliseconds;
+                    console.log(chars[j]);
+                    newHTML[i] = chars[j]
+                    textElement.innerHTML = newHTML.join('')
+                }
+            }
+
+            if (foundMatch) {
+                continue;
+            }
+        }
+    }
+
+    function delay(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    animateText();
+
+  </script>
 </body>
 </html>

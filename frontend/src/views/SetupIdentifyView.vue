@@ -34,10 +34,18 @@ import router from '@/router';
 
 let email = ref('')
 let feedback = ref(null)
+let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 
 function next() {
+    feedback.value = null
+
     if (!email.value) {
         feedback.value = 'Please enter your email'
+        return
+    }
+
+    if (!emailRegex.test(email.value)) {
+        feedback.value = 'Please enter a valid email'
         return
     }
 

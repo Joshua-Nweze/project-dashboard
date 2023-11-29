@@ -7,6 +7,6 @@ let { setupAccCheckMail, setupAccCheckPwd, setupAccDetails } = SetupController
 
 router.post('/check-email', setupAccCheckMail )
 router.post('/check-password', setupAccCheckPwd)
-router.post('/setup', setupAccDetails)
+router.post('/setup-details', setupAccDetails)
 
 export default router

@@ -43,7 +43,9 @@
 import Header from '@/components/auth/Header.vue';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
-import SmallLoadingSpinner from '@/components/SmallLoadingSpinner.vue'; 
+import SmallLoadingSpinner from '@/components/SmallLoadingSpinner.vue';
+import { AES }  from 'crypto-js'
+import router from '@/router';
 
 let route = useRoute()
 let feedback = ref('')
@@ -55,6 +57,11 @@ let isChecking = ref(false)
 let status = ref(null)
 
 async function check() {
+    if (!email.value || !password.value) {
+        feedback.value = 'All inputs are required'
+        return
+    }
+
     feedback.value = status.value = null
     isChecking.value = true
 
@@ -68,6 +75,15 @@ async function check() {
     })
 
     let res = await req.json()
+
+    if (req.status == 200) {
+        let encpwd = AES.encrypt(password.value, process.env.VUE_APP_CRYPTO_KEY).toString();
+        console.log(encpwd)
+
+        router.push(`/setup/details?email=${email.value}&r=${encpwd}`)
+    } else {
+        password.value = ''
+    }
 
     isChecking.value = false
     feedback.value = res.message

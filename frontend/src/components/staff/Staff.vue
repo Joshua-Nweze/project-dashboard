@@ -168,12 +168,21 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
+
+                                <div v-if="inviteFeedback" class="alert alert-dismissible fade show" :class="[ inviteStatus == 200 ? 'alert-success' : 'alert-warning' ]" role="alert">
+                                    {{ inviteFeedback }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" @click="inviteFeedback = inviteStatus = null"></button>
+                                </div>
+
                                 <label for="inviteeEmail">Staff email</label>
-                                <input type="text" class="form-control" id="inviteeEmail" placeholder="johndoe@gmail.com">
+                                <input type="text" class="form-control" id="inviteeEmail" placeholder="johndoe@gmail.com" v-model="inviteeEmail">
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-success">Invite</button>
+                                <button type="button" class="btn btn-success" @click="inviteStaff">
+                                    <span v-if="!isInviting">Invite</span>
+                                    <SmallLoadingSpinner v-else />
+                                </button>
                             </div>
                             </div>
                         </div>
@@ -314,6 +323,35 @@ function clearFeedbackAndStatus() {
     feedback.value = status.value = null
 }
 
+let inviteeEmail = ref('')
+let isInviting = ref(false)
+let inviteFeedback = ref(null)
+let inviteStatus = ref(null)
+
+async function inviteStaff() {
+    isInviting.value = true
+    inviteFeedback.value = inviteStatus.value = null
+
+    let req = await fetch('http://localhost:3000/api/admin/invite-staff', {
+        method: 'POST',
+        headers: { 'Content-type': 'application/json' },
+        body: JSON.stringify({
+            adminId: user.value.id,
+            email: inviteeEmail.value
+        })
+    })
+
+    let res = await req.json()
+
+    isInviting.value = false
+    inviteStatus.value = req.status
+    inviteFeedback.value = res.message
+    inviteeEmail.value  = ''
+
+    setTimeout(() => {
+        inviteFeedback.value = inviteStatus.value = null
+    }, 5000)
+}
 </script>
 
 <style scoped>
