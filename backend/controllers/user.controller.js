@@ -155,7 +155,7 @@ async function deleteAccount(req, res){
                 }
 
             } else {
-                res.status(403).json({ message: 'Incorrect password' })
+                res.status(401).json({ message: 'Incorrect password' })
                 return
             }
         }
