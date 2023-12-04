@@ -38,9 +38,9 @@
                          v-model="password">
                     </div>
 
-                    <div class="forgot-pwd">
+                    <RouterLink to="/forgot-password" class="link-sm">
                         Forgot password
-                    </div>
+                    </RouterLink>
 
                     <div class="d-flex justify-content-end">
                             <button class="btn btn-secondary" :class="{'disable-click': loading}" @click="login">
@@ -51,6 +51,14 @@
                                 <SmallLoadingSpinner v-else />
                             </button>
                     </div>
+
+                    <div class="link-sm text-center mt-5">
+                        Have you been invited to be a staff?
+                        <RouterLink to="/setup/identify">
+                            Setup account
+                        </RouterLink>
+                    </div>
+                    
                     
                 </div>
 
@@ -162,7 +170,7 @@ async function check() {
         display: none;
     }
 
-    .forgot-pwd{
+    .link-sm{
         font-size: 12px;
     }
 

@@ -95,6 +95,27 @@ const routes = [
     component: function () {
       return import(/* webpackChunkName: "SetupDetailsView" */ '../views/SetupDetailsView.vue')
     }
+  },
+  {
+    path: '/forgot-password',
+    name: 'forgot-password',
+    component: function () {
+      return import(/* webpackChunkName: "ForgotPasswordView" */ '../views/ForgotPasswordView.vue')
+    }
+  },
+  {
+    path: '/forgot-password-otp',
+    name: 'forgot-password-otp',
+    component: function () {
+      return import(/* webpackChunkName: "ForgotPasswordOtpView" */ '../views/ForgotPasswordOtpView.vue')
+    }
+  },
+  {
+    path: '/reset-password',
+    name: 'reset-password',
+    component: function () {
+      return import(/* webpackChunkName: "ResetPasswordView" */ '../views/ResetPasswordView.vue')
+    }
   }
 ]
 

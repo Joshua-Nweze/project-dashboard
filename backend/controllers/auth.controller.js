@@ -67,7 +67,7 @@ async function forgotPassword(req, res) {
         let isBlocked = await BlockedUsers.findOne({ email })
 
         if(!email){
-            res.status(400).json({ message: 'All inouts are required' })
+            res.status(400).json({ message: 'Inout is required' })
             return
         }
 
@@ -120,7 +120,8 @@ async function forgotPassword(req, res) {
                                     from: 'jnweze2@gmail.com',
                                     to: email,
                                     subject: 'Reset password OTP',
-                                    html: `<p>Don't share with anyone.</p><p>Use this OTP to reset your password.</p><p><strong>This OTP expires after 15 minutes.</strong/></p><p style="font-size: 22px; color: indigo">${otpValue}</p> <p>If you didn't try resetting your password, ignore this email.</p>`
+                                    html: `<p>Don't share with anyone.</p><p>Use this OTP to reset your password.</p><p><strong>This OTP expires after 15 minutes.</strong/></p><p style="font-size: 22px; color: #6E6D70">${otpValue}</p> <p>If you didn't try resetting your password, ignore this email.</p>
+                                    `
                                 }
 
                                 // Setting up nodemailer
@@ -161,7 +162,7 @@ async function validateOTP(req, res) {
             hashedOTP = userOTP.OTP
 
         } else {
-            res.status(404).json({ message: 'OTP not found' })
+            res.status(400).json({ message: 'Invalid OTP' })
             return
         }
 
@@ -171,6 +172,7 @@ async function validateOTP(req, res) {
             return
         }
 
+        // delete opt if expired
         if (expiresAt < Date.now()) {
             OTP.deleteOne({email})
                 .then(() => {
@@ -197,7 +199,7 @@ async function validateOTP(req, res) {
 
 async function resetPassword(req, res) {
     try {
-        let { email, password, password_confirm } = req.body
+        let { email, otp, password, password_confirm } = req.body
         let hashedPwd
 
         if(password.length < 6){
@@ -211,6 +213,25 @@ async function resetPassword(req, res) {
         } else {
             hashedPwd = await bcrypt.hash(password, 10)
         } 
+
+        let checkOtp = await OTP.findOne({ email })
+
+        if (!checkOtp) {
+            res.status(400).json({ message: 'OTP not found' })
+            return
+        }
+
+        let isOtpValid = await bcrypt.compare(otp, checkOtp.OTP)
+
+        if (!otp) {
+            res.status(400).json({ message: 'Invalid OTP' })
+            return
+        }
+
+        if (!isOtpValid) {
+            res.status(400).json({ message: 'Invalid OTP' })
+            return
+        }
 
         const user = await Users.findOne({ email })
 
@@ -227,6 +248,7 @@ async function resetPassword(req, res) {
             .catch((e) => res.status(500).json({ message: 'Something went wrong, try again later' }))
 
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: 'Something went wrong, try again later' })
     }
 }

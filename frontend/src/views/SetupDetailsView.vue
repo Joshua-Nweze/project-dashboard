@@ -60,7 +60,7 @@
 import Header from '@/components/auth/Header.vue';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
-import CryptoJS, { AES } from 'crypto-js';
+import { decrypt } from '../composables/enc'
 import SmallLoadingSpinner from '@/components/SmallLoadingSpinner.vue';
 import router from '@/router';
 
@@ -73,7 +73,7 @@ let phoneNumber = ref('')
 let feedback = ref(null)
 let status = ref(null)
 
-let email = ref(route.query.email)
+let email = ref(route.query.q)
 let encPwd = ref(route.query.r)
 
 let phoneNumberRegex = /^(\+234\d{10}|0[789][01]\d{8})$/
@@ -82,12 +82,18 @@ let isCreatingAccount = ref(false)
 let countdown = ref(5)
 
 async function createAccount() {
-    isCreatingAccount.value = true
     feedback.value = status.value = null
 
-    const pwd = await AES.decrypt(encPwd.value, process.env.VUE_APP_CRYPTO_KEY).toString(CryptoJS.enc.Utf8);
+    let pwd = decrypt(encPwd.value)
+    email.value = decrypt(email.value)
+    console.log(pwd, email.value)
+
+    if (!email.value || !encPwd.value) {
+        feedback.value = 'Something went wrong, looks like your link is broken.'
+        return
+    }
     
-    if(!name.value || !email.value || !phoneNumber.value) {
+    if(!name.value || !lga.value || !phoneNumber.value) {
         feedback.value = 'All inputs are required'
         return
     }
@@ -96,6 +102,9 @@ async function createAccount() {
         feedback.value = 'Enter valid Nigerian phone number'
         return
     }
+
+    isCreatingAccount.value = true
+
 
     let req = await fetch('http://localhost:3000/api/setup/setup-details', {
         method: 'POST',
@@ -124,8 +133,6 @@ async function createAccount() {
                 router.push('/')
             }
         }, 1000)
-
-        
     }
 }
 </script>

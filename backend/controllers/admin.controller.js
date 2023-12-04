@@ -45,7 +45,15 @@ async function inviteStaff(req, res) {
                 `<p>You've been invited to be a staff in Enugu State Ministry of Works dashboard.</p>
                 <p>Use your email to log in. <br /> This is your password: <b>${randPwd}</b> <br /> You can change it after setting up your account.</p>
                 <p><b>DON'T SHARE THIS WITH ANYONE</b></p>
-                <p>Go to ..link... to setup your account. You have to set up your account so you can log in</p>`
+                <p>Go to ..link... to setup your account. You have to set up your account so you can log in</p>
+                
+
+                <p>Click the button bellow to setup your account</p>
+                                    
+                <a href="" target="_blank">
+                    <button style="padding: 6px 14px; border-radius: 6px; border: none; background: #6E6D70; text-align: center;">Setup account<button>
+                </a>
+                `
             )
 
             res.status(200).json({ message: 'Invite sent successfully' })

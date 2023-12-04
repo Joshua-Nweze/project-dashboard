@@ -31,6 +31,7 @@
 import Header from '@/components/auth/Header.vue';
 import { ref } from 'vue';
 import router from '@/router';
+import { encrypt } from '../composables/enc'
 
 let email = ref('')
 let feedback = ref(null)
@@ -49,7 +50,8 @@ function next() {
         return
     }
 
-    router.push(`/setup/password?email=${email.value}`)
+    email.value = encrypt(email.value)
+    router.push(`/setup/password?q=${email.value}`)
 }
 </script>
 
@@ -83,4 +85,5 @@ function next() {
 
 .row {
     margin-top: 80px;
-}</style>
+}
+</style>

@@ -45,13 +45,16 @@ import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 import SmallLoadingSpinner from '@/components/SmallLoadingSpinner.vue';
 import { AES }  from 'crypto-js'
+import { encrypt, decrypt } from '../composables/enc'
 import router from '@/router';
 
 let route = useRoute()
 let feedback = ref('')
 
-let email = ref(route.query.email)
+let email = ref(route.query.q)
 let password = ref('')
+
+email.value = decrypt(email.value)
 
 let isChecking = ref(false)
 let status = ref(null)
@@ -77,10 +80,10 @@ async function check() {
     let res = await req.json()
 
     if (req.status == 200) {
-        let encpwd = AES.encrypt(password.value, process.env.VUE_APP_CRYPTO_KEY).toString();
-        console.log(encpwd)
+        password.value = encrypt(password.value)
+        email.value = encrypt(email.value)
 
-        router.push(`/setup/details?email=${email.value}&r=${encpwd}`)
+        router.push(`/setup/details?q=${email.value}&r=${password.value}`)
     } else {
         password.value = ''
     }
