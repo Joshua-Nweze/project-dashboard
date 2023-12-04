@@ -13,21 +13,21 @@
 
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="basic-addon1">@</span>
-                        <input type="email" @keypress.enter="login" class="form-control" placeholder="E-mail"
+                        <input type="email" @keypress.enter="check" class="form-control" placeholder="E-mail"
                             aria-label="E-mail" aria-describedby="basic-addon1" v-model="email">
                     </div>
 
                     <div>
                         <div class="input-group mb-3">
                             <span class="input-group-text" id="basic-addon1"><i class="bi bi-lock"></i></span>
-                            <input type="password" @keypress.enter="login" class="form-control" placeholder="Password"
+                            <input type="password" @keypress.enter="check" class="form-control" placeholder="Password"
                                 aria-label="Password" aria-describedby="basic-addon1" v-model="password">
                         </div>
                         <div class="form-text" id="basic-addon4">Enter password sent to your email.</div>
                     </div>
 
                     <div class="d-flex justify-content-end">
-                        <button class="btn btn-secondary" @click="check">
+                        <button class="btn btn-secondary" @click="check" @keypress.enter="check">
                             <span v-if="!isChecking">Continue</span>
                             <SmallLoadingSpinner v-else />
                         </button>

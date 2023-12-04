@@ -56,6 +56,12 @@
                 </div>
             </div>
 
+            <div v-if="user.userType == 'staff'" class="row justify-content-center">
+                <div class="mx-md-5 px-md-5r col col-md-8 mt-5 py-5">
+                    <DeleteAccount />
+                </div>
+            </div>
+
             <!-- Change Pwd Modal -->
             <div class="modal fade" id="changePwdModal" tabindex="-1" aria-labelledby="changePwdModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -117,6 +123,7 @@ import { inject, ref } from "vue";
 import { storeToRefs } from "pinia";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import SmallLoadingSpinner from "@/components/SmallLoadingSpinner.vue";
+import DeleteAccount from "@/components/account/DeleteAccount.vue";
 
 let userEmail = inject('userEmail')
 
@@ -147,9 +154,9 @@ let isEditing = ref(false)
 let feedback = ref('')
 let status = ref('')
 
-async function editAccount() {
-    isEditing.value = true
+let phoneNumberRegex = /^(\+234\d{10}|0[789][01]\d{8})$/
 
+async function editAccount() {
     feedback.value = status.value = ''
 
     if(!name.value || !phone.value || !lga.value || !useUser || ! user.value.id) {
@@ -159,13 +166,12 @@ async function editAccount() {
         isEditing.value = false
         return
     }
-    if (typeof phone.value != 'number') {
-        feedback.value = 'Phone number must be a number'
-        status.value = 400
-
-        isEditing.value = false
+    if (!phoneNumberRegex.test(phone.value)) {
+        feedback.value = 'Enter valid Nigerian phone number'
         return
     }
+
+    isEditing.value = true
 
     let req = await userStore.editAccount(
         name.value,

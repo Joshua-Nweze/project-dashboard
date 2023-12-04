@@ -16,20 +16,25 @@ async function editAcc(req, res) {
         if (!user) {
             res.status(404).json({ message: 'User not found' })
             return
-        } else {
-            Users.updateOne(
-                { _id: id },
-                { name, phoneNumber, lga }
-            ) 
-                .then(() => {
-                    res.status(200).json({ message: 'Details updated successfully' })
-                })
-                .catch((error) => {
-                    console.log(error)
-                    res.status(500).json({ message: 'Something went wrong, try again later' })
-                    return
-                })
         }
+
+        if (user.userType == 'admin') {
+            res.status(401).json({ message: 'You are not allowed to perform this action' })
+            return   
+        }
+
+        Users.updateOne(
+            { _id: id },
+            { name, phoneNumber, lga }
+        ) 
+            .then(() => {
+                res.status(200).json({ message: 'Details updated successfully' })
+            })
+            .catch((error) => {
+                console.log(error)
+                res.status(500).json({ message: 'Something went wrong, try again later' })
+                return
+            })
 
     } catch (error) {
         res.status(500).json({ message: 'Something went wrong, try again later' })
@@ -111,7 +116,7 @@ async function deleteAccount(req, res){
         let { email, password, id } = req.body
 
         if(!email || !password || !id) {
-            res.status(400).json({ message: 'All inputs are required' })
+            res.status(400).json({ message: 'Missing req.body values' })
             return
         }
 
@@ -137,10 +142,12 @@ async function deleteAccount(req, res){
                     res.status(500).json({ message: 'Something went wrong, try again later' })
                     return
                 } else {
-                    let del = await Projects.deleteMany({ staffId: id })
+                    let delUserProjects = await Projects.deleteMany({ staff: id })
 
-                    if (!del) {
+                    if (!delUserProjects) {
                         res.status(500).json({ message: 'Something went wrong, try again later' })
+
+                        return
                     }
 
                     res.status(200).json({ message: 'Account deleted' })

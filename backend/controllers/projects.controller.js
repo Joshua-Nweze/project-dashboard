@@ -74,6 +74,7 @@ async function getProject(req, res) {
     }
 }
 
+// for admin
 async function getAllProjects(req, res) {
     try {
         let { id } = req.query
@@ -87,7 +88,7 @@ async function getAllProjects(req, res) {
 
         let projects = await Project.find()
 
-        if (!projects) {
+        if (!projects.length) {
             res.status(404).json({ message: 'No project available' })
             return
         }
@@ -98,6 +99,7 @@ async function getAllProjects(req, res) {
     }
 }
 
+// for staff
 async function getStaffProjects(req, res) {
     try {
         let { staffId } = req.query

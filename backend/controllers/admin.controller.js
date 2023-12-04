@@ -51,7 +51,7 @@ async function inviteStaff(req, res) {
                 <p>Click the button bellow to setup your account</p>
                                     
                 <a href="" target="_blank">
-                    <button style="padding: 6px 14px; border-radius: 6px; border: none; background: #6E6D70; text-align: center;">Setup account<button>
+                    <button style="padding: 6px 14px; border-radius: 6px; border: none; background: #6E6D70; text-align: center; color: white">Setup account<button>
                 </a>
                 `
             )

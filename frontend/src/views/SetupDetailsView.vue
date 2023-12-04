@@ -15,7 +15,7 @@
                     </div>
 
                     <div class="input-group mb-3">
-                        <input type="text" @keypress.enter="login" class="form-control" placeholder="Full Name" aria-label="E-mail" aria-describedby="basic-addon1" v-model="name">
+                        <input type="text" @keypress.enter="createAccount" class="form-control" placeholder="Full Name" aria-label="E-mail" aria-describedby="basic-addon1" v-model="name">
                     </div>
                     <div class="input-group mb-3">
                         <select name="lga" class="form-control" v-model="lga">
@@ -40,11 +40,11 @@
                         </select>
                     </div>
                     <div class="input-group mb-3">
-                        <input type="tel" @keypress.enter="login" class="form-control" placeholder="Phone" aria-label="E-mail" aria-describedby="basic-addon1" v-model="phoneNumber">
+                        <input type="tel" @keypress.enter="createAccount" class="form-control" placeholder="Phone" aria-label="E-mail" aria-describedby="basic-addon1" v-model="phoneNumber">
                     </div>
 
                     <div class="d-flex justify-content-end">
-                        <button class="btn btn-secondary" @click="createAccount">
+                        <button class="btn btn-secondary" @click="createAccount" >
                             <span v-if="!isCreatingAccount">Create account</span>
                             <span class="px-3" v-else><SmallLoadingSpinner /></span>
                         </button>
@@ -79,7 +79,7 @@ let encPwd = ref(route.query.r)
 let phoneNumberRegex = /^(\+234\d{10}|0[789][01]\d{8})$/
 
 let isCreatingAccount = ref(false)
-let countdown = ref(5)
+let countdown = ref(3)
 
 async function createAccount() {
     feedback.value = status.value = null

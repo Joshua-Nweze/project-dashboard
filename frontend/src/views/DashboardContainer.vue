@@ -23,6 +23,8 @@ import Sidenav from "@/components/navbar/Sidenav"
 import Footer from "@/components/Footer"
 import {  storeToRefs } from "pinia"
 
+import { useUser } from "@/store/useUser"
+
 import { onMounted, provide, ref } from 'vue'
 import { jwtDecode } from "jwt-decode"
 import Cookies from "js-cookie";
@@ -30,7 +32,6 @@ import Cookies from "js-cookie";
 let cookie = Cookies.get('token')
 let decoded = jwtDecode(cookie)
 
-import { useUser } from "@/store/useUser"
 let userStore = useUser()
 let { user } =  storeToRefs(userStore)
 
