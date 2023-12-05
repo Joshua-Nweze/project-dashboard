@@ -93,12 +93,15 @@ import { ref } from "@vue/reactivity";
 import { inject } from "vue";
 import { useUser } from "@/store/useUser";
 import { storeToRefs } from "pinia";
+import { useProjects } from "@/store/useProjects";
 
 import LoadingSpinner from "../LoadingSpinner.vue";
 import SmallLoadingSpinner from "../SmallLoadingSpinner.vue";
 
 let userStore = useUser()
 let { user } = storeToRefs(userStore)
+
+let projectsStore = useProjects()
 
 const userEmail = inject('userEmail')
 let isDataReady = ref(false)
@@ -165,6 +168,8 @@ async function submit() {
 
     status.value = req.status
     feedback.value = res.message
+
+    await projectsStore.getStaffProjects(user.value.id)
 
     loading.value = false
 }

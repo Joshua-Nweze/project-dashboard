@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-    import AddProject from "@/components/projects/AddProject"
+import AddProject from "@/components/projects/AddProject"
 </script>
 
 <style>

@@ -55,14 +55,10 @@ let userStore = useUser()
 
 let { user } = storeToRefs(userStore)
 
-console.log(user.value)
-
 let password = ref(null)
 
 let feedback = ref('')
 let isDeleting = ref(false)
-
-let delAccountModal = ref(null)
 
 let showDelAccSection = ref(false)
 

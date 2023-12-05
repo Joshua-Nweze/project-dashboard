@@ -8,7 +8,8 @@ const routes = [
   {
     path: '/',
     name: 'auth',
-    component: AuthView
+    component: AuthView,
+		mete: {requiresAuth: false},
   },
   {
     path: '/dashboard',
@@ -125,14 +126,29 @@ const router = createRouter({
   linkActiveClass: "active"
 })
 
-router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (Cookies.get("token") == null) {
+router.beforeEach(async (to, from, next) => {
+	let token = Cookies.get('token')
+
+	let req = await fetch('http://localhost:3000/api/validate-token', {
+		method: 'POST',
+		headers: { 'Content-type': 'application/json' },
+		body: JSON.stringify({ token })
+	})
+
+	let res = await req.json()
+
+  if (to.meta.requiresAuth) {
+    if (token == null) {
       next({ path: "/" });
+
     } else {
-      next();
+			next()
     }
   } else {
+
+		if (res.valid && !to.meta.requiresAuth) {
+			next({ path: '/dashboard' })
+		}
     next();
   }
 });

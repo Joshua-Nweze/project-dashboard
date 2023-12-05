@@ -182,7 +182,6 @@ import { useAdmin } from "@/store/useAdmin";
 import { useProjects } from "@/store/useProjects";
 import Chart from 'chart.js/auto';
 
-
 import LoadingSpinner from "../LoadingSpinner.vue";
 
 let userStore = useUser()
@@ -211,6 +210,7 @@ async function getDataOnLoad() {
     if(user.value.userType == 'admin') {
         await adminStore.getAllStaff(user.value.id)
     }
+
     isDataReady.value = true
 }
 getDataOnLoad()
