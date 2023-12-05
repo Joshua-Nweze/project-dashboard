@@ -34,9 +34,9 @@
                             <span class="col-9 align-items-center">Account</span>
                         </router-link>
                     </div>
-                    </div>
                 </div>
             </div>
+        </div>
     </div>
 </template>
 

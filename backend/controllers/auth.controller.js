@@ -262,22 +262,11 @@ async function logout(req, res) {
     }
 }
 
-// checking cookie
-// remove later
-function checkCokie(req, res) {
-    try {
-        console.log(req.cookies.token)
-        res.json('ok')
-    } catch (error) {
-        console.log(error)
-    }
-}
 
 export default {
     login,
     forgotPassword,
     validateOTP,
     resetPassword,
-    logout,
-    checkCokie
+    logout
 }

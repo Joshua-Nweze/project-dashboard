@@ -13,9 +13,9 @@
                         <span><i class="bi bi-person-circle"></i></span>
                     </router-link>
 
-                    <router-link to="/" class="router-link">
+                    <span @click="logout">
                         <span class=""><i class="bi bi-box-arrow-left"></i></span>
-                    </router-link>
+                    </span>
                 </div>
             </div>
         </nav>
@@ -60,7 +60,7 @@
                     </div>
 
                     <div class="row mt-auto">
-                        <div class="col-12 btn btn-outline-light">
+                        <div class="col-12 btn btn-outline-light" @click="logout">
                             Logout
                         </div>
                     </div>
@@ -76,6 +76,7 @@ import { useRouter } from 'vue-router';
 import { useUser } from '@/store/useUser';
 import { storeToRefs } from 'pinia';
 import { inject, ref } from 'vue';
+import Cookies from 'js-cookie'
 
 let userStore = useUser()
 const userEmail = inject('userEmail')
@@ -100,6 +101,16 @@ async function getDataOnLoad() {
     dataReady.value = true
 }
 getDataOnLoad()
+
+async function logout() {
+    let req = await fetch('http://localhost:3000/api/auth/logout', { credentials: 'include' })
+
+    if(req.status == 200) {
+        Cookies.remove('token')
+        router.push('/')
+    }
+}
+
 </script>
 
 <style scoped>

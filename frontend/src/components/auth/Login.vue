@@ -61,9 +61,6 @@
                     
                     
                 </div>
-
-                <button @click="logout">Logout</button>
-                <button @click="check">check</button>
             </div>
         </div>
     </div>
@@ -134,22 +131,6 @@ async function login() {
 function clearFeedbackAndStatus () {
     feedback.value = null;
     status.value = null;
-}
-async function logout() {
-    let req = await fetch('http://localhost:3000/api/auth/logout', { credentials: 'include' })
-
-    if(req.status == 200) {
-        Cookies.remove('token')
-    }
-}
-
-async function check() {
-    let req = await fetch('http://localhost:3000/api/auth/check', { credentials: 'include' })
-    if(req.status == 200 ) {
-        const token = Cookies.get('token'); // Replace 'token' with the actual name of your JWT cookie
-        console.log('Token:', token)
-    }
-    console.log(await Cookies.get('token'))
 }
 </script>
 

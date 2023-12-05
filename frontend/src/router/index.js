@@ -137,8 +137,6 @@ router.beforeEach(async (to, from, next) => {
 
 	let res = await req.json()
 
-	console.log(res.valid)
-
   if (to.meta.requiresAuth) {
     if (token == null) {
       next({ path: "/" });
