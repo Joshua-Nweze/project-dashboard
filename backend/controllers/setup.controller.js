@@ -6,6 +6,13 @@ async function setupAccCheckMail(req, res) {
     try {
         let { email } = req.body
 
+        let userWithEmail = await Users.findOne({ email })
+
+        if (userWithEmail) {
+            res.status(400).json({ message: 'User with email exists' })
+            return
+        }
+
         let user = await Invitee.findOne({ email })
 
         if(!user) {
@@ -22,6 +29,13 @@ async function setupAccCheckMail(req, res) {
 async function setupAccCheckPwd(req, res) {
     try {
         let { email, password } = req.body
+
+        let userWithEmail = await Users.findOne({ email })
+
+        if (userWithEmail) {
+            res.status(400).json({ message: 'User with email exists' })
+            return
+        }
 
         let user = await Invitee.findOne({ email })
 
@@ -47,6 +61,13 @@ async function setupAccCheckPwd(req, res) {
 async function setupAccDetails(req, res) {
     try {
         let { email, password, name, lga, phoneNumber } = req.body
+
+        let userWithEmail = await Users.findOne({ email })
+
+        if (userWithEmail) {
+            res.status(400).json({ message: 'User with email exists' })
+            return
+        }
 
         let user = await Invitee.findOne({ email })
         let comparePwd = await bcrypt.compare(password, user.password)
@@ -89,13 +110,15 @@ async function setupAccDetails(req, res) {
 
         let createAccount = await newUser.save()
 
-        if(!createAccount){
+        let delFromInvitee = await Invitee.deleteOne({ email })
+
+        if(!createAccount || !delFromInvitee){
             res.status(500).json({ message: 'Something went wrong, try again later' })
+            return
         }
 
         res.status(201).json({ message: 'Account setup successfull, proceed to login page to login' })
     } catch (error) {
-        console.log(error)
         res.status(500).json({ message: 'Something went wrong, try again later' })
     }
 }

@@ -18,7 +18,10 @@
                     </div>
 
                     <div class="d-flex justify-content-end">
-                        <button class="btn btn-secondary" @keypress.enter="next" @click="next">Continue</button>
+                        <button class="btn btn-secondary" @keypress.enter="next" @click="next">
+                            <span v-if="!isChecking">Continue</span>
+                            <span v-else><SmallLoadingSpinner /></span>
+                        </button>
                     </div>
 
                 </div>
@@ -32,12 +35,15 @@ import Header from '@/components/auth/Header.vue';
 import { ref } from 'vue';
 import router from '@/router';
 import { encrypt } from '../composables/enc'
+import SmallLoadingSpinner from '@/components/SmallLoadingSpinner.vue';
 
 let email = ref('')
 let feedback = ref(null)
 let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
 
-function next() {
+let isChecking = ref(false)
+
+async function next() {
     feedback.value = null
 
     if (!email.value) {
@@ -50,8 +56,23 @@ function next() {
         return
     }
 
-    email.value = encrypt(email.value)
-    router.push(`/setup/password?q=${email.value}`)
+    isChecking.value = true
+
+    let req = await fetch('http://localhost:3000/api/setup/check-email', {
+        method: 'POST',
+        headers: { 'Content-type': 'application/json' },
+        body: JSON.stringify({ email: email.value })
+    })
+
+    let res = await req.json()
+
+    if(req.status == 200){
+        email.value = encrypt(email.value)
+        router.push(`/setup/password?q=${email.value}`)
+    }
+
+    feedback.value = res.message
+    isChecking.value = false
 }
 </script>
 

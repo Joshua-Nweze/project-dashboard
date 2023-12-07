@@ -14,6 +14,14 @@ async function inviteStaff(req, res) {
 
         let isAdmin = await Users.findById(adminId)
 
+        
+        let userWithEmail = await Users.findOne({ email })
+
+        if (userWithEmail) {
+            res.status(400).json({ message: 'User with email exists' })
+            return
+        }
+
         if(!isAdmin || isAdmin.userType != 'admin') {
             res.status(401).json({ message: 'You are not allowed to perform this action' })
             return
@@ -21,7 +29,6 @@ async function inviteStaff(req, res) {
 
         let randPwd = generatePwd()
         let hashedPwd = await bcrypt.hash(randPwd, 10)
-        console.log(randPwd)
 
         let newInvitee = new Invitee({
             email,
@@ -61,7 +68,6 @@ async function inviteStaff(req, res) {
             res.status(500).json({ message: 'Something went wrong while trying to send invite, try again later' })
         }
     } catch (error) {
-        console.log(error)
         res.status(500).json({ message: 'Something went wrong, try again later' })
     }
 }

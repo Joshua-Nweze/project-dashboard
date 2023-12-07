@@ -109,10 +109,15 @@
                         <div class="card my-4">
                             <div class="card-body">
                             <div class="fs-5 ">Unanswered staff invites</div>
-                                <div class="row my-2">
-                                    <div class="col-1">1</div>
-                                    <div class="col-7">row</div>
-                                    <div class="col-4 d-flex justify-content-end">row</div>
+                                <div>
+                                    <div class="row my-2">
+                                        <div class="col-1">1</div>
+                                        <div class="col-7">row</div>
+                                        <div class="col-4 d-flex justify-content-end">row</div>
+                                    </div>
+                                </div>
+                                <div class="fs-4 py-3 d-flex justify-content-center">
+                                    Nothing to show
                                 </div>
                             </div>
                         </div>

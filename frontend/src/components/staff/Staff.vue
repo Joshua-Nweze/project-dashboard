@@ -169,7 +169,7 @@
                             </div>
                             <div class="modal-body">
 
-                                <div v-if="inviteFeedback" class="alert alert-dismissible fade show" :class="[ inviteStatus == 200 ? 'alert-success' : 'alert-warning' ]" role="alert">
+                                <div v-if="inviteFeedback" class="alert alert-dismissible fade show" :class="[ inviteStatus == 200 ? 'alert-success' : 'alert-danger' ]" role="alert">
                                     {{ inviteFeedback }}
                                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" @click="inviteFeedback = inviteStatus = null"></button>
                                 </div>
