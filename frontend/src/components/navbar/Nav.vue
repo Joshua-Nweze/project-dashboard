@@ -2,29 +2,33 @@
     <div>
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
-                <button  class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample"
+                    aria-controls="offcanvasExample">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <a class="navbar-brand"><h1>ESHDC <span class="text-body-secondary">Data Dashboard</span></h1></a>
+                <a class="navbar-brand">
+                    <h1>ESHDC <span class="text-body-secondary">Data Dashboard</span></h1>
+                </a>
 
-                <div class="d-none d-lg-block justify-content-end nav-links">
+                <div class="d-none d-lg-flex gap-3 justify-content-end nav-links ">
 
                     <router-link to="/account" class="router-link">
-                        <span><i class="bi bi-person-circle"></i></span>
+                        <span><i class="bi bi-person-circle fs-4"></i></span>
                     </router-link>
 
-                    <span @click="logout">
-                        <span class=""><i class="bi bi-box-arrow-left"></i></span>
+                    <span class="me-3 logout" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                        <span class=""><i class="bi bi-box-arrow-left fs-4"></i></span>
                     </span>
                 </div>
             </div>
         </nav>
 
         <!-- Collapsible -->
-        <div v-if="dataReady" class="side-nav offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+        <div v-if="dataReady" class="side-nav offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
+            aria-labelledby="offcanvasExampleLabel">
             <div class="row d-flex justify-content-center pt-4 side-nav-items">
                 <div class="col-9 sidenav-brand d-flex flex-column" style="height: 90vh">
-                    <div class="offcanvas-header p-1" >
+                    <div class="offcanvas-header p-1">
                         <div class="offcanvas-title d-flex align-items-center gap-3" id="offcanvasExampleLabel">
                             <span><img src="../../assets/imgs/logo.png" alt="logo" class="logo rounded-circle"></span>
                             <span class="align-items-center">ESHDC</span>
@@ -33,27 +37,32 @@
                     </div>
                     <hr>
                     <div class="row items">
-                        <div class="col-12 sidebar-items" @click="goTo('/dashboard')"  data-bs-dismiss="offcanvas" aria-label="Close">
+                        <div class="col-12 sidebar-items" @click="goTo('/dashboard')" data-bs-dismiss="offcanvas"
+                            aria-label="Close">
                             <span class="col-3"><i class="bi bi-house"></i></span>
                             <span class="col-9 align-items-center">Dashboard</span>
                         </div>
 
-                        <div v-if="!isAdmin" class="col-12 sidebar-items" @click="goTo('/add-project')" data-bs-dismiss="offcanvas" aria-label="Close">
+                        <div v-if="!isAdmin" class="col-12 sidebar-items" @click="goTo('/add-project')"
+                            data-bs-dismiss="offcanvas" aria-label="Close">
                             <span class="col-3"><i class="bi bi-plus"></i></span>
                             <span class="col-9 align-items-center">Add project</span>
                         </div>
 
-                        <div class="col-12 sidebar-items"  @click="goTo('/projects')" data-bs-dismiss="offcanvas" aria-label="Close">
+                        <div class="col-12 sidebar-items" @click="goTo('/projects')" data-bs-dismiss="offcanvas"
+                            aria-label="Close">
                             <span class="col-3"><i class="bi bi-cone"></i></span>
                             <span class="col-9 align-items-center">Projects</span>
                         </div>
 
-                        <div v-if="isAdmin" class="col-12 sidebar-items" @click="goTo('/staff')" data-bs-dismiss="offcanvas" aria-label="Close">
+                        <div v-if="isAdmin" class="col-12 sidebar-items" @click="goTo('/staff')" data-bs-dismiss="offcanvas"
+                            aria-label="Close">
                             <span class="col-3"><i class="bi bi-people"></i></span>
                             <span class="col-9 align-items-center">Staff</span>
                         </div>
 
-                        <div class="col-12 sidebar-items" @click="goTo('/account')" data-bs-dismiss="offcanvas" aria-label="Close">
+                        <div class="col-12 sidebar-items" @click="goTo('/account')" data-bs-dismiss="offcanvas"
+                            aria-label="Close">
                             <span class="col-3"><i class="bi bi-person-circle"></i></span>
                             <span class="col-9 align-items-center">Account</span>
                         </div>
@@ -63,6 +72,24 @@
                         <div class="col-12 btn btn-outline-light" @click="logout">
                             Logout
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Logout Modal -->
+        <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to logout?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary"  @click="logout" data-bs-dismiss="modal">Logout</button>
                     </div>
                 </div>
             </div>
@@ -93,7 +120,7 @@ function goTo(route) {
 
 let dataReady = ref(false)
 async function getDataOnLoad() {
-    if (!user.value ) {
+    if (!user.value) {
         await userStore.getUserDetails(userEmail)
     }
 
@@ -105,7 +132,7 @@ getDataOnLoad()
 async function logout() {
     let req = await fetch('http://localhost:3000/api/auth/logout', { credentials: 'include' })
 
-    if(req.status == 200) {
+    if (req.status == 200) {
         Cookies.remove('token')
         router.push('/')
     }
@@ -114,49 +141,50 @@ async function logout() {
 </script>
 
 <style scoped>
-h1{
+h1 {
     font-size: 20px;
 }
 
-.navbar{
+.navbar {
     margin: 0;
     background-color: var(--bs-gray-300);
 }
 
-.nav-links > .router-link{
+.nav-links>.router-link {
     padding: 0 5px;
 }
 
-.p-2{
-    padding: 0.2rem!important;
+.p-2 {
+    padding: 0.2rem !important;
 }
-.router-link{
+
+.router-link {
     text-decoration: none;
     color: #212529;
 }
 
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
-    .side-nav-items{
+    .side-nav-items {
         width: 65vw;
     }
 }
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
-    .side-nav-items{
+    .side-nav-items {
         width: 40vw;
     }
 }
 
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (min-width: 768px) {
-    .side-nav-items{
+    .side-nav-items {
         width: 40vw;
     }
 }
 
-.side-nav-items{
+.side-nav-items {
     height: 100vh;
     background-color: black;
     margin: 0;
@@ -169,7 +197,8 @@ h1{
 
     /* Hide scrollbar for IE, Edge add Firefox */
     -ms-overflow-style: none;
-    scrollbar-width: none; /* Firefox */
+    scrollbar-width: none;
+    /* Firefox */
 }
 
 /* background-color: rgba(100, 100, 100, .7); */
@@ -178,12 +207,12 @@ h1{
     display: none;
 }
 
-.logo{
+.logo {
     height: 30px;
     width: 30px;
 }
 
-.sidebar-items{
+.sidebar-items {
     /* padding-bottom: 15px; */
     margin: 7px 0;
     width: 100%;
@@ -198,4 +227,10 @@ h1{
     background: none;
     bottom: auto;
 }
-</style>
+
+.logout {
+    transform: rotate(180deg);
+}
+.logout:hover {
+    cursor: pointer;
+}</style>
