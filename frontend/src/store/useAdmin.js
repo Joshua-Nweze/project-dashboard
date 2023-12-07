@@ -5,7 +5,8 @@ export const useAdmin = defineStore("useAdmin", {
         staff: null,
         allProjects: [],
         allOngoingProjects: [],
-        allFinishedProjects: []
+        allFinishedProjects: [],
+        unansweredInvites: null
     }),
 
     actions: {
@@ -43,5 +44,25 @@ export const useAdmin = defineStore("useAdmin", {
                 status: req.status
             }
         },
+
+        async getUnansweredInvites(id){
+            let req = await fetch(`http://localhost:3000/api/admin/get-unanswered-invites?id=${id}`)
+            let res = await req.json()
+
+            this.unansweredInvites = res.message
+        },
+
+        async cancelInvite (id, email) {
+            let req = await fetch('http://localhost:3000/api/admin/cancel-invite', {
+                method: 'DELETE',
+                headers: { 'Content-type': 'application/json' },
+                body: JSON.stringify({
+                    id,
+                    email
+                })
+            })
+
+            this.getUnansweredInvites(id)
+        }
     }
 })

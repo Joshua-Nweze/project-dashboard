@@ -305,6 +305,63 @@ async function viewUser(req, res) {
     }
 }
 
+async function getUnansweredInvites(req, res) {
+    try {
+        let { id } = req.query
+
+        if (!id) {
+            res.status(401).json({ message: 'You are not allowed to perform this action' })
+            return
+        }
+
+        let user = await Users.findById(id)
+
+        if(user.userType != 'admin') {
+            res.status(401).json({ message: 'You are not allowed to perform this action' })
+            return
+        }
+
+        let invitees = await Invitee.find().select({ _id: 0, password: 0 })
+
+        res.status(200).json({ message: invitees })
+
+    } catch (error) {
+        res.status(500).json({ message: 'Something went wrong, try again later' })
+    }
+}
+
+async function cancelInvite(req, res) {
+    try {
+        let { id, email } = req.body
+
+        if (!id) {
+            res.status(401).json({ message: 'You are not allowed to perform this action' })
+            return
+        }
+
+        let user = await Users.findById(id)
+
+        if(user.userType != 'admin') {
+            res.status(401).json({ message: 'You are not allowed to perform this action' })
+            return
+        }
+
+        let deleteInvite = await Invitee.findOneAndDelete({ email })
+
+        if (deleteInvite) {
+            res.status(200).json({ message: 'Invite deleted' })
+            return
+        } else {
+            res.status(500).json({ message: 'Something went wrong, try again later' })
+            return
+        }
+
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ message: 'Something went wrong, try again later' })
+    }
+}
+
 export default {
     inviteStaff,
     getAllStaff,
@@ -313,5 +370,7 @@ export default {
     getBlockedStaff,
     createAdminAcc,
     viewUser,
-    isUserBlocked
+    isUserBlocked,
+    getUnansweredInvites,
+    cancelInvite
 }
