@@ -81,11 +81,13 @@ let adminStore = useAdmin()
 let { allProjects } = storeToRefs(adminStore)
 
 const userEmail = inject('userEmail')
-let isDataReady = ref(false)
+let isDataReady = ref(true)
 let error = ref(false)
 
 async function getDataOnLoad() {
     if (!user.value ) {
+        isDataReady.value = false
+        
         let req = await userStore.getUserDetails(userEmail)
 
         if (req.status == 500) {
