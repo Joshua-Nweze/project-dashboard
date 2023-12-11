@@ -128,7 +128,7 @@
                                                         aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    Are you sure you want to cancel invite for {{ invitee.email }} ?
+                                                    Are you sure you want to cancel invite for {{ invitee.email }}?
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary"
@@ -236,10 +236,14 @@ let { staff, allProjects, allFinishedProjects, allOngoingProjects, unansweredInv
 
 const userEmail = inject('userEmail')
 
-let isDataReady = ref(false)
+let isDataReady = ref(true)
+
+console.log(user.value)
 
 async function getDataOnLoad() {
     if (!user.value) {
+        isDataReady.value = false
+
         await userStore.getUserDetails(userEmail)
     }
 
@@ -264,7 +268,8 @@ async function getDataOnLoad() {
                 indexAxis: 'y',
             }
         })
-    } else {
+    } else if (user.value.userType == 'admin') {
+        await adminStore.getAllStaff(user.value.id)
         await adminStore.getAllProjects(user.value.id)
 
         // getting unanswered invites
@@ -290,12 +295,9 @@ async function getDataOnLoad() {
         })
     }
 
-    if (user.value.userType == 'admin') {
-        await adminStore.getAllStaff(user.value.id)
-    }
-
     isDataReady.value = true
 }
+
 getDataOnLoad()
 
 async function cancelInvite(email) {
@@ -314,4 +316,5 @@ async function cancelInvite(email) {
 
 .card {
     padding: 0;
-}</style>
+}
+</style>

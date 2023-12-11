@@ -77,21 +77,19 @@ let { user } = storeToRefs(userStore)
 let { projects } = storeToRefs(projectsStore)
 let { staff, allProjects } = storeToRefs(adminStore)
 
-let isDataReady = ref(false)
+let isDataReady = ref(true)
 
 async function getDataOnLoad() {
     if (!user.value ) {
+        isDataReady.value = false
+
         await userStore.getUserDetails(userEmail)
     }
 
     if (user.value.userType == 'staff') {
         await projectsStore.getStaffProjects(user.value.id)
-    } else {
+    } else if (user.value.userType == 'admin') {
         await adminStore.getAllProjects(user.value.id)
-
-    }
-
-    if(user.value.userType == 'admin') {
         await adminStore.getAllStaff(user.value.id)
         projects.value = allProjects.value
     }
