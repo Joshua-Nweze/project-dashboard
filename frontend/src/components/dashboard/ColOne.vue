@@ -238,8 +238,6 @@ const userEmail = inject('userEmail')
 
 let isDataReady = ref(true)
 
-console.log(user.value)
-
 async function getDataOnLoad() {
     if (!user.value) {
         isDataReady.value = false

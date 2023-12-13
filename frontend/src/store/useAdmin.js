@@ -40,6 +40,9 @@ export const useAdmin = defineStore("useAdmin", {
                 this.allFinishedProjects = (res.message).filter(project => project.endDate != null)
             }
 
+            this.getAllStaff(id)
+            this.getUnansweredInvites(id)
+
             return {
                 status: req.status
             }

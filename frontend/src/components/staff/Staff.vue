@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="error">
-            <ErrorReload/>
+            <ErrorReload />
         </div>
         <div v-else>
             <div v-if="isDataReady">
@@ -12,7 +12,8 @@
                                 Staff
                             </div>
 
-                            <button class="btn btn-secondary my-3" data-bs-toggle="modal" data-bs-target="#inviteAdmin"><i class="bi bi-person-add"></i> Enroll a new staff</button>
+                            <button class="btn btn-secondary my-3" data-bs-toggle="modal" data-bs-target="#inviteAdmin"><i
+                                    class="bi bi-person-add"></i> Enroll a new staff</button>
 
                             <div>
                                 <div v-if="(typeof staff == 'object' || typeof staff == 'array')">
@@ -23,81 +24,101 @@
                                         <div class="col ">Action</div>
                                     </div>
 
-                                    <div
-                                    v-for="(staffDetail, index) in staff"
-                                    :key="index"
-                                    class="row my-3 align-items-center">
+                                    <div v-for="(staffDetail, index) in staff" :key="index"
+                                        class="row my-3 align-items-center">
                                         <div class="col text-break">{{ staffDetail.user.name }}</div>
-                                        <div class="col d-none d-sm-block text-break">{{  staffDetail.user.email }}</div>
-                                        <div class="col d-none d-md-block">{{ new Date(staffDetail.user.createdAt).toDateString() }}</div>
+                                        <div class="col d-none d-sm-block text-break">{{ staffDetail.user.email }}</div>
+                                        <div class="col d-none d-md-block">{{ new
+                                            Date(staffDetail.user.createdAt).toDateString() }}</div>
                                         <div class="col">
 
-                                            <button @click="viewUser(staffDetail.user._id)" type="button" class="btn bg-primary-subtle" data-bs-toggle="modal" :data-bs-target="`#view_${index}`">
+                                            <button @click="viewUser(staffDetail.user._id)" type="button"
+                                                class="btn bg-primary-subtle" data-bs-toggle="modal"
+                                                :data-bs-target="`#view_${index}`">
                                                 <i class="bi bi-eye text-primary"></i>
                                             </button>
 
                                             <span>
-                                                <button v-if="!staffDetail.isUserBlocked" type="button" class="mx-1 btn bg-warning-subtle" data-bs-toggle="modal" :data-bs-target="`#block_${index}`">
+                                                <button v-if="!staffDetail.isUserBlocked" type="button"
+                                                    class="mx-1 btn bg-warning-subtle" data-bs-toggle="modal"
+                                                    :data-bs-target="`#block_${index}`">
                                                     <i class="bi bi-person-lock text-warning"></i>
                                                 </button>
-                                                
-                                                <button v-if="staffDetail.isUserBlocked" type="button" class="mx-1 btn bg-success-subtle" data-bs-toggle="modal" :data-bs-target="`#unblock_${index}`">
+
+                                                <button v-if="staffDetail.isUserBlocked" type="button"
+                                                    class="mx-1 btn bg-success-subtle" data-bs-toggle="modal"
+                                                    :data-bs-target="`#unblock_${index}`">
                                                     <i class="bi bi-person-check text-success"></i>
                                                 </button>
                                             </span>
                                         </div>
 
                                         <!-- View user modal -->
-                                        <div class="modal fade" tabindex="-1"  :id="`view_${index}`" aria-labelledby="view" aria-hidden="true">
+                                        <div class="modal fade" tabindex="-1" :id="`view_${index}`" aria-labelledby="view"
+                                            aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div v-if="userDetails">
                                                         <div class="modal-header">
                                                             <h5 class="modal-title">{{ userDetails.user.name }}</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                                aria-label="Close"></button>
                                                         </div>
                                                         <div class="modal-body">
-                                                            <div><span class="fw-bold">LGA:</span> {{ userDetails.user.lga }}</div>
-                                                            <div><span class="fw-bold">Phone:</span> {{ userDetails.user.phoneNumber }}</div>
-                                                            <div><span class="fw-bold">Email:</span> {{ userDetails.user.email }}</div>
-                                                            <div><span class="fw-bold">Total number of projects:</span> {{ typeof userDetails.projects == 'object' || typeof userDetails.projects == 'array' ? userDetails.projects.length : 0  }}</div>
-                                                            <div><span class="fw-bold">Projects completed:</span> {{ userDetailsFinisedProjects.length }}</div>
-                                                            <div><span class="fw-bold">Ongoing projects:</span> {{ userDetailsOngoingProjects.length }}</div>
+                                                            <div><span class="fw-bold">LGA:</span> {{ userDetails.user.lga
+                                                            }}</div>
+                                                            <div><span class="fw-bold">Phone:</span> {{
+                                                                userDetails.user.phoneNumber }}</div>
+                                                            <div><span class="fw-bold">Email:</span> {{
+                                                                userDetails.user.email }}</div>
+                                                            <div><span class="fw-bold">Total number of projects:</span> {{
+                                                                typeof userDetails.projects == 'object' || typeof
+                                                                userDetails.projects == 'array' ?
+                                                                userDetails.projects.length : 0 }}</div>
+                                                            <div><span class="fw-bold">Projects completed:</span> {{
+                                                                userDetailsFinisedProjects.length }}</div>
+                                                            <div><span class="fw-bold">Ongoing projects:</span> {{
+                                                                userDetailsOngoingProjects.length }}</div>
                                                         </div>
                                                     </div>
 
                                                     <div v-else>
-                                                        <LoadingSpinner class="m-5 p-5"/>
+                                                        <LoadingSpinner class="m-5 p-5" />
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <!-- Block modal -->
-                                        <div class="modal fade" tabindex="-1"  :id="`block_${index}`" aria-labelledby="block" aria-hidden="true">
+                                        <div class="modal fade" tabindex="-1" :id="`block_${index}`" aria-labelledby="block"
+                                            aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title">Block {{ staffDetail.user.name }}</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="clearFeedbackAndStatus"></button>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close" @click="clearFeedbackAndStatus"></button>
                                                     </div>
                                                     <div class="modal-body">
 
                                                         <div v-if="feedback">
-                                                            <div
-                                                            class="alert alert-dismissible fade show"
-                                                            :class="{'alert-success': status == 200 || status == 201, 'alert-danger': status != 200  }"
-                                                            role="alert">
+                                                            <div class="alert alert-dismissible fade show"
+                                                                :class="{ 'alert-success': status == 200 || status == 201, 'alert-danger': status != 200 }"
+                                                                role="alert">
                                                                 {{ feedback }}
-                                                                <button type="button" class="btn-close" @click="clearFeedbackAndStatus"></button>
+                                                                <button type="button" class="btn-close"
+                                                                    @click="clearFeedbackAndStatus"></button>
                                                             </div>
                                                         </div>
 
-                                                        <div class="alert alert-warning">When a staff is blocked, the staff can no longer log in when logged out.</div>
+                                                        <div class="alert alert-warning">When a staff is blocked, the staff
+                                                            can no longer log in when logged out.</div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                        <button type="button" class="btn btn-danger" @click="blockUser(staffDetail.user.email, user.id)">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Cancel</button>
+                                                        <button type="button" class="btn btn-danger"
+                                                            @click="blockUser(staffDetail.user.email, user.id)">
                                                             <div v-if="!isBlocking">
                                                                 Block
                                                             </div>
@@ -111,30 +132,35 @@
                                         </div>
 
                                         <!-- Unblock modal -->
-                                        <div class="modal fade" tabindex="-1"  :id="`unblock_${index}`" aria-labelledby="block" aria-hidden="true">
+                                        <div class="modal fade" tabindex="-1" :id="`unblock_${index}`"
+                                            aria-labelledby="block" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title">Unblock {{ staffDetail.user.name }}</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="clearFeedbackAndStatus"></button>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close" @click="clearFeedbackAndStatus"></button>
                                                     </div>
                                                     <div class="modal-body">
 
                                                         <div v-if="feedback">
-                                                            <div
-                                                            class="alert alert-dismissible fade show"
-                                                            :class="{'alert-success': status == 200 || status == 201, 'alert-danger': status != 200  }"
-                                                            role="alert">
+                                                            <div class="alert alert-dismissible fade show"
+                                                                :class="{ 'alert-success': status == 200 || status == 201, 'alert-danger': status != 200 }"
+                                                                role="alert">
                                                                 {{ feedback }}
-                                                                <button type="button" class="btn-close" @click="clearFeedbackAndStatus"></button>
+                                                                <button type="button" class="btn-close"
+                                                                    @click="clearFeedbackAndStatus"></button>
                                                             </div>
                                                         </div>
 
-                                                        <div class="alert alert-warning">When a staff is unblocked,the staff can log in whenever.</div>
+                                                        <div class="alert alert-warning">When a staff is unblocked,the staff
+                                                            can log in whenever.</div>
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                        <button type="button" class="btn btn-success" @click="unblockUser(staffDetail.user.email, user.id)">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Cancel</button>
+                                                        <button type="button" class="btn btn-success"
+                                                            @click="unblockUser(staffDetail.user.email, user.id)">
                                                             <div v-if="!isUnblocking">
                                                                 Unblock
                                                             </div>
@@ -160,30 +186,34 @@
 
 
                     <!-- Invite to be admin modal -->
-                    <div class="modal fade" tabindex="-1"  id="inviteAdmin" aria-labelledby="inviteAdmin" aria-hidden="true">
+                    <div class="modal fade" tabindex="-1" id="inviteAdmin" aria-labelledby="inviteAdmin" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Enroll a new staff</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-
-                                <div v-if="inviteFeedback" class="alert alert-dismissible fade show" :class="[ inviteStatus == 200 ? 'alert-success' : 'alert-danger' ]" role="alert">
-                                    {{ inviteFeedback }}
-                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" @click="inviteFeedback = inviteStatus = null"></button>
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Enroll a new staff</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
+                                <div class="modal-body">
 
-                                <label for="inviteeEmail">Staff email</label>
-                                <input type="text" class="form-control" id="inviteeEmail" placeholder="johndoe@gmail.com" v-model="inviteeEmail">
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                                <button type="button" class="btn btn-success" @click="inviteStaff">
-                                    <span v-if="!isInviting">Invite</span>
-                                    <SmallLoadingSpinner v-else />
-                                </button>
-                            </div>
+                                    <div v-if="inviteFeedback" class="alert alert-dismissible fade show"
+                                        :class="[inviteStatus == 200 ? 'alert-success' : 'alert-danger']" role="alert">
+                                        {{ inviteFeedback }}
+                                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+                                            @click="inviteFeedback = inviteStatus = null"></button>
+                                    </div>
+
+                                    <label for="inviteeEmail">Staff email</label>
+                                    <input type="text" class="form-control" id="inviteeEmail"
+                                        placeholder="johndoe@gmail.com" v-model="inviteeEmail">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-success" @click="inviteStaff">
+                                        <span v-if="!isInviting">Invite</span>
+                                        <SmallLoadingSpinner v-else />
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -192,10 +222,10 @@
             </div>
 
             <div v-else>
-                <LoadingSpinner class="p-3"/>
+                <LoadingSpinner class="p-3" />
             </div>
         </div>
-        
+
     </div>
 </template>
 
@@ -217,25 +247,30 @@ let { staff } = storeToRefs(adminStore)
 
 let userEmail = inject('userEmail')
 
-let isDataReady = ref(false)
+let isDataReady = ref(true)
 let error = ref(false)
 
 async function getDataOnLoad() {
-    if (!user.value ) {
+    if (!user.value) {
+        isDataReady.value = false
+
         let req = await userStore.getUserDetails(userEmail)
 
         if (req.status == 500) {
             error.value = true
             return
         }
-    }
 
-    if (user.value.userType == 'admin') {
-        let req = await adminStore.getAllStaff(user.value.id)
+        if (user.value.userType == 'admin') {
+            let req = await adminStore.getAllStaff(user.value.id)
 
-        if (req.status == 500) {
-            error.value = true
-            return
+            await adminStore.getUnansweredInvites(user.value.id)
+            await adminStore.getAllProjects(user.value.id)
+
+            if (req.status == 500) {
+                error.value = true
+                return
+            }
         }
     }
 
@@ -346,7 +381,7 @@ async function inviteStaff() {
     isInviting.value = false
     inviteStatus.value = req.status
     inviteFeedback.value = res.message
-    inviteeEmail.value  = ''
+    inviteeEmail.value = ''
 
     setTimeout(() => {
         inviteFeedback.value = inviteStatus.value = null
@@ -354,8 +389,6 @@ async function inviteStaff() {
 }
 </script>
 
-<style scoped>
-.admins{
+<style scoped>.admins {
     font-size: 28px;
-}
-</style>
+}</style>

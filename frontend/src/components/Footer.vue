@@ -1,8 +1,7 @@
 <template>
     <footer class="footer">
         <div class="row">
-            <div class="col-6">&copy; {{ new Date().getFullYear() }} ESHDC </div>
-            <div class="col-6 text-end">Designed and created by Joshua Nweze</div>
+            <div class="col-12 text-end">&copy; {{ new Date().getFullYear() }} Enugu State Ministry of Works </div>
         </div>
     </footer>
 </template>

@@ -5,7 +5,7 @@
                 <div class="profile-head row mb-3">
                     <div class="col">
                         <h5>
-                        {{ user.name || user.email }}
+                            {{ user.name || user.email }}
                         </h5>
                         <h6>
                             {{ (user.userType).charAt(0).toUpperCase() + (user.userType).slice(1) }}
@@ -16,24 +16,25 @@
                             <RouterLink to="/edit-account" class="btn btn-outline-secondary">Edit</RouterLink>
                         </div>
                         <div class="d-flex justify-content-end mb-2" v-else>
-                            <div class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#changePwdModal">Change password</div>
+                            <div class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#changePwdModal">
+                                Change password</div>
                         </div>
                     </div>
                 </div>
 
-                
+
                 <div class="md-offset-3 col-md-8" v-if="user.userType == 'staff'">
-                    <div class=""> 
+                    <div class="">
                         <strong>Email</strong>
-                        <span  class="ms-2"> {{ user.email }}</span>
+                        <span class="ms-2"> {{ user.email }}</span>
                     </div>
-                    
-                    <div class=""> 
+
+                    <div class="">
                         <strong>Phone</strong>
                         <span class="ms-2"> {{ user.phoneNumber }}</span>
                     </div>
-                    
-                    <div class=""> 
+
+                    <div class="">
                         <strong>LGA</strong>
                         <span class="ms-2"> {{ user.lga }}</span>
                     </div>
@@ -42,7 +43,8 @@
 
             <div v-if="user.userType == 'admin'">
                 <!-- Chanhe Pwd modal -->
-                <div class="modal fade" id="changePwdModal" tabindex="-1" aria-labelledby="changePwdModalLabel" aria-hidden="true">
+                <div class="modal fade" id="changePwdModal" tabindex="-1" aria-labelledby="changePwdModalLabel"
+                    aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -52,18 +54,19 @@
                             <div class="modal-body">
 
                                 <div v-if="changePwdFeedback">
-                                    <div
-                                        class="alert alert-dismissible fade show"
-                                        :class="{'alert-success': changePwdStatus == 200 || changePwdStatus == 201, 'alert-danger': changePwdStatus != 200  }"
+                                    <div class="alert alert-dismissible fade show"
+                                        :class="{ 'alert-success': changePwdStatus == 200 || changePwdStatus == 201, 'alert-danger': changePwdStatus != 200 }"
                                         role="alert">
                                         {{ changePwdFeedback }}
-                                        <button type="button" class="btn-close" @click="( changePwdFeedback = changePwdStatus = '' )"></button>
+                                        <button type="button" class="btn-close"
+                                            @click="(changePwdFeedback = changePwdStatus = '')"></button>
                                     </div>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="current-password" class="form-label">Current password</label>
-                                    <input type="password" class="form-control" id="current-password" v-model="currentPassword">
+                                    <input type="password" class="form-control" id="current-password"
+                                        v-model="currentPassword">
                                 </div>
                                 <div class="mb-3">
                                     <label for="new-password" class="form-label">New password</label>
@@ -71,7 +74,8 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="re-new-password" class="form-label">Enter new password again</label>
-                                    <input type="password" class="form-control" id="re-new-password" v-model="reNewPassword">
+                                    <input type="password" class="form-control" id="re-new-password"
+                                        v-model="reNewPassword">
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -93,7 +97,7 @@
             </div>
         </div>
         <LoadingSpinner v-else />
-        
+
     </div>
 </template>
 
@@ -103,17 +107,26 @@ import { inject, ref } from "vue";
 import { storeToRefs } from "pinia";
 import LoadingSpinner from "../LoadingSpinner.vue";
 import SmallLoadingSpinner from "../SmallLoadingSpinner.vue";
+import { useAdmin } from "@/store/useAdmin";
 
 let userEmail = inject('userEmail')
 
 let userStore = useUser()
 let { user } = storeToRefs(userStore)
 
+let adminStore = useAdmin()
+
 let isDataReady = ref(false)
 
 async function getDataOnLoad() {
     if (!user.value) {
-       await userStore.getUserDetails(userEmail)
+        await userStore.getUserDetails(userEmail)
+
+        if (user.value.userType == 'admin') {
+            await adminStore.getUnansweredInvites(user.value.id)
+            await adminStore.getAllProjects(user.value.id)
+            await adminStore.getAllStaff(user.value.id)
+        }
     }
 
     isDataReady.value = true
@@ -166,32 +179,33 @@ async function changePassword() {
 
     changePwdFeedback.value = req.message
     changePwdStatus.value = req.status
-    
+
     isChangingPwd.value = false
 }
 </script>
 
 <style scoped>
-.emp-profile{
+.emp-profile {
     padding: 3%;
     margin-top: 3%;
     margin-bottom: 3%;
     border-radius: 0.5rem;
 }
 
-.profile-head h5{
+.profile-head h5 {
     color: #333;
 }
-.profile-head h6{
+
+.profile-head h6 {
     color: #0062cc;
 }
 
-.profile-head{
-    font-weight:600;
+.profile-head {
+    font-weight: 600;
     border: none;
 }
-.profile-head{
+
+.profile-head {
     border: none;
-    border-bottom:2px solid #4a535d;
-}
-</style>
+    border-bottom: 2px solid #4a535d;
+}</style>

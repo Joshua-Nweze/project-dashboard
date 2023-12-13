@@ -8,38 +8,27 @@
 
                 <div v-if="typeof projects == 'array' || typeof projects == 'object'">
                     <div class="row px-md-2">
-                        <Searchbar 
-                            placeholder="Search project"
-                        />
+                        <Searchbar placeholder="Search project" />
                     </div>
 
                     <div class="row flex justify-content-center gap-2 px-md-2">
-                        <div 
-                        v-for="(project, index) in projects"
-                        :key="index"
-                        class="card col-sm-12 col-md-3 col-lg-4 col-4 px-0" 
-                        style="width: 16rem;"
-                        >
+                        <div v-for="(project, index) in projects" :key="index"
+                            class="card col-sm-12 col-md-3 col-lg-4 col-4 px-0" style="width: 16rem;">
                             <div class="position-relative">
-                                <img :src="`data:image/jpeg;base64,${project.image.imageBase64}`" class="card-img-top px-0" alt="project image thumbnail" style="height: 200px;">
+                                <img :src="`data:image/jpeg;base64,${project.image.imageBase64}`" class="card-img-top px-0"
+                                    alt="project image thumbnail" style="height: 200px;">
                                 <!-- Only for staff -->
-                                <div
-                                v-if="user.userType == 'staff'"
-                                class="position-absolute top-0 end-0 p-2"
-                                >
-                                    <ProjectActionBtns
-                                    :user="user"
-                                    :project="project"
-                                    :editModalId="`editModalId${index}`"
-                                    :deleteModalId="`deleteModalId${index}`"
-                                    />
+                                <div v-if="user.userType == 'staff'" class="position-absolute top-0 end-0 p-2">
+                                    <ProjectActionBtns :user="user" :project="project" :editModalId="`editModalId${index}`"
+                                        :deleteModalId="`deleteModalId${index}`" />
                                 </div>
                                 <!--  -->
                             </div>
                             <div class="card-body px-2">
                                 <h5 class="card-title col">{{ project.projectName }}</h5>
 
-                                <p class="card-text mt-2">{{ (project.description).slice(0, 95) }} {{ (project.description).length > 95 ? '...' : '' }}</p>
+                                <p class="card-text mt-2">{{ (project.description).slice(0, 95) }} {{
+                                    (project.description).length > 95 ? '...' : '' }}</p>
                                 <RouterLink :to="`/project/${project._id}`" class="btn btn-primary">See more</RouterLink>
                             </div>
                         </div>
@@ -56,7 +45,6 @@
             </div>
         </div>
     </div>
-    
 </template>
 
 <script setup>
@@ -85,42 +73,43 @@ let isDataReady = ref(true)
 let error = ref(false)
 
 async function getDataOnLoad() {
-    if (!user.value ) {
+    if (!user.value) {
         isDataReady.value = false
-        
+
         let req = await userStore.getUserDetails(userEmail)
 
         if (req.status == 500) {
             error.value = true
             return
         }
-    }
 
-    if (user.value.userType == 'staff') {
-        let req = await projectsStore.getStaffProjects(user.value.id)
-        
-        if(req.status == 500) {
-            error.value = true
-            return
+        if (user.value.userType == 'staff') {
+            let req = await projectsStore.getStaffProjects(user.value.id)
+
+            if (req.status == 500) {
+                error.value = true
+                return
+            }
+
+            isDataReady.value = true
+        } else {
+            let req = await adminStore.getAllProjects(user.value.id)
+
+            await adminStore.getUnansweredInvites(user.value.id)
+            await adminStore.getAllProjects(user.value.id)
+
+            if (req.status == 500) {
+                error.value = true
+                return
+            }
+
+            projects.value = allProjects.value
+            isDataReady.value = true
         }
-
-        isDataReady.value = true
-    } else {
-        let req = await adminStore.getAllProjects(user.value.id)
-        
-        if(req.status == 500) {
-            error.value = true
-            return
-        }
-
-        projects.value = allProjects.value
-        isDataReady.value = true
     }
 }
 getDataOnLoad()
 
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
