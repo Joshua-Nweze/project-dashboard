@@ -284,6 +284,8 @@ let userDetailsFinisedProjects = ref(0)
 
 
 async function viewUser(id) {
+    userDetails.value = null
+
     let req = await fetch(`http://localhost:3000/api/admin/view-user-details?id=${id}`)
     let res = await req.json()
 

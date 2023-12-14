@@ -5,7 +5,7 @@
                 <div class="col-9 sidenav-brand">
                     <div class="row">
                         <span class="col-3"><img src="../../assets/imgs/logo.png" alt="logo" class="logo rounded-circle"></span>
-                        <span class="col-9 align-items-center">ESHDC</span>
+                        <span class="col-9 align-items-center">MOW</span>
                     </div>
                     <hr>
                     <div class="row" v-if="dataReady">

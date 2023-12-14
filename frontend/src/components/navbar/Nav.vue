@@ -7,7 +7,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <a class="navbar-brand">
-                    <h1>ESHDC <span class="text-body-secondary">Data Dashboard</span></h1>
+                    <h1>MOW <span class="text-body-secondary">Data Dashboard</span></h1>
                 </a>
 
                 <div class="d-none d-lg-flex gap-3 justify-content-end nav-links ">
@@ -31,7 +31,7 @@
                     <div class="offcanvas-header p-1">
                         <div class="offcanvas-title d-flex align-items-center gap-3" id="offcanvasExampleLabel">
                             <span><img src="../../assets/imgs/logo.png" alt="logo" class="logo rounded-circle"></span>
-                            <span class="align-items-center">ESHDC</span>
+                            <span class="align-items-center">MOW</span>
                         </div>
                         <span data-bs-dismiss="offcanvas" aria-label="Close"><i class="bi bi-x-circle"></i></span>
                     </div>

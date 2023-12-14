@@ -109,7 +109,12 @@ let isDataReady = ref(false)
 async function getDataOnLoad() {
     if (!user.value ) {
         await userStore.getUserDetails(userEmail)
+
+        if (user.value.userType == 'staff') {
+            await projectsStore.getStaffProjects(user.value.id)
+        }
     }
+
     isDataReady.value = true
 }
 getDataOnLoad()

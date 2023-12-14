@@ -12,9 +12,18 @@
                             class="list-group p-1 px-2 my-2 recent-project"
                         >
 
-                            <RouterLink :to="`/project/${project._id}`" class="link">
-                                <div class="fs-6 text-muted fw-medium">{{ project.projectName }}</div>
-                                <div class="text-muted" style="font-size: 13px;">{{ (project.description).slice(0, 20) }} {{ (project.description).length > 20 ? '...' : '' }}</div>
+                            <RouterLink :to="`/project/${project._id}`" class="link" style="color: black;">
+                                <div class="row">
+                                    <div class="col-10">
+                                        <div>{{ project.projectName }}</div>
+                                        <div class="text-muted" style="font-size: 13px;">{{ (project.description).slice(0, 20) }} {{ (project.description).length > 20 ? '...' : '' }}</div>
+                                    </div>
+                                    <div class="col-2 d-flex justify-content-center align-items-center">
+                                        <div class="bg-light py-1 px-2 me-1 rounded-circle">
+                                            <i class="bi bi-chevron-right fs-6"></i>
+                                        </div>
+                                    </div>
+                                </div>
                             </RouterLink>
                             
                         </div>
@@ -35,7 +44,7 @@
                         <div
                             v-for="(user, index) in (staff).slice(0, 4)" :key="index"
                         >
-                            <div class="list-group p-1 px-2 my-2 recent-project bg-success-subtle">
+                            <div class="list-group p-1 px-2 my-2 recent-staff bg-success-subtle">
                                 <div>{{ user.user.name }}</div>
                                 <div class="text-muted" style="font-size: 13px;">Registered on {{ new Date(user.user.createdAt).toDateString() }}</div>
                             </div>
@@ -112,7 +121,11 @@ getDataOnLoad()
 }
 
 .recent-project{
-    background-color: rgb(215, 215, 215);
+    background: linear-gradient(56deg, rgba(219,229,231,1) 8%, rgba(147,176,190,1) 55%, rgba(161,190,223,1) 100%);
+}
+
+.recent-staff {
+    background: linear-gradient(56deg, rgba(219,231,220,1) 8%, rgba(147,190,158,1) 55%, rgba(161,223,177,1) 100%);
 }
 
 .link{

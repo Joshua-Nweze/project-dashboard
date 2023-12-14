@@ -108,6 +108,9 @@ import { storeToRefs } from "pinia";
 import LoadingSpinner from "../LoadingSpinner.vue";
 import SmallLoadingSpinner from "../SmallLoadingSpinner.vue";
 import { useAdmin } from "@/store/useAdmin";
+import { useProjects } from "@/store/useProjects";
+
+let projectsStore = useProjects()
 
 let userEmail = inject('userEmail')
 
@@ -126,6 +129,8 @@ async function getDataOnLoad() {
             await adminStore.getUnansweredInvites(user.value.id)
             await adminStore.getAllProjects(user.value.id)
             await adminStore.getAllStaff(user.value.id)
+        } else if (user.value.userType == 'staff') {
+            await projectsStore.getStaffProjects(user.value.id)
         }
     }
 
