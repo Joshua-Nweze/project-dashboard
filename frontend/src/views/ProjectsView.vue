@@ -9,14 +9,12 @@
                 <div v-if="typeof projects == 'array' || typeof projects == 'object'">
                     <div class="row px-md-2">
                         <div class="input-group mb-5">
-                            <input type="text" class="form-control" placeholder="Search project" aria-label="Recipient's username" aria-describedby="basic-addon2">
-                            <span class="input-group-text" id="basic-addon2"><i class="bi bi-search"></i> <span class="ms-1 d-none d-md-inline">Search</span></span>
-                         </div>
+                            <input type="text" class="form-control" placeholder="Search project" v-model="search">
+                        </div>
                     </div>
 
                     <div class="row flex justify-content-center gap-2 px-md-2">
-                        <!-- STAFF -->
-                        <div v-if="user.userType == 'staff'" v-for="(project, index) in projects" :key="index"
+                        <div v-if="retrivedProjects.length" v-for="(project, index) in retrivedProjects" :key="index"
                             class="card col-sm-12 col-md-3 col-lg-4 col-4 px-0" style="width: 16rem;">
                             <div class="position-relative">
                                 <img :src="`data:image/jpeg;base64,${project.image.imageBase64}`" class="card-img-top px-0"
@@ -37,20 +35,8 @@
                             </div>
                         </div>
 
-                        <!-- ADMIN -->
-                        <div v-if="user.userType == 'admin'" v-for="(project, index) in allProjects" :key="index"
-                            class="card col-sm-12 col-md-3 col-lg-4 col-4 px-0" style="width: 16rem;">
-                            <div class="position-relative">
-                                <img :src="`data:image/jpeg;base64,${project.image.imageBase64}`" class="card-img-top px-0"
-                                    alt="project image thumbnail" style="height: 200px;">
-                            </div>
-                            <div class="card-body px-2">
-                                <h5 class="card-title col">{{ project.projectName }}</h5>
-
-                                <p class="card-text mt-2">{{ (project.description).slice(0, 95) }} {{
-                                    (project.description).length > 95 ? '...' : '' }}</p>
-                                <RouterLink :to="`/project/${project._id}`" class="btn btn-primary">See more</RouterLink>
-                            </div>
+                        <div v-else class="text-center">
+                            No project with "{{ search }}"" found. <br> Change the search term and try again 
                         </div>
                     </div>
                 </div>
@@ -72,7 +58,7 @@ import LoadingSpinner from '@/components/LoadingSpinner.vue';
 import { useUser } from '@/store/useUser';
 import { useProjects } from '@/store/useProjects';
 import { storeToRefs } from 'pinia';
-import { inject, ref } from 'vue';
+import { inject, ref, watch } from 'vue';
 import NothingToShow from '../components/NothingToShow.vue'
 import { useAdmin } from '@/store/useAdmin';
 import ErrorReload from '@/components/ErrorReload.vue';
@@ -89,6 +75,8 @@ let { allProjects } = storeToRefs(adminStore)
 const userEmail = inject('userEmail')
 let isDataReady = ref(true)
 let error = ref(false)
+
+let retrivedProjects = ref(null)
 
 async function getDataOnLoad() {
     if (!user.value) {
@@ -109,6 +97,7 @@ async function getDataOnLoad() {
                 return
             }
 
+            retrivedProjects.value = req.message
             isDataReady.value = true
         } else {
             await adminStore.getUnansweredInvites(user.value.id)
@@ -120,14 +109,51 @@ async function getDataOnLoad() {
                 return
             }
 
-            projects.value = allProjects.value
-
+            retrivedProjects.value = allProjects.value
             isDataReady.value = true
         }
     }
-}
-getDataOnLoad()
 
+    if (user.value.userType == 'staff') {
+        search.value = ''
+        retrivedProjects.value = projects.value
+    } else {
+        search.value = ''
+        retrivedProjects.value = allProjects.value
+    }
+}
+
+let search = ref('')
+
+watch(search, (newSearch) => {
+    if (user.value.userType == 'staff') {
+        retrivedProjects.value = projects.value
+        if (newSearch == '' || !newSearch) {
+            retrivedProjects.value = projects.value
+        }
+    } else if (user.value.userType == 'admin') {
+        retrivedProjects.value = allProjects.value
+        if (newSearch == '' || !newSearch) {
+            retrivedProjects.value = allProjects.value
+        }
+    }
+
+    let filteredProjects = []
+
+    retrivedProjects.value.forEach(project => {
+        if ((project.projectName.toLowerCase()).includes(newSearch.toLowerCase())) {
+            filteredProjects.push(project)
+        }
+    });
+    retrivedProjects.value = filteredProjects
+})
+
+getDataOnLoad()
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.form-control:focus {
+    border-color: #6c757d;
+    box-shadow: none;
+}
+</style>

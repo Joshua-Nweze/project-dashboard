@@ -19,7 +19,7 @@
                                         <div class="text-muted" style="font-size: 13px;">{{ (project.description).slice(0, 20) }} {{ (project.description).length > 20 ? '...' : '' }}</div>
                                     </div>
                                     <div class="col-2 d-flex justify-content-center align-items-center">
-                                        <div class="bg-light py-1 px-2 me-1 rounded-circle">
+                                        <div class="bg-light py-1 px-2 me-2 rounded-circle">
                                             <i class="bi bi-chevron-right fs-6"></i>
                                         </div>
                                     </div>

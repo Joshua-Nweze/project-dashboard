@@ -24,7 +24,8 @@ export const useProjects = defineStore("project", {
 
 
             return {
-                status: req.status
+                status: req.status,
+                message: this.projects
             }
         },
 
