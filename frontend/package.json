@@ -17,8 +17,7 @@
     "pinia": "^2.0.30",
     "vue": "^3.2.13",
     "vue-chartjs": "^5.2.0",
-    "vue-router": "^4.0.3",
-    "vue3-otp-input": "^0.4.1"
+    "vue-router": "^4.0.3"
   },
   "devDependencies": {
     "@vue/cli-plugin-router": "~5.0.0",

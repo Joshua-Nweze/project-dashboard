@@ -36,7 +36,7 @@
                         </div>
 
                         <div v-else class="text-center">
-                            No project with "{{ search }}"" found. <br> Change the search term and try again 
+                            No project with "{{ search }}" found. <br> Change the search term and try again 
                         </div>
                     </div>
                 </div>

@@ -39,7 +39,28 @@
 
                         <div class="mb-3">
                             <label for="lga" class="form-label">LGA</label>
-                            <input type="text" class="form-control" id="lga" v-model="lga">
+                            <div class="input-group mb-3">
+                                <select name="lga" class="form-control" v-model="lga">
+                                    <option value="">-- Select LGA --</option>
+                                    <option value="Aninri">Aninri</option>
+                                    <option value="Awgu">Awgu</option>
+                                    <option value="Enugu East">Enugu East</option>
+                                    <option value="Enugu North">Enugu North</option>
+                                    <option value="Enugu South">Enugu South</option>
+                                    <option value="Ezeagu">Ezeagu</option>
+                                    <option value="Igbo Etiti">Igbo Etiti</option>
+                                    <option value="Igbo Eze North">Igbo Eze North</option>
+                                    <option value="Igbo Eze South">Igbo Eze South</option>
+                                    <option value="Isi Uzo">Isi Uzo</option>
+                                    <option value="Nkanu East">Nkanu East</option>
+                                    <option value="Nkanu West">Nkanu West</option>
+                                    <option value="Nsukka">Nsukka</option>
+                                    <option value="Oji River">Oji River</option>
+                                    <option value="Udenu">Udenu</option>
+                                    <option value="Udi">Udi</option>
+                                    <option value="Uzo-Uwani">Uzo-Uwani</option>
+                                </select>
+                            </div>
                         </div>
 
                         <div class="mb-3">
@@ -117,7 +138,7 @@ import { useUser } from '@/store/useUser';
 import { useProjects } from '@/store/useProjects';
 import { storeToRefs } from 'pinia';
 import SmallLoadingSpinner from '../SmallLoadingSpinner.vue';
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 
 let userStore = useUser()
 let { user } = storeToRefs(userStore)

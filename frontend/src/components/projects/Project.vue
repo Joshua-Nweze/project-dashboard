@@ -41,7 +41,7 @@
                                             alt="milestone image">
                                     </a>
                                 </Lightgallery>
-                                <!-- <br> -->
+
                                 <div v-if="user.userType == 'staff'" class="btn btn-outline-danger mt-3" data-bs-toggle="modal"  :data-bs-target="`#del_milestone_${index}`">
                                     Delete milestone
                                 </div>
@@ -194,7 +194,7 @@
 </template>
 
 <script setup>
-import { inject, ref } from 'vue';
+import { inject, onMounted, ref, onUnmounted } from 'vue';
 import Lightgallery from 'lightgallery/vue';
 import lgThumbnail from 'lightgallery/plugins/thumbnail';
 import lgZoom from 'lightgallery/plugins/zoom'
@@ -208,6 +208,7 @@ import { useAdmin } from '@/store/useAdmin';
 
 let projectsStore = useProjects()
 let userStore = useUser()
+let adminStore = useAdmin()
 
 let { user } = storeToRefs(userStore)
 let { project } = storeToRefs(projectsStore)
@@ -226,8 +227,14 @@ let usersName = ref(null)
 async function getDataOnLoad() {
     if (!user.value) {
         await userStore.getUserDetails(userEmail)
-    }
 
+        if (user.value.userType == 'staff') {
+            await projectsStore.getStaffProjects(user.value.id)
+        } else {
+            await adminStore.getAllProjects(user.value.id)
+        }
+
+    }
     let req = await projectsStore.getProject(route.params.id)
 
     let getUserNameReq = await viewUser(project.value.staff)
@@ -399,4 +406,5 @@ function deleteMilestoneFeedbackAndStatus() {
 
 .date {
     font-size: 15px;
-}</style>
+}
+</style>

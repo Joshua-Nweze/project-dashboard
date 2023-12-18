@@ -55,7 +55,6 @@ import { ref } from 'vue';
 import Header from '@/components/auth/Header.vue';
 import SmallLoadingSpinner from '@/components/SmallLoadingSpinner.vue';
 import router from '@/router';
-import VOtpInput from 'vue3-otp-input'
 import { decrypt, encrypt } from '../composables/enc'
 import { useRoute } from 'vue-router';
 
