@@ -134,7 +134,7 @@ async function logout() {
 
     if (req.status == 200) {
         Cookies.remove('token')
-        router.push('/')
+        window.location.href = window.location.href  // refresh 
     }
 }
 
