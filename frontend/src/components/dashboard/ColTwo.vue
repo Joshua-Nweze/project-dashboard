@@ -9,20 +9,13 @@
                         <div
                             v-for="(project) in (projects).slice(0, 4)"
                             :key="project.index"
-                            class="list-group p-1 px-2 my-2 recent-project"
+                            class="list-group p-1 px-2 my-2"
                         >
 
                             <RouterLink :to="`/project/${project._id}`" class="link" style="color: black;">
-                                <div class="row">
-                                    <div class="col-10">
-                                        <div>{{ project.projectName }}</div>
-                                        <div class="text-muted" style="font-size: 13px;">{{ (project.description).slice(0, 20) }} {{ (project.description).length > 20 ? '...' : '' }}</div>
-                                    </div>
-                                    <div class="col-2 d-flex justify-content-center align-items-center">
-                                        <div class="bg-light py-1 px-2 me-2 rounded-circle">
-                                            <i class="bi bi-chevron-right fs-6"></i>
-                                        </div>
-                                    </div>
+                                <div class="card p-2">
+                                    <div class="card-title">{{ project.projectName }}</div>
+                                    <div class="card-text text-muted" style="font-size: 13px;">{{ (project.description).slice(0, 20) }} {{ (project.description).length > 20 ? '...' : '' }}</div>
                                 </div>
                             </RouterLink>
                             
@@ -44,9 +37,9 @@
                         <div
                             v-for="(user, index) in (staff).slice(0, 4)" :key="index"
                         >
-                            <div class="list-group p-1 px-2 my-2 recent-staff bg-success-subtle">
-                                <div>{{ user.user.name }}</div>
-                                <div class="text-muted" style="font-size: 13px;">Registered on {{ new Date(user.user.createdAt).toDateString() }}</div>
+                            <div class="list-group p-1 px-2 my-2 card bg-success-subtle">
+                                <div class="card-title">{{ user.user.name }}</div>
+                                <div class="text-muted card-text" style="font-size: 13px;">Registered on {{ new Date(user.user.createdAt).toDateString() }}</div>
                             </div>
                         </div>
                     </div>
