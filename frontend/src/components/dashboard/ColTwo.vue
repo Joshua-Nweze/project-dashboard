@@ -1,5 +1,5 @@
 <template>
-    <div  v-if="isDataReady">
+    <div>
         <div>
             <div class="card">
                 <div class="card-body">
@@ -57,13 +57,7 @@
                 </div>
             </div>
         </div>
-    </div>
-    
-    <div v-else class="m-5">
-        <LoadingSpinner />
-    </div>
-
-    
+    </div> 
 </template>
 
 <script setup>
@@ -86,15 +80,7 @@ let { user } = storeToRefs(userStore)
 let { projects } = storeToRefs(projectsStore)
 let { staff, allProjects } = storeToRefs(adminStore)
 
-let isDataReady = ref(true)
-
 async function getDataOnLoad() {
-    if (!user.value ) {
-        isDataReady.value = false
-
-        await userStore.getUserDetails(userEmail)
-    }
-
     if (user.value.userType == 'staff') {
         await projectsStore.getStaffProjects(user.value.id)
     } else if (user.value.userType == 'admin') {
@@ -102,8 +88,6 @@ async function getDataOnLoad() {
         await adminStore.getAllStaff(user.value.id)
         projects.value = allProjects.value
     }
-
-    isDataReady.value = true
 }
 getDataOnLoad()
 

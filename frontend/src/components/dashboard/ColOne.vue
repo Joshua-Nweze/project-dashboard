@@ -1,6 +1,5 @@
 <template>
-    <div v-if="isDataReady">
-
+    <div>
         <div class="row">
             <div class="">
                 <div class="card bg-primary mb-2">
@@ -206,25 +205,18 @@
 
     </div>
 
-    <div v-else class="m-5">
-        <LoadingSpinner />
-    </div>
-
     <div class="my-3">
-        <canvas id="myGraphChart"></canvas>
+        <canvas id="myGraphChart" ref="a"></canvas>
     </div>
 </template>
 
 <script setup>
 import { reactive, ref } from "@vue/reactivity";
 import { storeToRefs } from "pinia";
-import { inject } from 'vue'
 import { useUser } from "@/store/useUser";
 import { useAdmin } from "@/store/useAdmin";
 import { useProjects } from "@/store/useProjects";
 import Chart from 'chart.js/auto';
-
-import LoadingSpinner from "../LoadingSpinner.vue";
 
 let userStore = useUser()
 let projectsStore = useProjects()
@@ -234,22 +226,16 @@ let { user } = storeToRefs(userStore)
 let { projects, ongoingProjects, finishedProjects } = storeToRefs(projectsStore)
 let { staff, allProjects, allFinishedProjects, allOngoingProjects, unansweredInvites } = storeToRefs(adminStore)
 
-const userEmail = inject('userEmail')
+let a = ref(null)
+console.log(a.value)
 
-let isDataReady = ref(true)
-
-async function getDataOnLoad() {
-    if (!user.value) {
-        isDataReady.value = false
-
-        await userStore.getUserDetails(userEmail)
-    }
+async function displayChart() {
+    const graph = document.getElementById('myGraphChart')
+    console.log(graph)
 
     if (user.value.userType == 'staff') {
-        await projectsStore.getStaffProjects(user.value.id)
-
-        // bar chart for user
-        const graph = document.getElementById('myGraphChart')
+        // bar chart for staff
+        console.log(graph)
         new Chart(graph, {
             type: 'bar',
             data: {
@@ -267,14 +253,7 @@ async function getDataOnLoad() {
             }
         })
     } else if (user.value.userType == 'admin') {
-        await adminStore.getAllStaff(user.value.id)
-        await adminStore.getAllProjects(user.value.id)
-
-        // getting unanswered invites
-        await adminStore.getUnansweredInvites(user.value.id)
-
         // bar chart for admin
-        const graph = document.getElementById('myGraphChart')
         new Chart(graph, {
             type: 'bar',
             data: {
@@ -292,11 +271,11 @@ async function getDataOnLoad() {
             }
         })
     }
-
-    isDataReady.value = true
 }
 
-getDataOnLoad()
+setTimeout(() => {
+    displayChart()
+}, 100)
 
 async function cancelInvite(email) {
     await adminStore.cancelInvite(user.value.id, email)

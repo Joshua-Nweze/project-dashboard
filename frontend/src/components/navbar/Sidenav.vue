@@ -4,8 +4,12 @@
             <div class="row d-flex justify-content-center pt-4">
                 <div class="col-9 sidenav-brand">
                     <div class="row">
-                        <span class="col-3"><img src="../../assets/imgs/logo.png" alt="logo" class="logo rounded-circle"></span>
-                        <span class="col-9 align-items-center">MOW</span>
+                        <span class="align-items-center text-center text-secondary">
+                            <div class="d-flex align-items-center">
+                                <div><i class="bi bi-person-circle"></i></div>
+                                <div v-if="user" class="text-break ms-2">{{ user.userType == 'staff' ? user.name : user.email }}</div>
+                            </div>
+                        </span>
                     </div>
                     <hr>
                     <div class="row" v-if="dataReady">

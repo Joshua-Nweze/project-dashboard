@@ -108,7 +108,6 @@ async function getStaffProjects(req, res) {
             res.status(403).json({ message: 'Staff is required' })
             return
         }
-
         let user = await Users.findById( staffId )
 
         if(!user) {

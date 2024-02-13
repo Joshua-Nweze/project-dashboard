@@ -7,7 +7,7 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <a class="navbar-brand">
-                    <h1>MOW <span class="text-body-secondary">Data Dashboard</span></h1>
+                    <h1><span class="text-body-secondary">Project Dashboard</span></h1>
                 </a>
 
                 <div class="d-none d-lg-flex gap-3 justify-content-end nav-links ">
@@ -30,8 +30,12 @@
                 <div class="col-9 sidenav-brand d-flex flex-column" style="height: 90vh">
                     <div class="offcanvas-header p-1">
                         <div class="offcanvas-title d-flex align-items-center gap-3" id="offcanvasExampleLabel">
-                            <span><img src="../../assets/imgs/logo.png" alt="logo" class="logo rounded-circle"></span>
-                            <span class="align-items-center">MOW</span>
+                            <span class="align-items-center text-secondary">
+                                <div class="d-flex align-items-center">
+                                    <div><i class="bi bi-person-circle"></i></div>
+                                    <div v-if="user" class="text-break mx-2">{{ user.userType == 'staff' ? user.name : user.email }}</div>
+                                </div>
+                            </span>
                         </div>
                         <span data-bs-dismiss="offcanvas" aria-label="Close"><i class="bi bi-x-circle"></i></span>
                     </div>
@@ -107,6 +111,7 @@ import Cookies from 'js-cookie'
 
 let userStore = useUser()
 const userEmail = inject('userEmail')
+const apihost = inject('apihost')
 
 let { user } = storeToRefs(userStore)
 
@@ -130,7 +135,7 @@ async function getDataOnLoad() {
 getDataOnLoad()
 
 async function logout() {
-    let req = await fetch('http://localhost:3000/api/auth/logout', { credentials: 'include' })
+    let req = await fetch(`${apihost}/api/auth/logout`, { credentials: 'include' })
 
     if (req.status == 200) {
         Cookies.remove('token')

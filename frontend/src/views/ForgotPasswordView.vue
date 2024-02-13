@@ -56,6 +56,8 @@ let loading = ref(false)
 let feedback = ref(null)
 let status = ref(null)
 
+const apihost = inject('apihost')
+
 async function sendOtp() {
     feedback.value = status.value = null
 
@@ -66,7 +68,7 @@ async function sendOtp() {
 
     loading.value = true
 
-    let req = await fetch('http://localhost:3000/api/auth/forgot-password', {
+    let req = await fetch(`${apihost}/api/auth/forgot-password`, {
         method: 'POST',
         headers: { 'Content-type': 'application/json' },
         body: JSON.stringify({ email: email.value })

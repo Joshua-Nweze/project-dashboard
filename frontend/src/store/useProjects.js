@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+let apihost = 'http://localhost:3000'
 
 export const useProjects = defineStore("project", {
     state: () => ({
@@ -10,7 +11,7 @@ export const useProjects = defineStore("project", {
 
     actions: {
         async getStaffProjects(id) {
-            let req = await fetch(`http://localhost:3000/api/projects/get-staff-projects?staffId=${id}`, { credentials: 'include' })
+            let req = await fetch(`${apihost}/api/projects/get-staff-projects?staffId=${id}`, { credentials: 'include' })
             let res = await req.json()
             
             this.projects = res.message
@@ -30,7 +31,7 @@ export const useProjects = defineStore("project", {
         },
 
         async getProject(id) {
-            let req = await fetch(`http://localhost:3000/api/projects/get?id=${id}`)
+            let req = await fetch(`${apihost}/api/projects/get?id=${id}`)
             let res = await req.json()
 
             this.project = res.message
@@ -39,7 +40,7 @@ export const useProjects = defineStore("project", {
         },
 
         async deleteProject(id, staffId) {
-            let req = await fetch(`http://localhost:3000/api/projects/delete-project`, {
+            let req = await fetch(`${apihost}/api/projects/delete-project`, {
                 method: 'DELETE',
                 headers: {'Content-type': 'application/json'},
                 body: JSON.stringify({
@@ -54,7 +55,7 @@ export const useProjects = defineStore("project", {
         },
 
         async editProject({id, staffId, projectName, lga, location, description, startDate}) {
-            let req = await fetch(`http://localhost:3000/api/projects/edit-project`, {
+            let req = await fetch(`${apihost}/api/projects/edit-project`, {
                 method: 'PATCH',
                 headers: {'Content-type': 'application/json'},
                 body: JSON.stringify({
@@ -73,7 +74,7 @@ export const useProjects = defineStore("project", {
         },
 
         async markProjectAsFinished(projectId, staffId) {
-            let req = await fetch('http://localhost:3000/api/projects/mark-project-as-finished', {
+            let req = await fetch(`${apihost}/api/projects/mark-project-as-finished`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -91,7 +92,7 @@ export const useProjects = defineStore("project", {
         },
 
         async unmarkProjectAsFinished(projectId, staffId) {
-            let req = await fetch('http://localhost:3000/api/projects/unmark-project-as-finished', {
+            let req = await fetch(`${apihost}/api/projects/unmark-project-as-finished`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -109,7 +110,7 @@ export const useProjects = defineStore("project", {
         },
 
         async deleteMilestone(projectId, milestoneId, staffId) {
-            let req = await fetch('http://localhost:3000/api/projects/delete-milestone', {
+            let req = await fetch(`${apihost}/api/projects/delete-milestone`, {
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

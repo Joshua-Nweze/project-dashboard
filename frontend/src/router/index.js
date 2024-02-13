@@ -4,6 +4,8 @@ import DashboardContainer from '@/views/DashboardContainer'
 
 import Cookies from 'js-cookie'
 
+const apihost = 'http://localhost:3000'
+
 const routes = [
   {
     path: '/',
@@ -129,7 +131,7 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
 	let token = Cookies.get('token')
 
-	let req = await fetch('http://localhost:3000/api/validate-token', {
+	let req = await fetch(`${apihost}/api/validate-token`, {
 		method: 'POST',
 		headers: { 'Content-type': 'application/json' },
 		body: JSON.stringify({ token })

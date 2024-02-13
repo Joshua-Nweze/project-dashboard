@@ -118,6 +118,7 @@
                         isDeleting = true
                         await projectsStore.deleteProject(project._id, user.id)
                         isDeleting = false
+                        await projectsStore.getStaffProjects(user.id)
                         
                      }"
                     >

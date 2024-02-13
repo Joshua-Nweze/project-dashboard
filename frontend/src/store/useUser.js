@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+let apihost = 'http://localhost:3000'
 
 export const useUser = defineStore("userStore", {
     state: () => ({
@@ -7,7 +8,7 @@ export const useUser = defineStore("userStore", {
 
     actions: {
         async getUserDetails (email) {
-            let req = await fetch(`http://localhost:3000/api/user/get-details?email=${email}`, { credentials: 'include' })
+            let req = await fetch(`${apihost}/api/user/get-details?email=${email}`, { credentials: 'include' })
             let res = await req.json()
 
             this.user = res
@@ -19,7 +20,7 @@ export const useUser = defineStore("userStore", {
         },
 
         async editAccount(name, phoneNumber, lga, id, email) {
-            let req = await fetch(`http://localhost:3000/api/user/edit-account`, {
+            let req = await fetch(`${apihost}/api/user/edit-account`, {
                 credentials: 'include',
                 method: 'PATCH',
                 headers: {'Content-Type': 'application/json'},
@@ -31,6 +32,7 @@ export const useUser = defineStore("userStore", {
             let res = await req.json()
 
             if (req.status == 200) {
+                // fetch updated user details
                 this.getUserDetails(email)
             }
 
@@ -41,7 +43,7 @@ export const useUser = defineStore("userStore", {
         },
 
         async changePassword(id, password, new_password, re_new_password) {
-            let req = await fetch(`http://localhost:3000/api/user/change-password`, {
+            let req = await fetch(`${apihost}/api/user/change-password`, {
                 credentials: 'include',
                 method: 'PATCH',
                 headers: {'Content-Type': 'application/json'},

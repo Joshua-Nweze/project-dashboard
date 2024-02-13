@@ -64,7 +64,7 @@ router.post('/add', function (req, res) {
     uploadr(req, res, function (err) {
 
         if (err) {
-            return res.status(400).json({ message: err.message })
+            return res.status(400).json({ message: "eee" + err.message })
         }
 
         addProject(req, res)

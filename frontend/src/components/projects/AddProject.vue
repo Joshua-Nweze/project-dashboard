@@ -120,6 +120,7 @@ let { user } = storeToRefs(userStore)
 let projectsStore = useProjects()
 
 const userEmail = inject('userEmail')
+const apihost = inject('apihost')
 let isDataReady = ref(false)
 
 async function getDataOnLoad() {
@@ -181,18 +182,18 @@ async function submit() {
     formData.append('description', description.value);
     formData.append('image', image);
 
-    let req = await fetch('http://localhost:3000/api/projects/add', {
+    let req = await fetch(`${apihost}/api/projects/add`, {
         method: 'POST',
         body: formData
     })
     let res = await req.json()
 
-    status.value = req.status
-    feedback.value = res.message
-
     await projectsStore.getStaffProjects(user.value.id)
 
     loading.value = false
+
+    status.value = req.status
+    feedback.value = res.message
 }
 
 </script>

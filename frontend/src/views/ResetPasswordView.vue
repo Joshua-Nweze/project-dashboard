@@ -55,12 +55,14 @@
 <script setup>
 import Header from '@/components/auth/Header.vue';
 import SmallLoadingSpinner from '@/components/SmallLoadingSpinner.vue';
-import { ref } from 'vue';
+import { inject, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { decrypt } from '../composables/enc'
 import router from '@/router';
 
 let route = useRoute()
+
+const apihost = inject('apihost')
 
 let newPassword = ref('')
 let reNewPassword = ref('')
@@ -111,7 +113,7 @@ async function resetPwd() {
 
     loading.value = true
 
-    let req = await fetch('http://localhost:3000/api/auth/reset-password', {
+    let req = await fetch(`${apihost}/api/auth/reset-password`, {
         method: "PATCH",
         headers: { 'Content-type': 'application/json' },
         body: JSON.stringify({

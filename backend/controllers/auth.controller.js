@@ -117,7 +117,7 @@ async function forgotPassword(req, res) {
                             .then(() =>  {
                                 //sending otp to user
                                 let mailOptions = {
-                                    from: 'jnweze2@gmail.com',
+                                    from: process.env.MAIL_SENDER,
                                     to: email,
                                     subject: 'Reset password OTP',
                                     html: `<p>Don't share with anyone.</p><p>Use this OTP to reset your password.</p><p><strong>This OTP expires after 15 minutes.</strong/></p><p style="font-size: 22px; color: #6E6D70">${otpValue}</p> <p>If you didn't try resetting your password, ignore this email.</p>

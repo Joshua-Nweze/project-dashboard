@@ -1,12 +1,16 @@
+import { inject } from "vue"
+
+const apihost = inject('apihost')
+
 async function getUserDetails (email) {
-    let req = await fetch(`http://localhost:3000/api/user/get-details?email=${email}`, { credentials: 'include' })
+    let req = await fetch(`${apihost}/api/user/get-details?email=${email}`, { credentials: 'include' })
     let res = await req.json()
 
     return res
 }
 
 async function getStaffProjects(id) {
-    let req = await fetch(`http://localhost:3000/api/projects/get-staff-projects?staffId=${id}`, { credentials: 'include' })
+    let req = await fetch(`${apihost}/api/projects/get-staff-projects?staffId=${id}`, { credentials: 'include' })
     let res = await req.json()
 
     let ongoingProjects;

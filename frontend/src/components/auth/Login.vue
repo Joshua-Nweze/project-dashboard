@@ -67,19 +67,20 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { inject, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { provide } from 'vue';
 import SmallLoadingSpinner from '../SmallLoadingSpinner.vue';
+import Header from "./Header.vue";
 
 import Cookies from 'js-cookie'
-
-import Header from "./Header.vue";
 
 let router = useRouter()
 
 let email = ref('')
 let password = ref('')
+
+let apihost = inject('apihost')
 
 let feedback = ref(null)
 let status = ref(null)
@@ -103,7 +104,7 @@ async function login() {
         return
     }
 
-    let req = await fetch('http://localhost:3000/api/auth/login', {
+    let req = await fetch(`${apihost}/api/auth/login`, {
         method: 'POST',
         credentials: 'include',
         headers: {'Content-type': 'application/json'},

@@ -1,10 +1,9 @@
 <template>
     <div>
         <div class="justify-content-center d-flex">
-            <img src="../../assets/imgs/logo.png" alt="" height="100">
         </div>
 
-        <div class="justify-content-center d-flex text-secondary fw-bold">Ministry Of Works projects dashboard</div>
+        <div class="justify-content-center d-flex text-secondary fw-bold">Projects dashboard</div>
 
         <div class="fs-3 text-secondary mb-4 mt-5">{{ title }}</div>
     </div>

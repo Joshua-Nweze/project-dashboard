@@ -1,5 +1,7 @@
 <template>
-    <AddProject />
+    <div>
+        <AddProject />
+    </div>
 </template>
 
 <script setup>

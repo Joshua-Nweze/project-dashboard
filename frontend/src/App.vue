@@ -1,8 +1,17 @@
 <template>
-    <router-view />
+    <div>
+        <div>
+            <router-view />
+        </div>
+    </div>
 </template>
 
 <script setup>
+import { provide } from 'vue';
+
+// when changing the api host, change also in router/index.js
+// and in store/*
+provide('apihost', 'http://localhost:3000')
 </script>
 
 <style>

@@ -32,10 +32,12 @@
 
 <script setup>
 import Header from '@/components/auth/Header.vue';
-import { ref } from 'vue';
+import { ref, inject } from 'vue';
 import router from '@/router';
 import { encrypt } from '../composables/enc'
 import SmallLoadingSpinner from '@/components/SmallLoadingSpinner.vue';
+
+const apihost = inject('apihost')
 
 let email = ref('')
 let feedback = ref(null)
@@ -58,7 +60,7 @@ async function next() {
 
     isChecking.value = true
 
-    let req = await fetch('http://localhost:3000/api/setup/check-email', {
+    let req = await fetch(`${apihost}/api/setup/check-email`, {
         method: 'POST',
         headers: { 'Content-type': 'application/json' },
         body: JSON.stringify({ email: email.value })

@@ -13,8 +13,8 @@
 </template>
 
 <script setup>
-    import ColOne from "@/components/dashboard/ColOne.vue";
-    import ColTwo from "@/components/dashboard/ColTwo.vue";
+import ColOne from "@/components/dashboard/ColOne.vue";
+import ColTwo from "@/components/dashboard/ColTwo.vue";
 </script>
 
 <style>

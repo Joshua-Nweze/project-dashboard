@@ -50,10 +50,13 @@ import SmallLoadingSpinner from "../SmallLoadingSpinner.vue";
 import { useUser } from "@/store/useUser";
 import { storeToRefs } from "pinia";
 import Cookies from "js-cookie";
+import { inject } from "vue";
 
 let userStore = useUser()
 
 let { user } = storeToRefs(userStore)
+
+let apihost = inject('apihost')
 
 let password = ref(null)
 
@@ -72,7 +75,7 @@ async function delAccount() {
 
     isDeleting.value = true
 
-    let req = await fetch('http://localhost:3000/api/user/delete-account', {
+    let req = await fetch(`${apihost}/api/user/delete-account`, {
         method: 'DELETE',
         credentials: 'include',
         headers: { 'Content-type': 'application/json' },

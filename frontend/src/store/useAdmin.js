@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+let apihost = 'http://localhost:3000'
 
 export const useAdmin = defineStore("useAdmin", {
     state: () => ({
@@ -11,7 +12,7 @@ export const useAdmin = defineStore("useAdmin", {
 
     actions: {
         async getAllStaff (adminId) {
-            let req = await fetch(`http://localhost:3000/api/admin/get-all-staff?adminId=${adminId}`, {
+            let req = await fetch(`${apihost}/api/admin/get-all-staff?adminId=${adminId}`, {
                 credentials: 'include',
             })
             let res = await req.json()
@@ -28,7 +29,7 @@ export const useAdmin = defineStore("useAdmin", {
         },
 
         async getAllProjects(id) {
-            let req = await fetch(`http://localhost:3000/api/projects/get-all-projects?id=${id}`)
+            let req = await fetch(`${apihost}/api/projects/get-all-projects?id=${id}`)
             let res = await req.json()
             
             this.allProjects = res.message
@@ -49,14 +50,14 @@ export const useAdmin = defineStore("useAdmin", {
         },
 
         async getUnansweredInvites(id){
-            let req = await fetch(`http://localhost:3000/api/admin/get-unanswered-invites?id=${id}`)
+            let req = await fetch(`${apihost}/api/admin/get-unanswered-invites?id=${id}`)
             let res = await req.json()
 
             this.unansweredInvites = res.message
         },
 
         async cancelInvite (id, email) {
-            let req = await fetch('http://localhost:3000/api/admin/cancel-invite', {
+            let req = await fetch(`${apihost}/api/admin/cancel-invite`, {
                 method: 'DELETE',
                 headers: { 'Content-type': 'application/json' },
                 body: JSON.stringify({

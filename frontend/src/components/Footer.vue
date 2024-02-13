@@ -1,7 +1,7 @@
 <template>
     <footer class="footer">
         <div class="row">
-            <div class="col-12 text-end">&copy; {{ new Date().getFullYear() }} Enugu State Ministry of Works </div>
+            <div class="col-12 text-end">&copy; {{ new Date().getFullYear() }} Made by <a target="_blank" href="https://joshuanweze.netlify.app">Joshua Nweze</a> </div>
         </div>
     </footer>
 </template>

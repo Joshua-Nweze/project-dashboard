@@ -246,6 +246,7 @@ let { user } = storeToRefs(userStore)
 let { staff } = storeToRefs(adminStore)
 
 let userEmail = inject('userEmail')
+let apihost = inject('apihost')
 
 let isDataReady = ref(true)
 let error = ref(false)
@@ -286,7 +287,7 @@ let userDetailsFinisedProjects = ref(0)
 async function viewUser(id) {
     userDetails.value = null
 
-    let req = await fetch(`http://localhost:3000/api/admin/view-user-details?id=${id}`)
+    let req = await fetch(`${apihost}/api/admin/view-user-details?id=${id}`)
     let res = await req.json()
 
     userDetails.value = res.message
@@ -305,7 +306,7 @@ let status = ref(null)
 async function blockUser(email, adminId) {
     isBlocking.value = true
 
-    let req = await fetch('http://localhost:3000/api/admin/block-staff', {
+    let req = await fetch(`${apihost}/api/admin/block-staff`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -333,7 +334,7 @@ let isUnblocking = ref(false)
 async function unblockUser(email, adminId) {
     isUnblocking.value = true
 
-    let req = await fetch('http://localhost:3000/api/admin/unblock-staff', {
+    let req = await fetch(`${apihost}/api/admin/unblock-staff`, {
         method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -369,7 +370,7 @@ async function inviteStaff() {
     isInviting.value = true
     inviteFeedback.value = inviteStatus.value = null
 
-    let req = await fetch('http://localhost:3000/api/admin/invite-staff', {
+    let req = await fetch(`${apihost}/api/admin/invite-staff`, {
         method: 'POST',
         headers: { 'Content-type': 'application/json' },
         body: JSON.stringify({

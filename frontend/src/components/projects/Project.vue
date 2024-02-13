@@ -94,7 +94,7 @@
 
                 <div v-else>
                     <div class="text-center fs-3 mt-5">
-                        {{ project.message }}. <br>
+                        {{ project.message }} <br>
                         <div class="fs-5 text-muted">Are you sure the link is correct? </div>
                     </div>
                 </div>
@@ -137,9 +137,7 @@
                             <div class="mt-4">Attach document ( image(s) )</div>
                             <div class="attach-doc-div text-center">
                                 <div ref="fileFeedback"></div>
-                                <span><i class="bi bi-upload fs-1 text-secondary"></i> <br> Drag and drop here</span> <br>
-                                <span>or</span> <br>
-                                <div>
+                                <div class="mt-3">
                                     Select file <br>
 
                                     <div class="d-flex justify-content-center mt-3">
@@ -155,12 +153,13 @@
                             <span>
                                 <span v-if="!project.endDate">
                                     <button v-if="!isUpdatingProjectStatus" type="button" class="btn btn-outline-success"
-                                        @click="markProjectAsFinished(project._id, user.id)">Mark as
-                                        finised</button>
+                                        @click="markProjectAsFinished(project._id, user.id)"> Mark as
+                                        finised
+                                    </button>
 
-                                    <span v-else class="px-3">
+                                    <button v-else class="btn btn-outline-success px-3">
                                         <SmallLoadingSpinner />
-                                    </span>
+                                    </button>
                                 </span>
 
                                 <span v-if="project.endDate">
@@ -168,9 +167,9 @@
                                         @click="unmarkProjectAsFinished(project._id, user.id)">Mark as
                                         unfinised</button>
 
-                                    <span v-else class="px-3">
+                                    <button v-else class="btn btn-outline-secondary px-3">
                                         <SmallLoadingSpinner />
-                                    </span>
+                                    </button>
                                 </span>
 
                             </span>
@@ -218,6 +217,7 @@ let plugins = ref([lgThumbnail, lgZoom])
 let route = useRoute()
 
 let userEmail = inject('userEmail')
+let apihost = inject('apihost')
 
 let isDataReady = ref(false)
 let status = ref(null)
@@ -225,20 +225,12 @@ let status = ref(null)
 let usersName = ref(null)
 
 async function getDataOnLoad() {
-    if (!user.value) {
-        await userStore.getUserDetails(userEmail)
-
-        if (user.value.userType == 'staff') {
-            await projectsStore.getStaffProjects(user.value.id)
-        } else {
-            await adminStore.getAllProjects(user.value.id)
-        }
-
-    }
     let req = await projectsStore.getProject(route.params.id)
 
-    let getUserNameReq = await viewUser(project.value.staff)
-    usersName.value = getUserNameReq.message.user.name
+    if (user.value.userType == 'admin') {
+        let getUserNameReq = await viewUser(project.value.staff)
+        usersName.value = getUserNameReq.message.user.name
+    }
 
     status.value = req.status
     isDataReady.value = true
@@ -286,7 +278,7 @@ function clearFeedbackAndStatus() {
 }
 
 async function viewUser(id) {
-    let req = await fetch(`http://localhost:3000/api/admin/view-user-details?id=${id}`)
+    let req = await fetch(`${apihost}/api/admin/view-user-details?id=${id}`)
     let res = await req.json()
 
     return res
@@ -355,7 +347,7 @@ async function addMilestone() {
 
     console.log([...formData.entries()]);
 
-    let req = await fetch('http://localhost:3000/api/projects/add-project-milestone', {
+    let req = await fetch(`${apihost}/api/projects/add-project-milestone`, {
         method: 'PATCH',
         body: formData
     })

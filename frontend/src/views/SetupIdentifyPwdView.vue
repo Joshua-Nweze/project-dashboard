@@ -41,12 +41,14 @@
 
 <script setup>
 import Header from '@/components/auth/Header.vue';
-import { ref } from 'vue';
+import { inject, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import SmallLoadingSpinner from '@/components/SmallLoadingSpinner.vue';
 import { AES }  from 'crypto-js'
 import { encrypt, decrypt } from '../composables/enc'
 import router from '@/router';
+
+const apihost = inject('apihost')
 
 let route = useRoute()
 let feedback = ref('')
@@ -68,7 +70,7 @@ async function check() {
     feedback.value = status.value = null
     isChecking.value = true
 
-    let req = await fetch('http://localhost:3000/api/setup/check-password', {
+    let req = await fetch(`${apihost}/api/setup/check-password`, {
         method: 'POST',
         headers: { 'Content-type': 'application/json' },
         body: JSON.stringify({ 

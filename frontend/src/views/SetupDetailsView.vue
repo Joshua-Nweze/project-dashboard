@@ -58,13 +58,15 @@
 
 <script setup>
 import Header from '@/components/auth/Header.vue';
-import { ref } from 'vue';
+import { inject, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { decrypt } from '../composables/enc'
 import SmallLoadingSpinner from '@/components/SmallLoadingSpinner.vue';
 import router from '@/router';
 
 let route = useRoute()
+
+const apihost = inject('apihost')
 
 let name = ref('')
 let lga = ref('')
@@ -106,7 +108,7 @@ async function createAccount() {
     isCreatingAccount.value = true
 
 
-    let req = await fetch('http://localhost:3000/api/setup/setup-details', {
+    let req = await fetch(`${apihost}/api/setup/setup-details`, {
         method: 'POST',
         headers: { 'Content-type': 'application/json' },
         body: JSON.stringify({

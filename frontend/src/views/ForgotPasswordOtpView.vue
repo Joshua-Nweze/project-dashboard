@@ -51,7 +51,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { inject, ref } from 'vue';
 import Header from '@/components/auth/Header.vue';
 import SmallLoadingSpinner from '@/components/SmallLoadingSpinner.vue';
 import router from '@/router';
@@ -64,6 +64,8 @@ let loading = ref(false)
 
 let feedback = ref(null)
 let status = ref(null)
+
+const apihost = inject('apihost')
 
 let email = ref(route.query.q)
 
@@ -104,7 +106,7 @@ async function resendOtp() {
         return
     }
 
-    let req = await fetch('http://localhost:3000/api/auth/forgot-password', {
+    let req = await fetch(`${apihost}/api/auth/forgot-password`, {
         method: 'POST',
         headers: { 'Content-type': 'application/json' },
         body: JSON.stringify({ email: email.value })
@@ -121,7 +123,7 @@ async function validateOtp() {
     
     loading.value = true
 
-    let req = await fetch('http://localhost:3000/api/auth/validate-opt', {
+    let req = await fetch(`${apihost}/api/auth/validate-opt`, {
         method: 'POST',
         headers: { 'Content-type': 'application/json' },
         body: JSON.stringify({
