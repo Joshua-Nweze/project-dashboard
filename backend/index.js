@@ -16,11 +16,14 @@ import checkAuth from "./middleware/checkAuth.js";
 
 const app = express()
 
+const PORT = process.env.PORT || 3000
+
 app.use(bodyParser.json())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cors({
-    origin: 'http://localhost:8080',
+    // origin: 'http://localhost:8080',
+	origin: 'https://pdashboardd.netlify.app/',
     credentials: true
 }))
 app.use(cookieParser())
@@ -54,6 +57,6 @@ app.post('/api/validate-token', (req, res) => {
   });
 
 mongoose.connect(process.env.DB_URI)
-    .then(app.listen(3000, () => {
-        console.log('server running in port 3k')
+    .then(app.listen(PORT, () => {
+        console.log(`server running in port ${PORT}`)
     }))

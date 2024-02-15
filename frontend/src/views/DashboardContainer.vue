@@ -68,16 +68,16 @@ async function getDataOnLoad() {
             isDataReady.value = true;
             return;
         }
+    }
 
-        if (user.value.userType == "staff") {
-            await projectsStore.getStaffProjects(user.value.id);
-        } else {
-            await adminStore.getAllStaff(user.value.id);
-            await adminStore.getAllProjects(user.value.id);
+    if (user.value.userType == "staff") {
+        await projectsStore.getStaffProjects(user.value.id);
+    } else {
+        await adminStore.getAllStaff(user.value.id);
+        await adminStore.getAllProjects(user.value.id);
 
-            // getting unanswered invites
-            await adminStore.getUnansweredInvites(user.value.id);
-        }
+        // getting unanswered invites
+        await adminStore.getUnansweredInvites(user.value.id);
     }
 
     isDataReady.value = true;

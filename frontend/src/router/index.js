@@ -133,6 +133,8 @@ router.beforeEach(async (to, from, next) => {
 
 	let req = await fetch(`${apihost}/api/validate-token`, {
 		method: 'POST',
+    credentials: 'include',
+    // mode: 'no-cors',
 		headers: { 'Content-type': 'application/json' },
 		body: JSON.stringify({ token })
 	})

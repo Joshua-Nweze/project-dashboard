@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-let apihost = 'https://lime-real-tuna.cyclic.app'
+let apihost = 'http://localhost:3000'
 
 export const useUser = defineStore("userStore", {
     state: () => ({
@@ -10,6 +10,8 @@ export const useUser = defineStore("userStore", {
         async getUserDetails (email) {
             let req = await fetch(`${apihost}/api/user/get-details?email=${email}`, { credentials: 'include' })
             let res = await req.json()
+
+            console.log(res)
 
             this.user = res
             

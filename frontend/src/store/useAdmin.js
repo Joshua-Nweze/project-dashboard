@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-let apihost = 'https://lime-real-tuna.cyclic.app'
+let apihost = 'http://lime-real-tuna.cyclic.app'
 
 export const useAdmin = defineStore("useAdmin", {
     state: () => ({
@@ -13,7 +13,7 @@ export const useAdmin = defineStore("useAdmin", {
     actions: {
         async getAllStaff (adminId) {
             let req = await fetch(`${apihost}/api/admin/get-all-staff?adminId=${adminId}`, {
-                credentials: 'include',
+                credentials: 'include'
             })
             let res = await req.json()
 
