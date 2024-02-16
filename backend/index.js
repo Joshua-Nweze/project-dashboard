@@ -22,8 +22,7 @@ app.use(bodyParser.json())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(cors({
-    // origin: 'http://localhost:8080',
-	origin: 'https://pdashboardd.netlify.app',
+    origin: ['http://localhost:8080', 'https://pdashboardd.netlify.app'],
     credentials: true
 }))
 app.use(cookieParser())
@@ -54,7 +53,7 @@ app.post('/api/validate-token', (req, res) => {
     } catch (error) {
       	return res.status(401).json({ valid: false });
     }
-  });
+});
 
 mongoose.connect(process.env.DB_URI)
     .then(app.listen(PORT, () => {

@@ -118,7 +118,7 @@ async function login() {
 
     console.log('res', res)
         if(req.status == 200) {
-        Cookies.set('token', res.token, { expires: 2, httpOnly: true })
+        Cookies.set('token', res.token, { expires: 2 })
         provide('userEmail', email.value)
         router.push('/dashboard')
     } else {

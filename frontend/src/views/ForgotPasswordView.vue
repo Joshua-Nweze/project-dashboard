@@ -44,7 +44,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { inject, ref } from 'vue';
 import Header from '@/components/auth/Header.vue';
 import SmallLoadingSpinner from '@/components/SmallLoadingSpinner.vue';
 import router from '@/router';

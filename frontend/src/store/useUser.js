@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-let apihost = 'http://localhost:3000'
+let apihost = 'http://lime-real-tuna.cyclic.app'
 
 export const useUser = defineStore("userStore", {
     state: () => ({
