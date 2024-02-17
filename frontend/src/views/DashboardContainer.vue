@@ -72,7 +72,7 @@ async function getDataOnLoad() {
 
     if (user.value.userType == "staff") {
         await projectsStore.getStaffProjects(user.value.id);
-    } else {
+    } else if (user.value.userType == "staff") {
         await adminStore.getAllStaff(user.value.id);
         await adminStore.getAllProjects(user.value.id);
 

@@ -2,6 +2,7 @@ import jwt from "jsonwebtoken";
 
 export default function checkAuth(req, res, next) {
     let token = req.cookies.token
+    console.log(token)
 
     if(token) {
         jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {

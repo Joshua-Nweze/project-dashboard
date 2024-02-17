@@ -130,7 +130,7 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
 	let token = Cookies.get('token')
-  console.log(token)
+  console.log('roken', token)
 
 	let req = await fetch(`${apihost}/api/validate-token`, {
 		method: 'POST',

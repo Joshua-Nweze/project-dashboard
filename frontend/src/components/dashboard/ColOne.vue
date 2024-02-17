@@ -206,7 +206,7 @@
     </div>
 
     <div class="my-3">
-        <canvas id="myGraphChart" ref="a"></canvas>
+        <canvas id="myGraphChart"></canvas>
     </div>
 </template>
 
@@ -226,16 +226,11 @@ let { user } = storeToRefs(userStore)
 let { projects, ongoingProjects, finishedProjects } = storeToRefs(projectsStore)
 let { staff, allProjects, allFinishedProjects, allOngoingProjects, unansweredInvites } = storeToRefs(adminStore)
 
-let a = ref(null)
-console.log(a.value)
-
 async function displayChart() {
     const graph = document.getElementById('myGraphChart')
-    console.log(graph)
 
     if (user.value.userType == 'staff') {
         // bar chart for staff
-        console.log(graph)
         new Chart(graph, {
             type: 'bar',
             data: {

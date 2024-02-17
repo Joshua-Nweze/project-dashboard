@@ -25,6 +25,10 @@ app.use(cors({
     origin: ['http://localhost:8080', 'https://pdashboardd.netlify.app'],
     credentials: true
 }))
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', req.headers.origin);
+    next();
+});
 app.use(cookieParser())
 
 app.use('/api/auth', authRoutes)
