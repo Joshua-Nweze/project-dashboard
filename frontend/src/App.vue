@@ -11,7 +11,7 @@ import { provide } from 'vue';
 
 // when changing the api host, change also in router/index.js
 // and in store/*
-provide('apihost', 'https://lime-real-tuna.cyclic.app')
+provide('apihost', 'http://localhost:3000')
 </script>
 
 <style>

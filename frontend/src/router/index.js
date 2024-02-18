@@ -4,7 +4,9 @@ import DashboardContainer from '@/views/DashboardContainer'
 
 import Cookies from 'js-cookie'
 
-const apihost = 'https://lime-real-tuna.cyclic.app'
+// const apihost = 'https://lime-real-tuna.cyclic.app'
+const apihost = 'http://localhost:3000'
+
 
 const routes = [
   {
