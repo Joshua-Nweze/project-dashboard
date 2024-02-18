@@ -11,7 +11,7 @@ import { provide } from 'vue';
 
 // when changing the api host, change also in router/index.js
 // and in store/*
-provide('apihost', 'http://localhost:3000')
+provide('apihost', process.env.VUE_APP_API_HOST)
 </script>
 
 <style>

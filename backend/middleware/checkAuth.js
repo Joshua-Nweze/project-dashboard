@@ -1,18 +1,50 @@
 import jwt from "jsonwebtoken";
 
-export default function checkAuth(req, res, next) {
-    let token = req.cookies.token
-    console.log('token: ', token)
+function s(string) {
+    return string.split(' ')
+}
 
-    if(token) {
-        jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+export default function checkAuth(req, res, next) {
+    // let { token } = req.headers.authorization
+    // console.log('token: ', token)
+
+    // if(token) {
+    //     jwt.verify(token, process.env.JWT_SECRET, (err, decodedToken) => {
+    //         if (err) {
+    //             return res.status(401).json({ message: "Authentification Failed, try logging in again" });
+    //         } else {
+    //             next()
+    //         }
+    //     })
+    // } else {
+    //     return res.status(401).json({ message: "Authentification Failed, try logging in again" });
+    // }
+
+    if (!req.headers.authorization) {
+        return res
+          .status(401)
+          .json({ message: "Authentification Failed, no auth header" })
+      } else {
+        const [tokenType, token] = s(req.headers.authorization)
+        console.log('token1: ', token)
+        if (token && tokenType === 'Bearer') {
+          const secret = process.env.JWT_SECRET
+          jwt.verify(token, secret, (err, decodedToken) => {
             if (err) {
-                return res.status(401).json({ message: "Authentification Failed, try logging in again" });
+              console.log(err)
+              return res
+              .status(401)
+              .json({ message: "Authentification Failed, try logging in again" })
             } else {
-                next()
+              // make user available for the next middleware
+              // console.log(decodedToken.data)
+            //   const decodedData = decodedToken
+            console.log('de: ', decodedToken)
+              res.locals.user = decodedToken.id
+            //   res.locals.remember_me = decodedData.data.remember_me
+              next()
             }
-        })
-    } else {
-        return res.status(401).json({ message: "Authentification Failed, try logging in again" });
-    }
+          })
+        }
+      }
 }

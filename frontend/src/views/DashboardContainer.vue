@@ -61,7 +61,7 @@ let error = ref(null);
 
 async function getDataOnLoad() {
     if (!user.value) {
-        let req = await userStore.getUserDetails(userEmail);
+        let req = await userStore.getUserDetails(userEmail, cookie);
 
         if (req.status == 500) {
             error.value = true;

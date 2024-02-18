@@ -245,6 +245,10 @@ let adminStore = useAdmin()
 let { user } = storeToRefs(userStore)
 let { staff } = storeToRefs(adminStore)
 
+import Cookies from "js-cookie";
+
+let cookie = Cookies.get('token')
+
 let userEmail = inject('userEmail')
 let apihost = inject('apihost')
 
@@ -255,7 +259,7 @@ async function getDataOnLoad() {
     if (!user.value) {
         isDataReady.value = false
 
-        let req = await userStore.getUserDetails(userEmail)
+        let req = await userStore.getUserDetails(userEmail, cookie)
 
         if (req.status == 500) {
             error.value = true

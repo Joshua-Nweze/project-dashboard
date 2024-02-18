@@ -4,8 +4,9 @@ import DashboardContainer from '@/views/DashboardContainer'
 
 import Cookies from 'js-cookie'
 
-// const apihost = 'https://lime-real-tuna.cyclic.app'
-const apihost = 'http://localhost:3000'
+// const apihost = 'https://project-dashboard-n7sx.onrender.com'
+const apihost = process.env.VUE_APP_API_HOST
+console.log(process.env.VUE_APP_API_HOST)
 
 
 const routes = [
@@ -138,8 +139,11 @@ router.beforeEach(async (to, from, next) => {
 		method: 'POST',
     credentials: 'include',
     // mode: 'no-cors',
-		headers: { 'Content-type': 'application/json' },
-		body: JSON.stringify({ token })
+		headers: { 
+      'Content-type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+		// body: { }
 	})
 
 	let res = await req.json()

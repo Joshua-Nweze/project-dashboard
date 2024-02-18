@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-let apihost = 'http://localhost:3000'
+let apihost = process.env.VUE_APP_API_HOST
 
 export const useProjects = defineStore("project", {
     state: () => ({

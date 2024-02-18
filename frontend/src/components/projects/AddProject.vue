@@ -114,6 +114,10 @@ import { useProjects } from "@/store/useProjects";
 import LoadingSpinner from "../LoadingSpinner.vue";
 import SmallLoadingSpinner from "../SmallLoadingSpinner.vue";
 
+import Cookies from "js-cookie";
+
+let cookie = Cookies.get('token')
+
 let userStore = useUser()
 let { user } = storeToRefs(userStore)
 
@@ -125,7 +129,7 @@ let isDataReady = ref(false)
 
 async function getDataOnLoad() {
     if (!user.value ) {
-        await userStore.getUserDetails(userEmail)
+        await userStore.getUserDetails(userEmail, cookie)
 
         if (user.value.userType == 'staff') {
             await projectsStore.getStaffProjects(user.value.id)

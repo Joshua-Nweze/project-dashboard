@@ -88,11 +88,11 @@ async function changePwd(req, res) {
 }
 
 async function getDetails(req, res) {
+    console.log('req local ', res.locals.user)
     try {
-        let { email } = req.query
-
+        let { email } = req.query 
         let details = await Users.findOne({ email })
-
+        
         if(!details){
             res.status(404).json({ message: 'User not found' })
             return

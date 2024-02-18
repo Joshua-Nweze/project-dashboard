@@ -107,7 +107,9 @@ import { useRouter } from 'vue-router';
 import { useUser } from '@/store/useUser';
 import { storeToRefs } from 'pinia';
 import { inject, ref } from 'vue';
-import Cookies from 'js-cookie'
+import Cookies from "js-cookie";
+
+let cookie = Cookies.get('token')
 
 let userStore = useUser()
 const userEmail = inject('userEmail')
@@ -126,7 +128,7 @@ function goTo(route) {
 let dataReady = ref(false)
 async function getDataOnLoad() {
     if (!user.value) {
-        await userStore.getUserDetails(userEmail)
+        await userStore.getUserDetails(userEmail, cookie)
     }
 
     user.value.userType == 'admin' ? isAdmin.value = true : isAdmin.value = false

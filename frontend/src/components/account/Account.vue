@@ -109,7 +109,9 @@ import LoadingSpinner from "../LoadingSpinner.vue";
 import SmallLoadingSpinner from "../SmallLoadingSpinner.vue";
 import { useAdmin } from "@/store/useAdmin";
 import { useProjects } from "@/store/useProjects";
+import Cookies from "js-cookie";
 
+let cookie = Cookies.get('token')
 let projectsStore = useProjects()
 
 let userEmail = inject('userEmail')
@@ -123,7 +125,7 @@ let isDataReady = ref(false)
 
 async function getDataOnLoad() {
     if (!user.value) {
-        await userStore.getUserDetails(userEmail)
+        await userStore.getUserDetails(userEmail, cookie)
 
         if (user.value.userType == 'admin') {
             await adminStore.getUnansweredInvites(user.value.id)

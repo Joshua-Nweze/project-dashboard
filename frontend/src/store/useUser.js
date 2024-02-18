@@ -1,5 +1,6 @@
+import Cookies from "js-cookie";
 import { defineStore } from "pinia";
-let apihost = 'http://localhost:3000'
+let apihost = process.env.VUE_APP_API_HOST
 
 export const useUser = defineStore("userStore", {
     state: () => ({
@@ -7,8 +8,12 @@ export const useUser = defineStore("userStore", {
     }),
 
     actions: {
-        async getUserDetails (email) {
-            let req = await fetch(`${apihost}/api/user/get-details?email=${email}`, { credentials: 'include' })
+        async getUserDetails (email, token) {
+            // let token = Cookies.get(token)
+            console.log(token)
+            let req = await fetch(`${apihost}/api/user/get-details?email=${email}`, { credentials: 'include',
+            headers: { 'Authorization': `Bearer ${token}` }
+        })
             let res = await req.json()
 
             console.log(res)
@@ -35,7 +40,7 @@ export const useUser = defineStore("userStore", {
 
             if (req.status == 200) {
                 // fetch updated user details
-                this.getUserDetails(email)
+                this.getUserDetails(email, token)
             }
 
             return {

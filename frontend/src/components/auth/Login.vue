@@ -107,7 +107,9 @@ async function login() {
     let req = await fetch(`${apihost}/api/auth/login`, {
         method: 'POST',
         credentials: 'include',
-        headers: {'Content-type': 'application/json'},
+        headers: {
+            'Content-type': 'application/json', 
+        },
         body: JSON.stringify({
             email: email.value,
             password: password.value

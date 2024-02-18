@@ -152,6 +152,9 @@ let userEmail = inject('userEmail')
 let userStore = useUser()
 let adminStore = useAdmin()
 let { user } = storeToRefs(userStore)
+import Cookies from "js-cookie";
+
+let cookie = Cookies.get('token')
 
 let name = ref('')
 let phone = ref('')
@@ -161,7 +164,7 @@ let isDataReady = ref(false)
 
 async function getDataOnLoad() {
     if (!user.value) {
-       await userStore.getUserDetails(userEmail)
+       await userStore.getUserDetails(userEmail, cookie)
 
        if (user.value.userType == 'staff') {
             await projectsStore.getStaffProjects(user.value.id)

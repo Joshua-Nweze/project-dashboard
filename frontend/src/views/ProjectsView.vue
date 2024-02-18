@@ -87,6 +87,7 @@ import { inject, ref, watch } from "vue";
 import NothingToShow from "../components/NothingToShow.vue";
 import { useAdmin } from "@/store/useAdmin";
 import ErrorReload from "@/components/ErrorReload.vue";
+import Cookies from "js-cookie";
 
 let userStore = useUser();
 let { user } = storeToRefs(userStore);
@@ -101,11 +102,13 @@ const userEmail = inject("userEmail");
 let isDataReady = ref(false);
 let error = ref(false);
 
+let cookie = Cookies.get('token')
+
 let retrivedProjects = ref(null);
 
 async function getDataOnLoad() {
     if (!user.value) {
-        let req = await userStore.getUserDetails(userEmail);
+        let req = await userStore.getUserDetails(userEmail, cookie);
 
         if (req.status == 500) {
             error.value = true;
