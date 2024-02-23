@@ -43,25 +43,6 @@ app.use('/api/projects', projectsRoutes)
 app.post('/api/validate-token', checkAuth, (req, res) => {
 	return res.status(200).json({ valid: true })
 })
-// app.post('/api/validate-token', (req, res) => {
-//     try {
-//       	const { token } = req.body;
-
-// 		if (!token) {
-// 			return res.status(401).json({ message: 'No token provided' });
-// 		}
-
-// 		const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-// 		if (decoded) {
-// 			return res.status(200).json({ valid: true })
-// 		} else {
-// 			return res.status(401).json({ valid: false })
-// 		}
-//     } catch (error) {
-//       	return res.status(401).json({ valid: false });
-//     }
-// });
 
 mongoose.connect(process.env.DB_URI)
     .then(app.listen(PORT, () => {

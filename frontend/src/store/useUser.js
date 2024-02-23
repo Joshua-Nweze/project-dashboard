@@ -9,14 +9,10 @@ export const useUser = defineStore("userStore", {
 
     actions: {
         async getUserDetails (email, token) {
-            // let token = Cookies.get(token)
-            console.log(token)
             let req = await fetch(`${apihost}/api/user/get-details?email=${email}`, { credentials: 'include',
             headers: { 'Authorization': `Bearer ${token}` }
         })
             let res = await req.json()
-
-            console.log(res)
 
             this.user = res
             

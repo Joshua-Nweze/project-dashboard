@@ -117,8 +117,6 @@ async function login() {
     })
 
     let res = await req.json()
-
-    console.log('res', res)
         if(req.status == 200) {
         Cookies.set('token', res.token, { expires: 2 })
         provide('userEmail', email.value)

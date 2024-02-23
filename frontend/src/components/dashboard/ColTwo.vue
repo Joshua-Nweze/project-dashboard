@@ -54,14 +54,11 @@
 </template>
 
 <script setup>
-import { ref } from "@vue/runtime-core";
 import { useProjects } from '@/store/useProjects';
 import { useUser } from '@/store/useUser';
 import { useAdmin } from '@/store/useAdmin'
 import { storeToRefs } from 'pinia';
 import { inject } from 'vue';
-
-import LoadingSpinner from '../LoadingSpinner.vue';
 
 const userEmail = inject('userEmail')
 
