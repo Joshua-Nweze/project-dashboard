@@ -9,7 +9,6 @@ export default function checkAuth(req, res, next) {
 		return res.status(401).json({ message: "Authentification Failed, no auth header" })
 	} else {
 		const [tokenType, token] = splitString(req.headers.authorization)
-		console.log(req.headers.authorization)
 
 		if (token && tokenType === 'Bearer') {
 			const secret = process.env.JWT_SECRET

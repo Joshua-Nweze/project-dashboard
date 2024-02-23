@@ -4,7 +4,8 @@ import DashboardContainer from '@/views/DashboardContainer'
 
 import Cookies from 'js-cookie'
 
-const apihost = process.env.VUE_APP_API_HOST
+const apihost = process.env.VUE_APP_API_HOST || 'https://project-dashboard-n7sx.onrender.com'
+console.log(apihost)
 
 const routes = [
   {
@@ -130,7 +131,7 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
 	let token = Cookies.get('token')
-
+  
 	let req = await fetch(`${apihost}/api/validate-token`, {
 		method: 'POST',
     credentials: 'include',
