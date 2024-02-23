@@ -11,7 +11,9 @@ import { provide } from 'vue';
 
 // when changing the api host, change also in router/index.js
 // and in store/*
-provide('apihost', process.env.VUE_APP_API_HOST)
+const apihost = process.env.VUE_APP_API_HOST || 'https://project-dashboard-n7sx.onrender.com'
+
+provide('apihost', apihost)
 </script>
 
 <style>

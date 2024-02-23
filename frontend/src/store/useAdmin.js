@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-let apihost = process.env.VUE_APP_API_HOST
+const apihost = process.env.VUE_APP_API_HOST || 'https://project-dashboard-n7sx.onrender.com'
 
 export const useAdmin = defineStore("useAdmin", {
     state: () => ({
