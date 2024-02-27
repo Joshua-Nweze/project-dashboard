@@ -132,7 +132,7 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
 	let token = Cookies.get('token')
   
-	let req = await fetch(`${apihost}/api/validate-token`, {
+	let req = await fetch(`https://project-dashboard-n7sx.onrender.com/api/validate-token`, {
 		method: 'POST',
     credentials: 'include',
 		headers: { 
