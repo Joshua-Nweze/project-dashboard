@@ -22,11 +22,14 @@ export const useUser = defineStore("userStore", {
             }
         },
 
-        async editAccount(name, phoneNumber, lga, id, email) {
+        async editAccount(name, phoneNumber, lga, id, email, token) {
             let req = await fetch(`${apihost}/api/user/edit-account`, {
                 credentials: 'include',
                 method: 'PATCH',
-                headers: {'Content-Type': 'application/json'},
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify({
                     name, phoneNumber, lga, id
                 })
@@ -45,11 +48,14 @@ export const useUser = defineStore("userStore", {
             }
         },
 
-        async changePassword(id, password, new_password, re_new_password) {
+        async changePassword(id, password, new_password, re_new_password, token) {
             let req = await fetch(`${apihost}/api/user/change-password`, {
                 credentials: 'include',
                 method: 'PATCH',
-                headers: {'Content-Type': 'application/json'},
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify({
                     id, password, new_password, re_new_password
                 })

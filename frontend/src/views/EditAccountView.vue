@@ -210,7 +210,8 @@ async function editAccount() {
         phone.value,
         lga.value,
         user.value.id,
-        userEmail
+        userEmail,
+        cookie
     )
 
     feedback.value = req.message
@@ -258,7 +259,8 @@ async function changePassword() {
         user.value.id,
         currentPassword.value,
         newPassword.value,
-        reNewPassword.value
+        reNewPassword.value,
+        cookie
     )
 
     changePwdFeedback.value = req.message

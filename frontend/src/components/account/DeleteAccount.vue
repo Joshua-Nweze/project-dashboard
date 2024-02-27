@@ -57,6 +57,7 @@ let userStore = useUser()
 let { user } = storeToRefs(userStore)
 
 let apihost = inject('apihost')
+let token = Cookies.get('token')
 
 let password = ref(null)
 
@@ -78,7 +79,10 @@ async function delAccount() {
     let req = await fetch(`${apihost}/api/user/delete-account`, {
         method: 'DELETE',
         credentials: 'include',
-        headers: { 'Content-type': 'application/json' },
+        headers: { 
+            'Content-type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({ 
             password: password.value,
             email: user.value.email,

@@ -179,7 +179,8 @@ async function changePassword() {
         user.value.id,
         currentPassword.value,
         newPassword.value,
-        reNewPassword.value
+        reNewPassword.value,
+        cookie
     )
 
     currentPassword.value = newPassword.value = reNewPassword.value = ''
