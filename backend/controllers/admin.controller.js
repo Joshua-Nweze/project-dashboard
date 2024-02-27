@@ -48,8 +48,8 @@ async function inviteStaff(req, res) {
             // recievers email, email subject, email body
             mailer(
                 email,
-                'Invitation to be a staff in Enugu State Ministry of Works dashboard',
-                `<p>You've been invited to be a staff in Enugu State Ministry of Works dashboard.</p>
+                'Invitation to be a staff in Projectss Dashboard',
+                `<p>You've been invited to be a staff in Projectss Dashboard.</p>
                 <p>Use your email to log in. <br /> This is your password: <b>${randPwd}</b> <br /> You can change it after setting up your account.</p>
                 <p><b>DON'T SHARE THIS WITH ANYONE</b></p>
                 <p>Go to ..link... to setup your account. You have to set up your account so you can log in</p>
